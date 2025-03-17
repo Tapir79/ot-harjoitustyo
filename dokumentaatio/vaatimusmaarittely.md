@@ -23,27 +23,35 @@ Pelin käyttäjärooli on _pelaaja_, joka ohjaa avaruusalusta ja yrittää tuhot
 
 ## Käyttöliittymäluonnos
 
-![](./kuvat/vaihtoehto1.jpg)
+![](./kuvat/ui_layout.jpg)
+
+Pelinäkymä voi olla joko pysty- tai sivuttaissuuntainen:
+
+![](./kuvat/game_layout1.jpg)
 
 tai 
 
-![](./kuvat/vaihtoehto2.jpg)
+![](./kuvat/game_layout2.jpg)
 
 Peli koostuu seuraavista osista:
 
-1. **Aloitusnäyttö**
+1. **Aloitusnäkymä**
    - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
    - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen
    - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa
    - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
 
-2. **Pelinäkymä**
+2. **Rekisteröitymisnäkymä**
+   - Lomake, jolla voi luoda uuden käyttäjätunnuksen
+   - Ohjaa takaisin kirjautumisnäkymään 
+
+3. **Pelinäkymä**
    - Pelaaja ohjaa alusta näppäimistöllä.
    - Pelissä on vihollisia, jotka liikkuvat ja ampuvat kohti pelaajaa
    - Pelaaja voi ampua vihollisia ja estää niiden pääsyn maahan.
    - Näytetään pelaajan pisteet, jäljellä olevat elämät ja pelin taso.
    
-3. **Pelin lopetusnäyttö**
+4. **Pelin lopetusnäkymä**
    - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
 
 ## Perusversion tarjoama toiminnallisuus

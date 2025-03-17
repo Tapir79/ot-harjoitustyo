@@ -8,3 +8,4 @@
 | 14.3 | 2  | vaatimusmäärittelyn kirjoittaminen |
 | 15.3 | 2  | vaatimusmäärittelyn kirjoittaminen | 
 | 16.3 | 2  | vaatimusmäärittelyn kirjoittaminen ja käyttöliittymän luonnostelu        |
+| 17.3 | 1  | käyttöliittymän luonnostelu ja puhtaaksi piirtäminen | 
