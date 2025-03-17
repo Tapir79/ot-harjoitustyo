@@ -86,10 +86,11 @@ Peli koostuu seuraavista osista:
   - Käytetään **coverage**-työkalua, jotta voidaan varmistaa koodin kattavuus.
   
 - **Testattavat osa-alueet**:
-  - Peli tulisi käynnistyä ilman virheitä.
-  - Pelaajan liikkuminen ja ampuminen pitäisi toimia oikein.
-  - Vihollisten liikkuminen ja niiden tuhoaminen pitää toimia.
-  - Pelin loppumekanismi ja tulosten tallentaminen tietokantaan tulee olla toimivia.
+  - Pelin käynnistyminen
+  - Pelaajan liikkuminen, ampuminen ja tuhoutuminen
+  - Vihollisten liikkuminen, ampuminen ja tuhoutuminen 
+  - Pelin lopetus
+  - Tulosten tallentaminen tietokantaan
 
 ## Jatkokehitysideoita (tai jos aikaa jää)
 
@@ -103,7 +104,3 @@ Perusversion jälkeen järjestelmää täydennetään mahdollisesti seuraavilla 
 - **Pelin vaikeustason säätäminen**: Pelaaja voi valita pelin vaikeustason ennen peliä.
 - **Äänet ja musiikki**: Pelissä voidaan lisätä taustamusiikkia ja äänitehosteita.
 - **Grafiikan parantaminen**: Pelin visuaalisuutta voidaan parantaa esimerkiksi erilaisten taustojen ja animaatioiden avulla.
-
-## Yhteenveto
-
-Tässä vaatimusmäärittelyssä on hahmoteltu perustoiminnot Space Invaders -pelille, jossa käytetään Pythonia, Pygamea, SQLitea, unittestia, coverage-työkalua ja Poetrya projektin hallintaan. Pelissä pelaaja ohjaa alusta, taistelee vihollisia vastaan ja yrittää saavuttaa parhaan mahdollisen pistemäärän.
