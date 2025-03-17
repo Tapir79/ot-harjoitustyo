@@ -23,11 +23,11 @@ Pelin käyttäjärooli on _pelaaja_, joka ohjaa avaruusalusta ja yrittää tuhot
 
 ## Käyttöliittymäluonnos
 
-![](./kuvat/vaihtoehto1.png)
+![](./kuvat/vaihtoehto1.jpg)
 
 tai 
 
-![](./kuvat/vaihtoehto2.png)
+![](./kuvat/vaihtoehto2.jpg)
 
 Peli koostuu seuraavista osista:
 
