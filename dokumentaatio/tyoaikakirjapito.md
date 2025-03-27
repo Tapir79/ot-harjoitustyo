@@ -9,5 +9,6 @@
 | 15.3 | 2  | vaatimusmäärittelyn kirjoittaminen | 
 | 16.3 | 2  | vaatimusmäärittelyn kirjoittaminen ja käyttöliittymän luonnostelu        |
 | 17.3 | 1  | käyttöliittymän luonnostelu ja puhtaaksi piirtäminen | 
-|19.3 | 1 | viikon 3 materiaaleihin tutustumista |
-|20.3 | 1 | viikon 3 materiaaleihin tutustumista | 
+| 19.3 | 1 | viikon 3 materiaaleihin tutustumista |
+| 20.3 | 1 | viikon 3 materiaaleihin tutustumista | 
+| 26.3 | 3 | harjoitustyön aloitus, projektin perusrunko |
