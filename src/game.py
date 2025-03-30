@@ -15,12 +15,14 @@ class Game:
         self.display_width = 800
         self.screen = pygame.display.set_mode((self.display_width, self.display_height))
         self.player = Player(self.display_width // 2, self.display_height - 50, 40, 40, 5, 0, self.display_width)
+        
         pygame.display.set_caption("Space Invaders")
 
         self.clock = pygame.time.Clock()
         self.running = True
     
         # TODO enemies, bullets
+        self.font = pygame.font.Font(None, 30) 
     
 
     def handle_events(self):
@@ -36,6 +38,8 @@ class Game:
     def draw(self):
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
+        instruction_text = self.font.render("Move the player 'a' and 'd'", True, (255, 255, 255))
+        self.screen.blit(instruction_text, (20, 20))
         pygame.display.update()
 
     def run(self):
