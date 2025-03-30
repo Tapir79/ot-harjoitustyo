@@ -56,7 +56,7 @@ class TestPlayer(unittest.TestCase):
     def test_invalid_key_does_nothing(self):
         """Test that player does not move if key is not a or d"""
         key = 'w'
-        speed = self.game.display_width + 1
+        speed = 5
         player_pos_x = self.player.x
         self.player.x = move_player(self.player.x, key, speed)
         
