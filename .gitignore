@@ -5,3 +5,6 @@ __pycache__
 muistilista.md
 .coverage
 htmlcov
+src/assets/Effects
+src/assets/Missiles
+src/assets/Ships
