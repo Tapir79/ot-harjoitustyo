@@ -1,4 +1,7 @@
 import pygame
+import os
+
+dirname = os.path.dirname(__file__)
 
 WHITE = (255, 255, 255)
 
@@ -17,8 +20,9 @@ def move_player(x, key, speed=5, left_boundary=0, right_boundary=800, player_wid
         return min(right_boundary - player_width, x + speed)
     return x  
 
-class Player:
+class Player (pygame.sprite.Sprite):
     def __init__(self, x, y, width=20, height=20, speed=5, left_boundary=0, right_boundary = 800):
+        super().__init__()
         self.x = x
         self.y = y
         self.width = width
@@ -26,6 +30,14 @@ class Player:
         self.speed = speed
         self.right_boundary = right_boundary
         self.left_boundary = left_boundary
+        self.image = pygame.image.load(
+            os.path.join(dirname, "assets", "player.png")
+        ).convert_alpha() 
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 
     def handle_input(self):
@@ -36,4 +48,4 @@ class Player:
             self.x = move_player(self.x, 'd', self.speed, self.left_boundary, self.right_boundary, self.width)
 
     def draw(self, screen):
-        pygame.draw.rect(screen, WHITE, (self.x, self.y, self.width, self.height))
+        screen.blit(self.image, (self.x, self.y))

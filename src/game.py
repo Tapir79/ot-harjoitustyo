@@ -14,7 +14,7 @@ class Game:
         self.display_height = 600
         self.display_width = 800
         self.screen = pygame.display.set_mode((self.display_width, self.display_height))
-        self.player = Player(self.display_width // 2, self.display_height // 2, 20, 20, 5, 0, self.display_width)
+        self.player = Player(self.display_width // 2, self.display_height - 50, 40, 40, 5, 0, self.display_width)
         pygame.display.set_caption("Space Invaders")
 
         self.clock = pygame.time.Clock()
