@@ -19,7 +19,8 @@ class TestPlayer(unittest.TestCase):
 
     @patch('pygame.key.get_pressed')
     def test_player_moves_left_pygame(self, mock_get_pressed):
-        """Test that player moves left"""
+        """Test that player moves left. 
+        https://docs.python.org/3/library/unittest.mock-examples.html"""
         mock_get_pressed.return_value = {pygame.K_a: True, pygame.K_d: False}
         self.player.handle_input()
         self.assertEqual(self.player.x, 0, "Player should move left.")
@@ -42,7 +43,8 @@ class TestPlayer(unittest.TestCase):
 
     @patch('pygame.key.get_pressed')
     def test_player_moves_right_pygame(self, mock_get_pressed):
-        """Test that player moves right"""
+        """Test that player moves right.
+        https://docs.python.org/3/library/unittest.mock-examples.html"""
         mock_get_pressed.return_value = {pygame.K_a: False, pygame.K_d: True}
         self.player.handle_input()
         self.assertEqual(self.player.x, 10, "Player should move right.")
