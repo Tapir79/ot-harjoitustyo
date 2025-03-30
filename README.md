@@ -36,3 +36,6 @@ Projektissa käytetyn [.pylinrc](https://github.com/Tapir79/ot-harjoitustyo/tree
 ### Kuvat: 
 - Kenney: https://kenney.nl/assets/space-shooter-extension 
 CC lisenssi: https://creativecommons.org/publicdomain/zero/1.0/
+
+## Tekoälyn käyttö 
+Olen käyttänyt ChatGPT:tä debuggailuun ja virheiden tulkintaan (esim. pylint virheiden merkitys, ohjelman käynnistysvirheet jne.), mutta en ole generoinut sillä koodia tai pyytänyt korjaamaan koodia.
