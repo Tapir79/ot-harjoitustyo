@@ -8,6 +8,7 @@ import sys
 import pygame
 from game import Game
 
+
 def main():
     """
     Main starting point for the game.
@@ -19,6 +20,7 @@ def main():
     game.run()
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()

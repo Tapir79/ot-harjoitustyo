@@ -5,6 +5,7 @@ from player import Player
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+
 class Game:
     """
     The Game class represents the main game logic for a simple Space Invaders-style game.
@@ -21,7 +22,8 @@ class Game:
         pygame.init()
         self.display_height = 600
         self.display_width = 800
-        self.screen = pygame.display.set_mode((self.display_width, self.display_height))
+        self.screen = pygame.display.set_mode(
+            (self.display_width, self.display_height))
         self.player = Player(self.display_width // 2,
                              self.display_height - 50,
                              40, 40, 5, 0,
@@ -57,7 +59,8 @@ class Game:
         """
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
-        instruction_text = self.font.render("Move the player with 'a' and 'd'", True, WHITE)
+        instruction_text = self.font.render(
+            "Move the player with 'a' and 'd'", True, WHITE)
         self.screen.blit(instruction_text, (20, 20))
         pygame.display.update()
 
