@@ -15,4 +15,4 @@
 | 27.3 | 2,5 | projektin hakeminen Cubbli-Linuxiin ja riippuvuuksien ja oman sovelluksen asentaminen sekä sen testaaminen | 
 | 28.3 | 3 | pelaajan lisääminen ja liikkuminen näppäimistökuuntelijoilla |
 | 29.3 | 2 | pelaajan liikkumisen testit|
-|30.3 | 4 | pelaajan ampuminen ja testit |
+|30.3 | 4 | pelaajan liikkuminen, testit ja changelog |
