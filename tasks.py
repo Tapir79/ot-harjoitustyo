@@ -35,12 +35,4 @@ def check(ctx):
     lint(ctx)
     test(ctx)
     coverage(ctx)
-
-@task
-def cubbli_check(ctx):
-    """Tarkista Cubbli Linux -yhteensopivuus"""
-    print("Muista tarkistaa seuraavat asiat Cubbli-ympäristössä:")
-    print("- [ ] Peli käynnistyy ilman virheitä")
-    print("- [ ] Näppäimet ja ammunta toimii")
-    print("- [ ] Tietokanta toimii (SQLite3)")
-    print("- [ ] Käyttäjän kirjautuminen onnistuu")
+    
