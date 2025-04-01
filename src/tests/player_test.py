@@ -1,62 +1,37 @@
 import unittest
-from unittest.mock import patch
-import pygame
-from player import Player, move_player
-from game import Game
+from ui.player import PlayerSprite
+from ui.game import Game
+from services.player_service import PlayerService
 
 
 class TestPlayer(unittest.TestCase):
     def setUp(self):
-        self.player = Player(5, 5)
+        self.player_service = PlayerService(5, 5)
+        self.player = PlayerSprite(self.player_service)
         self.game = Game()
 
     def test_player_moves_left(self):
-        key = 'a'
-        speed = 5
-        self.player.x = move_player(self.player.x, key, speed)
-        self.assertEqual(self.player.x, 0, "Player should move left")
-
-    @patch('pygame.key.get_pressed')
-    def test_player_moves_left_pygame(self, mock_get_pressed):
-        """https://docs.python.org/3/library/unittest.mock-examples.html"""
-        mock_get_pressed.return_value = {pygame.K_a: True, pygame.K_d: False}
-        self.player.handle_input()
-        self.assertEqual(self.player.x, 0, "Player should move left.")
+        self.player_service.move('a')
+        self.assertEqual(self.player_service.x, 0, "Player should move left")
 
     def test_player_cannot_move_out_of_bounds_to_left(self):
-        key = 'a'
-        speed = 10
-        left_boundary = 0
-        self.player.x = move_player(self.player.x, key, speed, left_boundary)
-        self.assertEqual(self.player.x, 0,
-                         "Player should not move out of bounds to left")
+        self.player_service.set_speed(10)
+        self.player_service.move('a')
+        self.assertEqual(self.player_service.x, 0, "Player should not move out of bounds to left")
 
     def test_player_moves_right(self):
-        key = 'd'
-        speed = 5
-        self.player.x = move_player(self.player.x, key, speed)
-        self.assertEqual(self.player.x, 10, "Player should move right")
-
-    @patch('pygame.key.get_pressed')
-    def test_player_moves_right_pygame(self, mock_get_pressed):
-        """https://docs.python.org/3/library/unittest.mock-examples.html"""
-        mock_get_pressed.return_value = {pygame.K_a: False, pygame.K_d: True}
-        self.player.handle_input()
-        self.assertEqual(self.player.x, 10, "Player should move right.")
+        self.player_service.move('d')
+        self.assertEqual(self.player_service.x, 10, "Player should move right")
 
     def test_player_cannot_move_out_of_bounds_to_right(self):
-        key = 'd'
-        speed = self.game.display_width + 1
-        self.player.x = move_player(self.player.x, key, speed)
-        max_x = self.game.display_width - self.player.width
-        self.assertEqual(self.player.x, max_x,
+        self.player_service.set_speed(self.game.display_width + 1)
+        self.player_service.move('d')
+        max_x = self.game.display_width - self.player_service.width
+        self.assertEqual(self.player_service.x, max_x,
                          "Player should not move out of bounds to right")
 
     def test_invalid_key_does_nothing(self):
-        key = 'w'
-        speed = 5
-        player_pos_x = self.player.x
-        self.player.x = move_player(self.player.x, key, speed)
-
-        self.assertEqual(self.player.x, player_pos_x,
-                         "Player position should not change if a or d is not pressed")
+        player_pos_x = self.player_service.x
+        self.player_service.move('w')
+        self.assertEqual(self.player_service.x, player_pos_x,
+                          "Player position should not change if a or d is not pressed")

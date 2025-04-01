@@ -1,6 +1,6 @@
 import pygame
-
-from player import Player
+from services.player_service import PlayerService
+from ui.player import PlayerSprite
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -24,10 +24,11 @@ class Game:
         self.display_width = 800
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
-        self.player = Player(self.display_width // 2,
-                             self.display_height - 50,
-                             40, 40, 5, 0,
+        self.player_service = PlayerService(self.display_width // 2,
+                             self.display_height - 50, 40,
+                             40, 5, 0,
                              self.display_width)
+        self.player = PlayerSprite(self.player_service)
 
         pygame.display.set_caption("Space Invaders")
 
