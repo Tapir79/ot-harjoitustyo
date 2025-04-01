@@ -4,7 +4,6 @@ This module initializes and starts the Space Invaders game.
 It creates a Game instance, runs the main game loop, and handles
 clean-up operations like quitting Pygame and exiting the system.
 """
-import os
 import sys
 import pygame
 from ui.game import Game
