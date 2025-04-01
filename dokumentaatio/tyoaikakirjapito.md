@@ -16,3 +16,4 @@
 | 28.3 | 3 | pelaajan lisääminen ja liikkuminen näppäimistökuuntelijoilla |
 | 29.3 | 2 | pelaajan liikkumisen testit|
 | 30.3 | 6 | pelaajan liikkuminen, testit, changelog, README, pylint, docstring |
+| 1.4 | 3 | pelaajalogiikan refaktorointi service-luokkaan ja jaottelu ui- ja service-kansioihin |
