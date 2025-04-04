@@ -1,10 +1,10 @@
-class PlayerService:
-    def __init__(self, x, y, width=20, height=20, speed=5, left_boundary=0, right_boundary=800):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.speed = speed
+from models.sprite_info import SpriteInfo
+from services.base_sprite_service import BaseSpriteService
+
+
+class PlayerService(BaseSpriteService):
+    def __init__(self, sprite_info: SpriteInfo, speed=5, left_boundary=0, right_boundary=800):
+        super().__init__(sprite_info, speed)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
 
@@ -26,15 +26,22 @@ class PlayerService:
         Returns:
             int: The updated x-coordinate after movement.
         """
+        x = self.sprite_info.get_x()
+        width = self.sprite_info.get_width()
+
         if key == 'a':
-            self.x = max(self.left_boundary, self.x - self.speed)
-        if key == 'd':
-            self.x = min(self.right_boundary - self.width, self.x + self.speed)
-        return self.x
+            new_x = max(self.left_boundary, x - self.speed)
+        elif key == 'd':
+            new_x = min(self.right_boundary - width, x + self.speed)
+        else:
+            new_x = x
+
+        self.sprite_info.set_x(new_x)
+        return new_x
 
     def get_position(self):
         """Get player position"""
-        return self.x, self.y
+        return self.sprite_info.get_x(), self.sprite_info.get_y()
 
     def set_speed(self, amount=1):
         """Set player speed to some amount"""

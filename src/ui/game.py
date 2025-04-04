@@ -1,6 +1,9 @@
 import pygame
 from services.player_service import PlayerService
 from ui.player import PlayerSprite
+from models.point import Point
+from models.size import Size
+from models.sprite_info import SpriteInfo
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -24,13 +27,20 @@ class Game:
         self.display_width = 800
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
-        self.player_service = PlayerService(self.display_width // 2,
-                                            self.display_height - 50, 40,
-                                            40, 5, 0,
-                                            self.display_width)
-        self.player = PlayerSprite(self.player_service)
-
         pygame.display.set_caption("Space Invaders")
+
+        player_position = Point(self.display_width // 2,
+                                self.display_height - 50)
+        player_size = Size(40, 40)
+        player_info = SpriteInfo(player_position, player_size)
+
+        self.player_service = PlayerService(
+            sprite_info=player_info,
+            speed=5,
+            left_boundary=0,
+            right_boundary=self.display_width
+        )
+        self.player = PlayerSprite(self.player_service)
 
         self.clock = pygame.time.Clock()
         self.running = True

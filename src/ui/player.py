@@ -16,11 +16,16 @@ class PlayerSprite(pygame.sprite.Sprite):
     def __init__(self, player_service: PlayerService):
         super().__init__()
         self.player = player_service
+
+        width = self.player.sprite_info.size.get_width()
+        height = self.player.sprite_info.size.get_height()
+
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, "player.png")
         ).convert_alpha()
         self.image = pygame.transform.scale(
-            self.image, (self.player.width, self.player.height))
+            self.image, (width, height)
+        )
 
         self.rect = self.image.get_rect()
 
