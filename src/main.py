@@ -8,6 +8,7 @@ import sys
 import pygame
 from ui.game import Game
 
+
 def main():
     """
     Main starting point for the game.

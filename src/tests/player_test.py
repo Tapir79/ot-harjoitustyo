@@ -17,7 +17,8 @@ class TestPlayer(unittest.TestCase):
     def test_player_cannot_move_out_of_bounds_to_left(self):
         self.player_service.set_speed(10)
         self.player_service.move('a')
-        self.assertEqual(self.player_service.x, 0, "Player should not move out of bounds to left")
+        self.assertEqual(self.player_service.x, 0,
+                         "Player should not move out of bounds to left")
 
     def test_player_moves_right(self):
         self.player_service.move('d')
@@ -34,4 +35,4 @@ class TestPlayer(unittest.TestCase):
         player_pos_x = self.player_service.x
         self.player_service.move('w')
         self.assertEqual(self.player_service.x, player_pos_x,
-                          "Player position should not change if a or d is not pressed")
+                         "Player position should not change if a or d is not pressed")

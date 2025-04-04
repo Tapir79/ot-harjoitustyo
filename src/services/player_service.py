@@ -31,15 +31,15 @@ class PlayerService:
         if key == 'd':
             self.x = min(self.right_boundary - self.width, self.x + self.speed)
         return self.x
-    
+
     def get_position(self):
         """Get player position"""
         return self.x, self.y
-    
+
     def set_speed(self, amount=1):
         """Set player speed to some amount"""
         self.speed = amount
-    
+
     def increase_speed(self, amount=1):
         """Increase player speed by the given amount"""
         self.speed += amount

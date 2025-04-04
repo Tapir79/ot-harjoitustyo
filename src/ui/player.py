@@ -4,7 +4,6 @@ from services.player_service import PlayerService
 from config import ASSETS_DIR
 
 
-
 class PlayerSprite(pygame.sprite.Sprite):
     """
     Represents the player character in the game.
@@ -24,7 +23,6 @@ class PlayerSprite(pygame.sprite.Sprite):
             self.image, (self.player.width, self.player.height))
 
         self.rect = self.image.get_rect()
-        
 
     def handle_input(self):
         """

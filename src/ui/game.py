@@ -25,9 +25,9 @@ class Game:
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
         self.player_service = PlayerService(self.display_width // 2,
-                             self.display_height - 50, 40,
-                             40, 5, 0,
-                             self.display_width)
+                                            self.display_height - 50, 40,
+                                            40, 5, 0,
+                                            self.display_width)
         self.player = PlayerSprite(self.player_service)
 
         pygame.display.set_caption("Space Invaders")
