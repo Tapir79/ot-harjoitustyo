@@ -13,7 +13,7 @@ class PlayerService(BaseSpriteService):
         self.right_boundary = right_boundary
         self.shooting = False
 
-    def shoot(self, bullet_width = 5, bullet_height = 10):
+    def shoot(self, bullet_width=5, bullet_height=10):
         """
         Create a new bullet.
         """
@@ -58,4 +58,3 @@ class PlayerService(BaseSpriteService):
 
         self.sprite_info.set_x(new_x)
         return new_x
-

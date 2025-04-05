@@ -54,9 +54,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        
-        
-
         # TODO: Add enemies and bullets
         self.font = pygame.font.Font(None, 30)
 

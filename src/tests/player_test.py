@@ -42,17 +42,13 @@ class TestPlayer(unittest.TestCase):
         self.player_service.move('w')
         self.assertEqual(self.player_service.sprite_info.get_x(), player_pos_x,
                          "Player position should not change if a or d is not pressed")
-        
-    
+
     def test_player_speed_increases(self):
         self.player_service.increase_speed(2)
         self.assertEqual(self.player_service.speed, 7,
                          "Player speed should increase")
-        
-    
+
     def test_player_speed_decreases(self):
         self.player_service.decrease_speed(2)
         self.assertEqual(self.player_service.speed, 3,
                          "Player speed should decrease")
-        
-    

@@ -14,4 +14,3 @@ class Size:
 
     def set_height(self, height):
         self.height = height
-

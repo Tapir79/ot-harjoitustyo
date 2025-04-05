@@ -51,7 +51,6 @@ class PlayerSprite(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             self.shoot()
 
-
     def shoot(self):
         bullet_service = self.player.shoot()
         bullet_sprite = BulletSprite(bullet_service)

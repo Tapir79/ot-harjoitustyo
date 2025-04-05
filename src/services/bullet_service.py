@@ -2,6 +2,7 @@ from services.base_sprite_service import BaseSpriteService
 from models.sprite_info import SpriteInfo
 from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 
+
 class BulletService(BaseSpriteService):
     def __init__(self,
                  sprite_info: SpriteInfo,
@@ -28,7 +29,7 @@ class BulletService(BaseSpriteService):
     def update(self):
         self.move()
         return self.get_position()
-    
+
     def is_moving(self):
         y = self.sprite_info.get_y()
         if y > LOWER_BOUNDARY and self.direction == "down":
