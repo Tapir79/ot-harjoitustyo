@@ -85,9 +85,8 @@ Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon.
 
 Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto. 
 
----
 
-### Päätoiminnallisuudet
+## Päätoiminnallisuudet
 
 Kuvataan seuraavaksi sovelluksen toimintalogiikka muutaman päätoiminnallisuuden osalta sekvenssikaaviona.
 
