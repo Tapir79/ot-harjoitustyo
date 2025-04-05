@@ -4,6 +4,10 @@
 
 Space Invaders on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä. Pisteet tallennetaan SQLite-tietokantaan. 
 
+## Toteutetus toiminnallisuudet
+
+
+
 ## Käyttäjät
 
 Pelin käyttäjärooli on _pelaaja_, joka ohjaa avaruusalusta ja yrittää tuhota vihollisia. Pelissä ei ole muita käyttäjärooleja, mutta peli voi tallentaa eri pelaajien tuloksia ja edistymistä.
@@ -36,61 +40,64 @@ tai
 Peli koostuu seuraavista osista:
 
 1. **Aloitusnäkymä**
-   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
-   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen
-   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa
-   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
+[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
+[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
+[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen
+[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa
+[ ]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
 
 2. **Rekisteröitymisnäkymä**
-   - Lomake, jolla voi luoda uuden käyttäjätunnuksen
-   - Ohjaa takaisin kirjautumisnäkymään 
+[ ]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen
+[ ]   - Ohjaa takaisin kirjautumisnäkymään 
 
 3. **Pelinäkymä**
-   - Pelaaja ohjaa alusta näppäimistöllä.
-   - Pelissä on vihollisia, jotka liikkuvat ja ampuvat kohti pelaajaa
-   - Pelaaja voi ampua vihollisia ja estää niiden pääsyn maahan.
-   - Näytetään pelaajan pisteet, jäljellä olevat elämät ja pelin taso.
-   
+[X]   - Pelaaja ohjaa alusta näppäimistöllä.
+[ ]   - Pelissä on vihollisia, jotka liikkuvat ja ampuvat kohti pelaajaa
+[ ]   - Pelaaja voi ampua vihollisia ja estää niiden pääsyn maahan.
+[ ]   - Näytetään pelaajan pisteet, jäljellä olevat elämät ja pelin taso.
+ 
 4. **Pelin lopetusnäkymä**
-   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
+[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
 
 ## Perusversion tarjoama toiminnallisuus
 
 ### Pelin toiminnot
 
 - **Aloitusnäyttö**
-  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
+[ ]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
   
 - **Pelin aikana**
-  - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
-  - Pelaaja voi ampua raketteja kohti vihollisia.
-  - Viholliset liikkuvat tasojen edetessä nopeammin.
-  - Pelaajalla on rajoitettu määrä elämiä.
-  - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
+[X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
+[ ] - Pelaaja voi ampua raketteja kohti vihollisia.
+[ ] - Viholliset liikkuvat tasojen edetessä nopeammin.
+[ ] - Pelaajalla on rajoitettu määrä elämiä.
+[ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
 - **Pelin loppu**
-  - Kun kaikki viholliset on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
-  - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.
+[ ] - Kun kaikki viholliset on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
+[ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.
 
 ### Pelin tallennus ja tietokanta
 
 - Pelissä on SQLite-tietokanta, johon tallennetaan:
-  - Pelaajan nimi (tai nimimerkki) ja salasana.
-  - Pelaajan paras pistemäärä.
-  - Pelin aikaleima.
+[ ] - Pelaajan nimi (tai nimimerkki) ja salasana.
+[ ] - Pelaajan paras pistemäärä.
+[ ] - Pelin aikaleima.
 
 ### Pelin testaus
 
 - **Testaus**:
-  - Pelin logiikkaa testataan **unittest**-kirjastolla.
-  - Käytetään **coverage**-työkalua, jotta voidaan varmistaa koodin kattavuus.
+[X]  - Pelin logiikkaa testataan **unittest**-kirjastolla.
+[X]  - Käytetään **coverage**-työkalua, jotta voidaan varmistaa koodin kattavuus.
   
 - **Testattavat osa-alueet**:
-  - Pelin käynnistyminen
-  - Pelaajan liikkuminen, ampuminen ja tuhoutuminen
-  - Vihollisten liikkuminen, ampuminen ja tuhoutuminen 
-  - Pelin lopetus
-  - Tulosten tallentaminen tietokantaan
+[X]  - Pelin alustaminen
+[X]  - Pelaajan liikkuminen
+[ ]  - Pelaajan ampuminen
+[ ]  - Pelaajan tuhoutuminen
+[ ]  - Vihollisten liikkuminen, ampuminen ja tuhoutuminen 
+[ ]  - Pelin lopetus
+[ ]  - Tulosten tallentaminen tietokantaan
 
 ## Jatkokehitysideoita (tai jos aikaa jää)
 
