@@ -5,7 +5,7 @@ Space Invaders on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estä
 ## Dokumentaatio
 * **TODO**: Käyttöohje
 * [Vaatimusmäärittely](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/vaatimusmaarittely.md)
-* **TODO**: Arkkitehtuurikuvaus
+* [Arkkitehtuuri](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/arkkitehtuuri.md)
 * **TODO**: Testausdokumentti
 * [Työaikakirjanpito](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/tyoaikakirjanpito.md)
 * [Changelog](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/changelog.md)
