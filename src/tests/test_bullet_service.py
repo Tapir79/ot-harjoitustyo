@@ -17,6 +17,10 @@ class TestBulletService(unittest.TestCase):
     def setUp(self):
         self.bullet = create_bullet_service()
 
+    def test_bullet_update(self):
+        self.bullet.update()
+        self.assertEqual(self.bullet.sprite_info.get_y(), 495)
+
     def test_bullet_moves_up(self):
         self.bullet.move()
         self.assertEqual(self.bullet.sprite_info.get_y(), 495)
@@ -36,13 +40,30 @@ class TestBulletService(unittest.TestCase):
         start_y = LOWER_BOUNDARY + 10
         bullet = create_bullet_service(y=start_y, direction="down")
         bullet.move()
-        # lower_boundary = 600 + 10 = 610; max y = 610 - 10 = 600
         self.assertEqual(bullet.sprite_info.get_y(), start_y)
 
     def test_bullet_invalid_move(self):
         bullet = create_bullet_service(y=0, direction="left")
         bullet.move()
         self.assertEqual(bullet.sprite_info.get_y(), 0)
+
+    def test_is_bullet_moving_up(self):
+        is_moving = self.bullet.is_moving()
+        self.assertEqual(is_moving, True)
+
+    def test_is_bullet_not_moving_up(self):
+        start_y = UPPER_BOUNDARY - 10
+        bullet = create_bullet_service(y=start_y, direction="up")
+        bullet.move()
+        is_moving = bullet.is_moving()
+        self.assertEqual(is_moving, False)
+
+    def test_is_bullet_not_moving_down(self):
+        start_y = LOWER_BOUNDARY + 10
+        bullet = create_bullet_service(y=start_y, direction="down")
+        bullet.move()
+        is_moving = bullet.is_moving()
+        self.assertEqual(is_moving, False)
 
 
 if __name__ == '__main__':
