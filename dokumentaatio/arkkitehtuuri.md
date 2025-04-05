@@ -36,6 +36,22 @@ classDiagram
         +decrease_speed()
     }
 
+    class SpriteInfo{
+        +size:Size
+        +position:Point
+
+    }
+
+    class Size{
+        +width:int
+        +height:int
+    }
+
+    class  Point{
+        +x:int
+        +y:int
+    }
+
     class PlayerService {
         +move(key)
         +shoot()
@@ -49,7 +65,9 @@ classDiagram
     BaseSpriteService <|-- PlayerService
     BaseSpriteService <|-- BulletService
 
-
+    SpriteInfo --> Size
+    SpriteInfo --> Point
+    BaseSpriteService --> SpriteInfo
 ```
 playerservice, bulletservice
 TODO enemyservice, jotka jakavat base-luokan base_sprite_service. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko ja sijainti. 
@@ -72,6 +90,19 @@ Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto.
 ### Päätoiminnallisuudet
 
 Kuvataan seuraavaksi sovelluksen toimintalogiikka muutaman päätoiminnallisuuden osalta sekvenssikaaviona.
+
+
+## Käyttäjän kirjautuminen 
+
+Toiminnallisuus toteuttamatta 
+
+## Uuden käyttäjän luominen 
+
+Toiminnallisuus toteuttamatta
+
+## Pelin eteneminen 
+
+Pelin käynnistyminen ja pelaajan toiminnot:
 
 ```mermaid
 sequenceDiagram
@@ -98,18 +129,6 @@ sequenceDiagram
     end
 ```
 
-## Käyttäjän kirjautuminen 
-
-Toteuttamatta 
-
-## Uuden käyttäjän luominen 
-
-Toteuttamatta 
-
-## Pelin eteneminen 
-
-
-
 # Jatkokehitystä vaativat toiminnallisuudet ja rakenteelliset heikkoudet
 
-Toteuttamatta
+Toiminnallisuus toteuttamatta
