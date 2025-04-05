@@ -1,5 +1,4 @@
 import unittest
-from ui.player import PlayerSprite
 from ui.game import Game
 from services.player_service import PlayerService
 from models.point import Point
@@ -13,7 +12,6 @@ class TestPlayer(unittest.TestCase):
         size = Size(10, 10)
         sprite_info = SpriteInfo(position, size)
         self.player_service = PlayerService(sprite_info=sprite_info)
-        self.player = PlayerSprite(self.player_service)
         self.game = Game()
 
     def test_player_moves_left(self):
