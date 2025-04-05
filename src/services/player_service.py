@@ -1,12 +1,20 @@
 from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
+from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
 
 
 class PlayerService(BaseSpriteService):
-    def __init__(self, sprite_info: SpriteInfo, speed=5, left_boundary=0, right_boundary=800):
+    def __init__(self, sprite_info: SpriteInfo, speed=5, left_boundary=LEFT_BOUNDARY, right_boundary=RIGHT_BOUNDARY):
         super().__init__(sprite_info, speed)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
+        self.shooting = False
+
+    def shoot(self):
+        self.shooting = True
+
+    def is_shooting(self):
+        return self.shooting
 
     def move(self, key):
         """
