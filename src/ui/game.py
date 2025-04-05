@@ -4,6 +4,7 @@ from ui.player import PlayerSprite
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
+from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -23,11 +24,14 @@ class Game:
         Sets up the game window and player object.
         """
         pygame.init()
-        self.display_height = 600
-        self.display_width = 800
+        self.display_height = LOWER_BOUNDARY
+        self.display_width = RIGHT_BOUNDARY
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
         pygame.display.set_caption("Space Invaders")
+
+
+        # player
 
         player_position = Point(self.display_width // 2,
                                 self.display_height - 50)
@@ -44,6 +48,9 @@ class Game:
 
         self.clock = pygame.time.Clock()
         self.running = True
+
+        
+        
 
         # TODO: Add enemies and bullets
         self.font = pygame.font.Font(None, 30)
