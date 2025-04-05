@@ -3,6 +3,12 @@ import pygame
 from services.player_service import PlayerService
 from config import ASSETS_DIR
 
+from ui.bullet import BulletSprite  # import the sprite class
+from services.bullet_service import BulletService
+from models.point import Point
+from models.size import Size
+from models.sprite_info import SpriteInfo
+
 
 class PlayerSprite(pygame.sprite.Sprite):
     """
@@ -13,9 +19,10 @@ class PlayerSprite(pygame.sprite.Sprite):
     dimensions, and the boundaries within which the player is allowed to move.
     """
 
-    def __init__(self, player_service: PlayerService):
+    def __init__(self, player_service: PlayerService, bullet_group: pygame.sprite.Group):
         super().__init__()
         self.player = player_service
+        self.bullet_group = bullet_group
 
         width = self.player.sprite_info.size.get_width()
         height = self.player.sprite_info.size.get_height()
@@ -41,6 +48,15 @@ class PlayerSprite(pygame.sprite.Sprite):
             self.player.move('a')
         if keys[pygame.K_d]:
             self.player.move('d')
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
+
+    def shoot(self):
+        bullet_service = self.player.shoot()
+        bullet_sprite = BulletSprite(bullet_service)
+
+        self.bullet_group.add(bullet_sprite)
 
     def update(self):
         x, y = self.player.get_position()

@@ -1,6 +1,9 @@
 from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
 from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
+from models.point import Point
+from models.size import Size
+from services.bullet_service import BulletService
 
 
 class PlayerService(BaseSpriteService):
@@ -10,11 +13,20 @@ class PlayerService(BaseSpriteService):
         self.right_boundary = right_boundary
         self.shooting = False
 
-    def shoot(self):
-        self.shooting = True
+    def shoot(self, bullet_width = 5, bullet_height = 10):
+        """
+        Create a new bullet.
+        """
+        player_x, player_y = self.get_position()
 
-    def is_shooting(self):
-        return self.shooting
+        bullet_x = player_x + self.sprite_info.size.width // 2 - bullet_width // 2
+        bullet_y = player_y - bullet_height
+
+        bullet_position = Point(bullet_x, bullet_y)
+        bullet_size = Size(bullet_width, bullet_height)
+        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
+
+        return BulletService(sprite_info=bullet_sprite_info, direction="up")
 
     def move(self, key):
         """
@@ -37,9 +49,9 @@ class PlayerService(BaseSpriteService):
         x = self.sprite_info.get_x()
         width = self.sprite_info.get_width()
 
-        if key == 'a':
+        if key == "a":
             new_x = max(self.left_boundary, x - self.speed)
-        elif key == 'd':
+        elif key == "d":
             new_x = min(self.right_boundary - width, x + self.speed)
         else:
             new_x = x

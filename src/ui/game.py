@@ -1,4 +1,6 @@
 import pygame
+from pygame.sprite import Group
+from ui.bullet import BulletSprite
 from services.player_service import PlayerService
 from ui.player import PlayerSprite
 from models.point import Point
@@ -30,6 +32,9 @@ class Game:
             (self.display_width, self.display_height))
         pygame.display.set_caption("Space Invaders")
 
+        # bullets
+
+        self.bullet_group = Group()
 
         # player
 
@@ -44,7 +49,7 @@ class Game:
             left_boundary=0,
             right_boundary=self.display_width
         )
-        self.player = PlayerSprite(self.player_service)
+        self.player = PlayerSprite(self.player_service, self.bullet_group)
 
         self.clock = pygame.time.Clock()
         self.running = True
@@ -69,6 +74,7 @@ class Game:
         Updates the game state. Currently only handles player input.
         """
         self.player.handle_input()
+        self.bullet_group.update()
 
     def draw(self):
         """
@@ -77,8 +83,9 @@ class Game:
         """
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
+        self.bullet_group.draw(self.screen)
         instruction_text = self.font.render(
-            "Move the player with 'a' and 'd'", True, WHITE)
+            "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
         self.screen.blit(instruction_text, (20, 20))
         pygame.display.update()
 

@@ -13,12 +13,11 @@ class BulletService(BaseSpriteService):
         self.direction = direction
 
     def move(self):
-        height = self.sprite_info.size.height
         y = self.sprite_info.get_y()
 
-        if self.direction == 'up':
+        if self.direction == "up":
             new_y = max(self.upper_boundary, y - self.speed)
-        elif self.direction == 'down':
+        elif self.direction == "down":
             new_y = min(self.lower_boundary, y + self.speed)
         else:
             new_y = y  # do nothing
@@ -29,3 +28,11 @@ class BulletService(BaseSpriteService):
     def update(self):
         self.move()
         return self.get_position()
+    
+    def is_moving(self):
+        y = self.sprite_info.get_y()
+        if y > LOWER_BOUNDARY and self.direction == "down":
+            return False
+        if y < UPPER_BOUNDARY and self.direction == "up":
+            return False
+        return True

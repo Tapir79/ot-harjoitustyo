@@ -25,9 +25,13 @@ class BulletSprite (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
+        self.bullet.update()
         x, y = self.bullet.get_position()
         self.rect.x = x
         self.rect.y = y
+
+        if self.bullet.is_moving() == False:
+            self.kill()
 
     def draw(self, screen):
         self.update()
