@@ -39,18 +39,3 @@ class PlayerService(BaseSpriteService):
         self.sprite_info.set_x(new_x)
         return new_x
 
-    def get_position(self):
-        """Get player position"""
-        return self.sprite_info.get_x(), self.sprite_info.get_y()
-
-    def set_speed(self, amount=1):
-        """Set player speed to some amount"""
-        self.speed = amount
-
-    def increase_speed(self, amount=1):
-        """Increase player speed by the given amount"""
-        self.speed += amount
-
-    def decrease_speed(self, amount=1):
-        """Decrease player speed by the given amount. Min=1"""
-        self.speed = max(1, self.speed - amount)
