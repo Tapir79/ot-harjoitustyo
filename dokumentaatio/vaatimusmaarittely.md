@@ -95,7 +95,9 @@ Peli koostuu seuraavista osista:
 [X]  - Pelaajan liikkuminen
 [X]  - Pelaajan ampuminen
 [ ]  - Pelaajan tuhoutuminen
-[ ]  - Vihollisten liikkuminen, ampuminen ja tuhoutuminen 
+[ ]  - Vihollisten liikkuminen
+[ ]  - Vihollisten ampuminen 
+[ ]  - Vihollisten tuhoutuminen 
 [ ]  - Pelin lopetus
 [ ]  - Tulosten tallentaminen tietokantaan
 
