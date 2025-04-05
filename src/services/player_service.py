@@ -14,7 +14,6 @@ class PlayerService(BaseSpriteService):
         super().__init__(sprite_info, speed)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
-        self.shooting = False
 
     def shoot(self, bullet_width=5, bullet_height=10):
         """
