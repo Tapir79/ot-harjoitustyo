@@ -18,5 +18,5 @@
 | 30.3 | 6 | pelaajan liikkuminen, testit, changelog, README, pylint, docstring |
 | 1.4 | 3 | pelaajalogiikan refaktorointi service-luokkaan ja jaottelu ui- ja service-kansioihin |
 | 4.4 | 4 | logiikan refaktoroitia ja pylint korjauksia |
-| 5.4 | | bullet-luokka|
-| yht | 37.5||
+| 5.4 | 3 | ammus-luokka ja pelaajan ampuminen. Pylint, coverage päivitykset.|
+| yht | 40.5||
