@@ -68,7 +68,7 @@ Peli koostuu seuraavista osista:
   
 - **Pelin aikana**
 [X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
-[ ] - Pelaaja voi ampua raketteja kohti vihollisia.
+[X] - Pelaaja voi ampua raketteja kohti vihollisia.
 [ ] - Viholliset liikkuvat tasojen edetessä nopeammin.
 [ ] - Pelaajalla on rajoitettu määrä elämiä.
 [ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
@@ -93,7 +93,7 @@ Peli koostuu seuraavista osista:
 - **Testattavat osa-alueet**:
 [X]  - Pelin alustaminen
 [X]  - Pelaajan liikkuminen
-[ ]  - Pelaajan ampuminen
+[X]  - Pelaajan ampuminen
 [ ]  - Pelaajan tuhoutuminen
 [ ]  - Vihollisten liikkuminen, ampuminen ja tuhoutuminen 
 [ ]  - Pelin lopetus
