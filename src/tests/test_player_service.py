@@ -17,7 +17,7 @@ class TestPlayer(unittest.TestCase):
     def test_player_shoot_creates_new_bullet(self):
         bullet = self.player_service.shoot()
 
-        bullet_width = 5 
+        bullet_width = 5
         bullet_height = 10
         player_x, player_y = self.player_service.get_position()
 
@@ -27,11 +27,13 @@ class TestPlayer(unittest.TestCase):
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
         bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
-        expected_bullet = BulletService(sprite_info=bullet_sprite_info, direction="up")
+        expected_bullet = BulletService(
+            sprite_info=bullet_sprite_info, direction="up")
 
-
-        self.assertEqual(bullet.direction, expected_bullet.direction, "Expected a bullet direction up")
-        self.assertEqual(bullet.speed, expected_bullet.speed, "Expected a bullet speed 5")
+        self.assertEqual(bullet.direction, expected_bullet.direction,
+                         "Expected a bullet direction up")
+        self.assertEqual(bullet.speed, expected_bullet.speed,
+                         "Expected a bullet speed 5")
 
     def test_player_moves_left(self):
         self.player_service.move('a')
@@ -52,7 +54,7 @@ class TestPlayer(unittest.TestCase):
     def test_player_cannot_move_out_of_bounds_to_right(self):
         self.player_service.set_speed(RIGHT_BOUNDARY + 1)
         self.player_service.move('d')
-        max_x = RIGHT_BOUNDARY- self.player_service.sprite_info.size.width
+        max_x = RIGHT_BOUNDARY - self.player_service.sprite_info.size.width
         self.assertEqual(self.player_service.sprite_info.get_x(), max_x,
                          "Player should not move out of bounds to right")
 
@@ -71,5 +73,3 @@ class TestPlayer(unittest.TestCase):
         self.player_service.decrease_speed(2)
         self.assertEqual(self.player_service.speed, 3,
                          "Player speed should decrease")
-
-    

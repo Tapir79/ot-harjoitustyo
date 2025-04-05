@@ -1,13 +1,16 @@
-from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
+from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
-from services.bullet_service import BulletService
+from models.sprite_info import SpriteInfo
+from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
 
 
 class PlayerService(BaseSpriteService):
-    def __init__(self, sprite_info: SpriteInfo, speed=5, left_boundary=LEFT_BOUNDARY, right_boundary=RIGHT_BOUNDARY):
+    def __init__(self, sprite_info: SpriteInfo,
+                 speed=5,
+                 left_boundary=LEFT_BOUNDARY,
+                 right_boundary=RIGHT_BOUNDARY):
         super().__init__(sprite_info, speed)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
