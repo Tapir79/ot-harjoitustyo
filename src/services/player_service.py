@@ -1,34 +1,12 @@
-from services.base_sprite_service import BaseSpriteService
-from services.bullet_service import BulletService
-from models.point import Point
-from models.size import Size
+from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
 
 
-class PlayerService(BaseSpriteService):
+class PlayerService(ShootingSpriteService):
     def __init__(self, sprite_info: SpriteInfo,
                  speed=5,
-                 left_boundary=LEFT_BOUNDARY,
-                 right_boundary=RIGHT_BOUNDARY):
+                 ):
         super().__init__(sprite_info, speed)
-        self.left_boundary = left_boundary
-        self.right_boundary = right_boundary
-
-    def shoot(self, bullet_width=5, bullet_height=10):
-        """
-        Create a new bullet.
-        """
-        player_x, player_y = self.get_position()
-
-        bullet_x = player_x + self.sprite_info.size.width // 2 - bullet_width // 2
-        bullet_y = player_y - bullet_height
-
-        bullet_position = Point(bullet_x, bullet_y)
-        bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
-
-        return BulletService(sprite_info=bullet_sprite_info, direction="up")
 
     def move(self, key):
         """

@@ -73,3 +73,6 @@ class TestPlayer(unittest.TestCase):
         self.player_service.decrease_speed(2)
         self.assertEqual(self.player_service.speed, 3,
                          "Player speed should decrease")
+
+
+# TODO collision tests with enemy and bullet

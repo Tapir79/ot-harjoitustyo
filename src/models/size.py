@@ -8,9 +8,3 @@ class Size:
 
     def get_height(self):
         return self.height
-
-    def set_width(self, width):
-        self.width = width
-
-    def set_height(self, height):
-        self.height = height
