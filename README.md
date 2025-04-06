@@ -1,6 +1,6 @@
 # Ohjelmistotekniikka, harjoitustyö
-# Space Invaders
-Space Invaders on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä.
+# Alien Attack
+[Space Invadersin](https://fi.wikipedia.org/wiki/Space_Invaders) kaltainen peli on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä.
 
 ## Dokumentaatio
 * **TODO**: Käyttöohje
