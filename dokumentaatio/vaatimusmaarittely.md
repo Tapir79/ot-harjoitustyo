@@ -2,7 +2,7 @@
 
 ## Sovelluksen tarkoitus
 
-Space Invaders on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä. Pisteet tallennetaan SQLite-tietokantaan. 
+Space Invadersin kaltainen avaruustaistelu on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä. Pisteet tallennetaan SQLite-tietokantaan. 
 
 ## Käyttäjät
 
@@ -35,6 +35,8 @@ tai
 
 Peli koostuu seuraavista osista:
 
+[X] = toteutettu
+
 1. **Aloitusnäkymä**
 [ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
 [ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
@@ -48,9 +50,14 @@ Peli koostuu seuraavista osista:
 
 3. **Pelinäkymä**
 [X]   - Pelaaja ohjaa alusta näppäimistöllä.
-[ ]   - Pelissä on vihollisia, jotka liikkuvat ja ampuvat kohti pelaajaa
-[ ]   - Pelaaja voi ampua vihollisia ja estää niiden pääsyn maahan.
-[ ]   - Näytetään pelaajan pisteet, jäljellä olevat elämät ja pelin taso.
+[X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa
+[X]   - Pelaaja voi ampua vihollisia
+[ ]   - Viholliset ampuvat kohti pelaajaa
+[ ]   - Pelaajan ammus tuhoaa vihollisen
+[ ]   - Vihollisen ammus tuhoaa pelaajan
+[ ]   - Näytetään pelaajan pisteet
+[ ]   - Näytetään jäljellä olevat elämät
+[ ]   - Näytetään pelin taso.
  
 4. **Pelin lopetusnäkymä**
 [ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
@@ -65,7 +72,7 @@ Peli koostuu seuraavista osista:
 - **Pelin aikana**
 [X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
 [X] - Pelaaja voi ampua raketteja kohti vihollisia.
-[ ] - Viholliset liikkuvat tasojen edetessä nopeammin.
+[X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
 [ ] - Pelaajalla on rajoitettu määrä elämiä.
 [ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
@@ -91,7 +98,7 @@ Peli koostuu seuraavista osista:
 [X]  - Pelaajan liikkuminen
 [X]  - Pelaajan ampuminen
 [ ]  - Pelaajan tuhoutuminen
-[ ]  - Vihollisten liikkuminen
+[X]  - Vihollisten liikkuminen
 [ ]  - Vihollisten ampuminen 
 [ ]  - Vihollisten tuhoutuminen 
 [ ]  - Pelin lopetus
