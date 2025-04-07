@@ -23,5 +23,5 @@
 |  4.4 | 4   | logiikan refaktoroitia ja pylint korjauksia |
 |  5.4 | 7   | ammus-luokka ja pelaajan ampuminen. Pylint, coverage päivitykset. Arkkitehtuuridokumentin kirjoittaminen ja kaaviot|
 |  6.4 | 10  | vihollisluokka, vihollisten generointi ja liikkuminen. Pylint, coverage ja koodin rakenteen refaktorointi  |
-|  7.4 | 2  | Ammuksen jäähdytysaika. |
-| yht | 52.5| |
+|  7.4 | 4  | Ammuksen jäähdytysaika. Vihollisen ampuminen. Arkkitehtuuri ja vaatimusmäärittely. |
+| yht | 54.5| |

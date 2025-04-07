@@ -52,7 +52,7 @@ Peli koostuu seuraavista osista:
 [X]   - Pelaaja ohjaa alusta näppäimistöllä.
 [X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa
 [X]   - Pelaaja voi ampua vihollisia
-[ ]   - Viholliset ampuvat kohti pelaajaa
+[X]   - Viholliset ampuvat kohti pelaajaa
 [ ]   - Pelaajan ammus tuhoaa vihollisen
 [ ]   - Vihollisen ammus tuhoaa pelaajan
 [ ]   - Näytetään pelaajan pisteet
@@ -99,7 +99,7 @@ Peli koostuu seuraavista osista:
 [X]  - Pelaajan ampuminen
 [ ]  - Pelaajan tuhoutuminen
 [X]  - Vihollisten liikkuminen
-[ ]  - Vihollisten ampuminen 
+[X]  - Vihollisten ampuminen 
 [ ]  - Vihollisten tuhoutuminen 
 [ ]  - Pelin lopetus
 [ ]  - Tulosten tallentaminen tietokantaan

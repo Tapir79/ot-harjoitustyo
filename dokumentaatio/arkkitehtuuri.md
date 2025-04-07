@@ -25,21 +25,42 @@ TODO vaiheessa ovat käyttäjän luominen ja kirjautuminen eli aloitusnäkymä j
 
 ## Sovelluslogiikka 
 
+playerservice, bulletservice ja enemyservice, jakavat base-luokan base_sprite_service. Lisäksi player- ja enemyservice perivät shootingSpriteService:n. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. 
+
+Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavio:
 
 ```mermaid
 classDiagram
     class BaseSpriteService {
         +sprite_info: SpriteInfo
-        +speed: int
         +get_position()
         +increase_speed()
         +decrease_speed()
     }
 
+    class ShootingSpriteService {
+        +move(key)
+        +shoot()
+        +update()
+    }
+
+    class PlayerService {
+       
+    }
+
+    class EnemyService {
+
+    }
+
+    class BulletService {
+        +move()
+        +update()
+    }
+
     class SpriteInfo{
         +size:Size
         +position:Point
-
+        +speed: int
     }
 
     class Size{
@@ -51,28 +72,19 @@ classDiagram
         +x:int
         +y:int
     }
+ 
 
-    class PlayerService {
-        +move(key)
-        +shoot()
-    }
-
-    class BulletService {
-        +move()
-        +update()
-    }
-
-    BaseSpriteService <|-- PlayerService
+    BaseSpriteService <|-- ShootingSpriteService
     BaseSpriteService <|-- BulletService
+
+    ShootingSpriteService <|-- PlayerService
+    ShootingSpriteService <|-- EnemyService
 
     SpriteInfo --> Size
     SpriteInfo --> Point
     BaseSpriteService --> SpriteInfo
 ```
-playerservice, bulletservice
-TODO enemyservice, jotka jakavat base-luokan base_sprite_service. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko ja sijainti. 
 
-Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokka/pakkauskaavio:
 
 
 ## Tietojen pysyväistallennus 
@@ -101,6 +113,28 @@ Toiminnallisuus toteuttamatta
 
 ## Pelin eteneminen 
 
+Pelin ylätasokaavio:
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Game
+    participant PlayerSprite
+    participant BulletSprite
+    participant EnemySprite
+
+    Main->>Game: aloita peli
+    Game->>PlayerSprite:luo pelaaja()
+    Game->>EnemySprite: luo viholliset()
+    Game->>Game: luo pelisimukka
+
+    loop peli-iteraatio
+        PlayerSprite->>Game: liiku ja ammu
+        EnemySprite->>Game: liiku ja ammu
+        BulletSprite->>Game: liiku
+    end
+```
+
 Pelin käynnistyminen ja pelaajan toiminnot:
 
 ```mermaid
@@ -125,6 +159,33 @@ sequenceDiagram
         BulletService-->>BulletSprite: uusi bullet sprite
         BulletService->>BulletService: päivitä sijainti
         BulletSprite->>Game: piirrä luoti
+    end
+```
+
+Pelin käynnistyminen ja vihollisen toiminnot:
+
+```mermaid
+sequenceDiagram
+    participant Main
+    participant Game
+    participant EnemySprite
+    participant EnemyService
+    participant BulletService
+    participant BulletSprite
+
+    Main->>Game: aloita peli
+    Game->>EnemySprite:luo viholliset()
+    Game->>Game: luo pelisimukka
+
+    loop peli-iteraatio jokainen vihollinen ja luoti
+        EnemySprite->>EnemyService: liiku() 
+        EnemyService->>EnemyService: päivitä suunta ja sijainti()
+        EnemySprite->>Game: piirrä vihollisen sijainti()
+        EnemySprite->>EnemyService: arvo luodaanko luoti()
+        EnemyService->>BulletService: luo uusi bullet()
+        BulletService-->>BulletSprite: uusi bullet sprite()
+        BulletService->>BulletService: päivitä luodin sijainti()
+        BulletSprite->>Game: piirrä luoti()
     end
 ```
 
