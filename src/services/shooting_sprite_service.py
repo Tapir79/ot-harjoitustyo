@@ -8,12 +8,12 @@ from config import LEFT_BOUNDARY, RIGHT_BOUNDARY
 
 
 class ShootingSpriteService(BaseSpriteService):
-    def __init__(self, sprite_info: SpriteInfo, speed=5,
+    def __init__(self, sprite_info: SpriteInfo, cooldown=0.3,
                  left_boundary=LEFT_BOUNDARY, right_boundary=RIGHT_BOUNDARY):
-        super().__init__(sprite_info, speed)
+        super().__init__(sprite_info)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
-        self.cooldown = 0.3
+        self.cooldown = cooldown
         self.last_shot = 0
 
     def can_shoot(self):
@@ -40,7 +40,7 @@ class ShootingSpriteService(BaseSpriteService):
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
+        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5)
 
         return BulletService(sprite_info=bullet_sprite_info, direction=direction)
 

@@ -5,9 +5,10 @@ from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY
 
 class EnemyService(ShootingSpriteService):
     def __init__(self, sprite_info: SpriteInfo,
-                 speed=1,
+                 cooldown=1
                  ):
-        super().__init__(sprite_info, speed)
+        sprite_info.set_speed(1)
+        super().__init__(sprite_info, cooldown=cooldown)
         self.direction = "right"
 
     def shoot(self, direction="down", bullet_width=5, bullet_height=10):
@@ -70,9 +71,9 @@ class EnemyService(ShootingSpriteService):
     def _move_in_current_direction(self):
         x = self.sprite_info.get_x()
         if self.direction == "left":
-            self.sprite_info.set_x(x - self.speed)
+            self.sprite_info.set_x(x - self.sprite_info.speed)
         if self.direction == "right":
-            self.sprite_info.set_x(x + self.speed)
+            self.sprite_info.set_x(x + self.sprite_info.speed)
 
     def set_direction(self, direction):
         self.direction = direction

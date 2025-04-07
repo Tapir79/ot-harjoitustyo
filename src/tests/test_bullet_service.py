@@ -9,8 +9,8 @@ from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 def create_bullet_service(y=500, direction="up", speed=5):
     position = Point(100, y)
     size = Size(10, 10)
-    sprite_info = SpriteInfo(position, size)
-    return BulletService(sprite_info, speed=speed, direction=direction)
+    sprite_info = SpriteInfo(position, size, speed)
+    return BulletService(sprite_info, direction=direction)
 
 
 class TestBulletService(unittest.TestCase):

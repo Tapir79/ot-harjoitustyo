@@ -6,9 +6,9 @@ from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 class BulletService(BaseSpriteService):
     def __init__(self,
                  sprite_info: SpriteInfo,
-                 speed=5,
                  direction="up"):
-        super().__init__(sprite_info, speed)
+        sprite_info.set_speed(5)
+        super().__init__(sprite_info)
         self.lower_boundary = LOWER_BOUNDARY + self.sprite_info.size.height
         self.upper_boundary = UPPER_BOUNDARY - self.sprite_info.size.height
         self.direction = direction
@@ -17,9 +17,9 @@ class BulletService(BaseSpriteService):
         y = self.sprite_info.get_y()
 
         if self.direction == "up":
-            new_y = max(self.upper_boundary, y - self.speed)
+            new_y = max(self.upper_boundary, y - self.sprite_info.speed)
         elif self.direction == "down":
-            new_y = min(self.lower_boundary, y + self.speed)
+            new_y = min(self.lower_boundary, y + self.sprite_info.speed)
         else:
             new_y = y  # do nothing
 

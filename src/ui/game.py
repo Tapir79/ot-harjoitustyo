@@ -35,28 +35,13 @@ class Game:
         pygame.display.set_caption("Alien Attack")
 
         # bullets
-
         self.bullet_group = Group()
         self.enemy_group = Group()
 
         # player
-
-        # player_position = Point(self.display_width // 2,
-        #                         self.display_height - 50)
-        # player_size = Size(40, 40)
-        # player_info = SpriteInfo(player_position, player_size)
-
-        # self.player_service = PlayerService(
-        #     sprite_info=player_info,
-        #     speed=5,
-        #     left_boundary=0,
-        #     right_boundary=self.display_width
-        # )
-        # self.player = PlayerSprite(self.player_service, self.bullet_group)
         self.player = self.create_player()
 
         # enemies
-
         self.create_enemies()
 
         self.clock = pygame.time.Clock()
@@ -112,7 +97,7 @@ class Game:
         player_position = Point(self.display_width // 2,
                                 self.display_height - 50)
         player_size = Size(40, 40)
-        player_info = SpriteInfo(player_position, player_size)
+        player_info = SpriteInfo(player_position, player_size, 5)
 
         player_service = PlayerService(
             sprite_info=player_info
@@ -132,7 +117,7 @@ class Game:
                 y = margin_y + row * spacing
 
                 enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height))
+                    Point(x, y), Size(enemy_width, enemy_height), 1)
                 enemy_service = EnemyService(
                     enemy_info)
                 enemy_sprite = EnemySprite(enemy_service, self.bullet_group)

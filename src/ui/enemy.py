@@ -1,13 +1,9 @@
 import os
+import random
 import pygame
 from config import ASSETS_DIR
 from ui.bullet import BulletSprite  # import the sprite class
-from services.bullet_service import BulletService
 from services.enemy_service import EnemyService
-from services.player_service import PlayerService
-from models.point import Point
-from models.size import Size
-from models.sprite_info import SpriteInfo
 
 
 class EnemySprite(pygame.sprite.Sprite):
@@ -38,12 +34,15 @@ class EnemySprite(pygame.sprite.Sprite):
 
     def shoot(self):
         bullet_service = self.enemy.try_shoot()
-        bullet_sprite = BulletSprite(bullet_service)
 
-        self.bullet_group.add(bullet_sprite)
+        if bullet_service:
+            bullet_sprite = BulletSprite(bullet_service)
+            self.bullet_group.add(bullet_sprite)
 
     def update(self):
         self.enemy.move()
+        if random.random() < 0.001:
+            self.shoot()
         x, y = self.enemy.get_position()
         self.rect.x = x
         self.rect.y = y

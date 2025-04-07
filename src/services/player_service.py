@@ -3,10 +3,9 @@ from models.sprite_info import SpriteInfo
 
 
 class PlayerService(ShootingSpriteService):
-    def __init__(self, sprite_info: SpriteInfo,
-                 speed=5,
-                 ):
-        super().__init__(sprite_info, speed)
+    def __init__(self, sprite_info: SpriteInfo):
+        sprite_info.set_speed(5)
+        super().__init__(sprite_info)
 
     def move(self, key):
         """
@@ -30,9 +29,10 @@ class PlayerService(ShootingSpriteService):
         width = self.sprite_info.get_width()
 
         if key == "a":
-            new_x = max(self.left_boundary, x - self.speed)
+            new_x = max(self.left_boundary, x - self.sprite_info.speed)
         elif key == "d":
-            new_x = min(self.right_boundary - width, x + self.speed)
+            new_x = min(self.right_boundary - width,
+                        x + self.sprite_info.speed)
         else:
             new_x = x
 

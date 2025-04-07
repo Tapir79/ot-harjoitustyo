@@ -9,7 +9,7 @@ class TestBaseSpriteService(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
         size = Size(10, 10)
-        sprite_info = SpriteInfo(position, size)
+        sprite_info = SpriteInfo(position, size, 5)
         self.base_sprite_service = BaseSpriteService(sprite_info)
 
     def test_position(self):

@@ -15,8 +15,13 @@ class BulletSprite (pygame.sprite.Sprite):
         width = self.bullet.sprite_info.size.get_width()
         height = self.bullet.sprite_info.size.get_height()
 
+        if self.bullet.direction == "up":
+            image_name = "player_bullet.png"
+        else:
+            image_name = "enemy_bullet.png"
+
         self.image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "player_bullet.png")
+            os.path.join(ASSETS_DIR, image_name)
         ).convert_alpha()
 
         self.image = pygame.transform.scale(

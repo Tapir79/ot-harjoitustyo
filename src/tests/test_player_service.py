@@ -12,7 +12,7 @@ class TestPlayer(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
         size = Size(10, 10)
-        self.sprite_info = SpriteInfo(position, size)
+        self.sprite_info = SpriteInfo(position, size, 5)
         self.player_service = PlayerService(sprite_info=self.sprite_info)
 
     def test_player_shoot_creates_new_bullet(self):
@@ -27,13 +27,13 @@ class TestPlayer(unittest.TestCase):
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
+        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5)
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="up")
 
         self.assertEqual(bullet.direction, expected_bullet.direction,
                          "Expected a bullet direction up")
-        self.assertEqual(bullet.speed, expected_bullet.speed,
+        self.assertEqual(bullet.sprite_info.speed, expected_bullet.sprite_info.speed,
                          "Expected a bullet speed 5")
 
     def test_player_moves_left(self):
@@ -67,12 +67,12 @@ class TestPlayer(unittest.TestCase):
 
     def test_player_speed_increases(self):
         self.player_service.increase_speed(2)
-        self.assertEqual(self.player_service.speed, 7,
+        self.assertEqual(self.player_service.sprite_info.speed, 7,
                          "Player speed should increase")
 
     def test_player_speed_decreases(self):
         self.player_service.decrease_speed(2)
-        self.assertEqual(self.player_service.speed, 3,
+        self.assertEqual(self.player_service.sprite_info.speed, 3,
                          "Player speed should decrease")
 
     def test_shooting_after_cooldown(self):

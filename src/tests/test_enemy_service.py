@@ -11,7 +11,7 @@ class TestEnemy(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
         size = Size(10, 10)
-        self.sprite_info = SpriteInfo(position, size)
+        self.sprite_info = SpriteInfo(position, size, 1)
         self.enemy_service = EnemyService(sprite_info=self.sprite_info)
 
     def test_enemy_shoot_creates_new_bullet(self):
@@ -26,13 +26,13 @@ class TestEnemy(unittest.TestCase):
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size)
+        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 1)
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="down")
 
         self.assertEqual(bullet.direction, expected_bullet.direction,
                          "Expected a bullet direction down")
-        self.assertEqual(bullet.speed, expected_bullet.speed,
+        self.assertEqual(bullet.sprite_info.speed, expected_bullet.sprite_info.speed,
                          "Expected a bullet speed 5")
 
     def test_enemy_moves_right(self):
@@ -81,7 +81,7 @@ class TestEnemy(unittest.TestCase):
     def test_enemy_speed_increases_if_hits_right_wall(self):
         self.enemy_service.sprite_info.set_x(RIGHT_BOUNDARY + 1)
         self.enemy_service.move()
-        new_speed = self.enemy_service.speed
+        new_speed = self.enemy_service.sprite_info.speed
         self.assertEqual(new_speed, 2)
 
     def test_enemy_stops_moving_if_touched_bottom(self):

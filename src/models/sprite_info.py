@@ -4,9 +4,10 @@ from models.size import Size
 
 
 class SpriteInfo:
-    def __init__(self, position: Point, size: Size):
+    def __init__(self, position: Point, size: Size, speed: int):
         self.position = position
         self.size = size
+        self.speed = speed
 
     def get_x(self):
         return self.position.x
@@ -25,3 +26,9 @@ class SpriteInfo:
 
     def get_height(self):
         return self.size.height
+
+    def get_speed(self):
+        return self.speed
+
+    def set_speed(self, speed):
+        self.speed = speed
