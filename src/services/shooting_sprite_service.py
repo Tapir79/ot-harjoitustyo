@@ -1,3 +1,4 @@
+import time
 from services.base_sprite_service import BaseSpriteService
 from services.bullet_service import BulletService
 from models.point import Point
@@ -12,6 +13,21 @@ class ShootingSpriteService(BaseSpriteService):
         super().__init__(sprite_info, speed)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
+        self.cooldown = 0.3
+        self.last_shot = 0
+
+    def can_shoot(self):
+        current_time = time.time()
+        if current_time - self.last_shot >= self.cooldown:
+            self.last_shot = current_time
+            return True
+
+        return False
+
+    def try_shoot(self):
+        if self.can_shoot():
+            return self.shoot()
+        return None
 
     def shoot(self, direction="up", bullet_width=5, bullet_height=10):
         """

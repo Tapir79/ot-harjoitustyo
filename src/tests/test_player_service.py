@@ -1,3 +1,4 @@
+import time
 import unittest
 from services.player_service import PlayerService
 from models.point import Point
@@ -74,5 +75,24 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(self.player_service.speed, 3,
                          "Player speed should decrease")
 
+    def test_shooting_after_cooldown(self):
+        self.player_service.last_shot = 0
+        bullet = self.player_service.try_shoot()
+        self.assertIsNotNone(bullet)
+
+    def test_shooting_in_cooldown(self):
+        self.player_service.last_shot = time.time()
+        bullet = self.player_service.try_shoot()
+        self.assertIsNone(bullet)
+
+    def test_player_tries_shooting_after_cooldown(self):
+        self.player_service.last_shot = 0
+        can_shoot = self.player_service.can_shoot()
+        self.assertEqual(can_shoot, True)
+
+    def test_player_cannot_shoot_if_in_cooldown(self):
+        self.player_service.last_shot = time.time()
+        can_shoot = self.player_service.can_shoot()
+        self.assertEqual(can_shoot, False)
 
 # TODO collision tests with enemy and bullet

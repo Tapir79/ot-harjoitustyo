@@ -52,10 +52,10 @@ class PlayerSprite(pygame.sprite.Sprite):
             self.shoot()
 
     def shoot(self):
-        bullet_service = self.player.shoot()
-        bullet_sprite = BulletSprite(bullet_service)
-
-        self.bullet_group.add(bullet_sprite)
+        bullet_service = self.player.try_shoot()
+        if bullet_service:
+            bullet_sprite = BulletSprite(bullet_service)
+            self.bullet_group.add(bullet_sprite)
 
     def update(self):
         x, y = self.player.get_position()
