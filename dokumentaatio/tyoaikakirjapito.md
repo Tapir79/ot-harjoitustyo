@@ -25,3 +25,5 @@
 |  6.4 | 10  | vihollisluokka, vihollisten generointi ja liikkuminen. Pylint, coverage ja koodin rakenteen refaktorointi  |
 |  7.4 | 4  | Ammuksen jäähdytysaika. Vihollisen ampuminen. Arkkitehtuuri ja vaatimusmäärittely. |
 | yht | 54.5| |
+| 8.4 | 4   | Vihollisen ja pelaajan luodin törmäykset. Vihollisen ja pelaajan luotien törmäykset. Törmäysten animointi.|
+| yht | 59.5| |
