@@ -154,7 +154,10 @@ class Game:
 
         return PlayerSprite(player_service, self.player_bullet_group)
 
-    def create_enemies(self, rows=3, cols=6, spacing=60):
+    def create_enemies(self, rows=4, cols=8, spacing=60):
+        """
+        Create enemies on screen. 
+        """
         enemy_width = 40
         enemy_height = 40
         margin_x = 50

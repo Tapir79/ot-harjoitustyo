@@ -4,11 +4,11 @@ from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED
+from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN
 
 
 class ShootingSpriteService(BaseSpriteService):
-    def __init__(self, sprite_info: SpriteInfo, cooldown=0.3,
+    def __init__(self, sprite_info: SpriteInfo, cooldown=PLAYER_COOLDOWN,
                  left_boundary=LEFT_BOUNDARY, right_boundary=RIGHT_BOUNDARY):
         super().__init__(sprite_info)
         self.left_boundary = left_boundary

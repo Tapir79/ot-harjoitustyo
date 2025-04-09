@@ -1,7 +1,7 @@
 import os
 import random
 import pygame
-from config import ASSETS_DIR
+from config import ASSETS_DIR, ENEMY_SHOOTING_PROBABILITY
 from ui.bullet import BulletSprite  # import the sprite class
 from services.enemy_service import EnemyService
 
@@ -41,7 +41,8 @@ class EnemySprite(pygame.sprite.Sprite):
 
     def update(self):
         self.enemy.move()
-        if random.random() < 0.001:
+        # TODO refactor when adding levels
+        if random.random() < ENEMY_SHOOTING_PROBABILITY:
             self.shoot()
         x, y = self.enemy.get_position()
         self.rect.x = x

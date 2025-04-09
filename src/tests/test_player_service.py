@@ -95,4 +95,4 @@ class TestPlayer(unittest.TestCase):
         can_shoot = self.player_service.can_shoot()
         self.assertEqual(can_shoot, False)
 
-# TODO collision tests with enemy and bullet
+    # collisions don't need tests because they are handled by pygame

@@ -1,11 +1,12 @@
 from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
+from config import PLAYER_COOLDOWN
 
 
 class PlayerService(ShootingSpriteService):
-    def __init__(self, sprite_info: SpriteInfo):
-        sprite_info.set_speed(5)
-        super().__init__(sprite_info)
+    def __init__(self, sprite_info: SpriteInfo,
+                 cooldown=PLAYER_COOLDOWN):
+        super().__init__(sprite_info, cooldown=cooldown)
 
     def move(self, key):
         """

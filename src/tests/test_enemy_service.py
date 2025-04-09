@@ -92,4 +92,4 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(self.enemy_service.sprite_info.get_y(),
                          LOWER_BOUNDARY - height)
 
-    # TODO collision tests with player and bullet
+     # collisions don't need tests because they are handled by pygame
