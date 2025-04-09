@@ -24,9 +24,9 @@ class ShootingSpriteService(BaseSpriteService):
 
         return False
 
-    def try_shoot(self):
+    def try_shoot(self, direction="up"):
         if self.can_shoot():
-            return self.shoot()
+            return self.shoot(direction)
         return None
 
     def shoot(self, direction="up", bullet_width=5, bullet_height=10):

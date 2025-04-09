@@ -33,7 +33,7 @@ class EnemySprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def shoot(self):
-        bullet_service = self.enemy.try_shoot()
+        bullet_service = self.enemy.try_shoot("down")
 
         if bullet_service:
             bullet_sprite = BulletSprite(bullet_service)

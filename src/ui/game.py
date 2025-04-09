@@ -90,6 +90,7 @@ class Game:
         """
         self.player.handle_input()
         self.player_bullet_group.update()
+        self.enemy_bullet_group.update()
         self.enemy_group.update()
         self.hit_group.update()
 
@@ -101,6 +102,7 @@ class Game:
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
         self.player_bullet_group.draw(self.screen)
+        self.enemy_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
         self.hit_group.draw(self.screen)
         instruction_text = self.font.render(
