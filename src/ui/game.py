@@ -35,7 +35,8 @@ class Game:
         pygame.display.set_caption("Alien Attack")
 
         # bullets
-        self.bullet_group = Group()
+        self.player_bullet_group = Group()
+        self.enemy_bullet_group = Group()
         self.enemy_group = Group()
 
         # player
@@ -59,12 +60,33 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
 
+    def check_sprite_collisions(self):
+        self.check_enemy_collisions()
+
+    def check_enemy_collisions(self):
+        """
+        Handle enemy collisions with player bullets. 
+        First get all player bullets. 
+        Then check collisions with each enemy.
+        Using pygame group collisions. 
+        """
+        collisions = pygame.sprite.groupcollide(
+            self.enemy_group,
+            self.player_bullet_group,
+            True,  # remove enemy
+            True   # remove bullet
+        )
+
+        if collisions:
+            for enemy, bullets in collisions.items():
+                print(f"Enemy hit by {len(bullets)} bullet(s)!")
+
     def update(self):
         """
         Updates the game state. Currently only handles player input.
         """
         self.player.handle_input()
-        self.bullet_group.update()
+        self.player_bullet_group.update()
         self.enemy_group.update()
 
     def draw(self):
@@ -74,7 +96,7 @@ class Game:
         """
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
-        self.bullet_group.draw(self.screen)
+        self.player_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
         instruction_text = self.font.render(
             "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
@@ -90,6 +112,7 @@ class Game:
         while self.running:
             self.handle_events()
             self.update()
+            self.check_sprite_collisions()
             self.draw()
             self.clock.tick(60)
 
@@ -103,7 +126,7 @@ class Game:
             sprite_info=player_info
         )
 
-        return PlayerSprite(player_service, self.bullet_group)
+        return PlayerSprite(player_service, self.player_bullet_group)
 
     def create_enemies(self, rows=3, cols=6, spacing=60):
         enemy_width = 40
@@ -120,5 +143,5 @@ class Game:
                     Point(x, y), Size(enemy_width, enemy_height), 1)
                 enemy_service = EnemyService(
                     enemy_info)
-                enemy_sprite = EnemySprite(enemy_service, self.bullet_group)
+                enemy_sprite = EnemySprite(enemy_service, self.enemy_bullet_group)
                 self.enemy_group.add(enemy_sprite)
