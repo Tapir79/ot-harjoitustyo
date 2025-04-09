@@ -26,7 +26,8 @@ class TestEnemy(unittest.TestCase):
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, ENEMY_BULLET_SPEED)
+        bullet_sprite_info = SpriteInfo(
+            bullet_position, bullet_size, ENEMY_BULLET_SPEED)
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="down")
 

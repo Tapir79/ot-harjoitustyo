@@ -70,5 +70,6 @@ class TestBulletService(unittest.TestCase):
         buffered_size = bullet.sprite_info.size.get_buffered_size(10)
         self.assertEqual(buffered_size.get_height(), 30)
 
+
 if __name__ == '__main__':
     unittest.main()
