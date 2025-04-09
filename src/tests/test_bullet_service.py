@@ -65,6 +65,10 @@ class TestBulletService(unittest.TestCase):
         is_moving = bullet.is_moving()
         self.assertEqual(is_moving, False)
 
+    def test_bullet_size_buffer_works_correctly(self):
+        bullet = create_bullet_service(y=10, direction="down")
+        buffered_size = bullet.sprite_info.size.get_buffered_size(10)
+        self.assertEqual(buffered_size.get_height(), 30)
 
 if __name__ == '__main__':
     unittest.main()

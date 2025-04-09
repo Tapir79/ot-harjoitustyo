@@ -1,13 +1,12 @@
 from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY
+from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY, ENEMY_SPEED, ENEMY_COOLDOWN
 
 
 class EnemyService(ShootingSpriteService):
     def __init__(self, sprite_info: SpriteInfo,
-                 cooldown=1
+                 cooldown=ENEMY_COOLDOWN  # 1
                  ):
-        sprite_info.set_speed(1)
         super().__init__(sprite_info, cooldown=cooldown)
         self.direction = "right"
 

@@ -8,7 +8,7 @@ from services.enemy_service import EnemyService
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
+from config import LOWER_BOUNDARY, RIGHT_BOUNDARY, PLAYER_SPEED, ENEMY_SPEED
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -61,6 +61,7 @@ class Game:
 
     def check_sprite_collisions(self):
         self.check_enemy_collisions()
+        self.check_enemy_bullet_collisions()
 
     def check_enemy_collisions(self):
         """
@@ -79,9 +80,27 @@ class Game:
         if collisions:
             for enemy, bullets in collisions.items():
                 position = enemy.rect.center
-                size = enemy.bullet.sprite_info.size if hasattr(
-                    enemy, "bullet") else enemy.enemy.sprite_info.size
+                size = enemy.enemy.sprite_info.size
                 explosion = HitAnimation(position, size)
+                self.hit_group.add(explosion)
+
+    def check_enemy_bullet_collisions(self):
+        """
+        Handle enemy bullet collisions with player bullets.
+        """
+        collisions = pygame.sprite.groupcollide(
+            self.enemy_bullet_group,
+            self.player_bullet_group,
+            True,  # remove enemy bullet
+            True   # remove player bullet
+        )
+
+        if collisions:
+            for enemy_bullet, player_bullet in collisions.items():
+                position = enemy_bullet.rect.center
+                buffered_size = enemy_bullet.bullet.sprite_info.size.get_buffered_size(
+                    10)
+                explosion = HitAnimation(position, buffered_size)
                 self.hit_group.add(explosion)
 
     def update(self):
@@ -127,7 +146,7 @@ class Game:
         player_position = Point(self.display_width // 2,
                                 self.display_height - 50)
         player_size = Size(40, 40)
-        player_info = SpriteInfo(player_position, player_size, 5)
+        player_info = SpriteInfo(player_position, player_size, PLAYER_SPEED)
 
         player_service = PlayerService(
             sprite_info=player_info
@@ -147,7 +166,7 @@ class Game:
                 y = margin_y + row * spacing
 
                 enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), 1)
+                    Point(x, y), Size(enemy_width, enemy_height), ENEMY_SPEED)
                 enemy_service = EnemyService(
                     enemy_info)
                 enemy_sprite = EnemySprite(

@@ -7,7 +7,6 @@ class BulletService(BaseSpriteService):
     def __init__(self,
                  sprite_info: SpriteInfo,
                  direction="up"):
-        sprite_info.set_speed(5)
         super().__init__(sprite_info)
         self.lower_boundary = LOWER_BOUNDARY + self.sprite_info.size.height
         self.upper_boundary = UPPER_BOUNDARY - self.sprite_info.size.height
