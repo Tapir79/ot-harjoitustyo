@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Group
-from ui.bullet import BulletSprite
+from ui.animations.hit import HitAnimation
 from ui.enemy import EnemySprite
 from ui.player import PlayerSprite
 from services.player_service import PlayerService
@@ -38,6 +38,7 @@ class Game:
         self.player_bullet_group = Group()
         self.enemy_bullet_group = Group()
         self.enemy_group = Group()
+        self.hit_group = pygame.sprite.Group()
 
         # player
         self.player = self.create_player()
@@ -47,8 +48,6 @@ class Game:
 
         self.clock = pygame.time.Clock()
         self.running = True
-
-        # TODO: Add enemies and bullets
         self.font = pygame.font.Font(None, 30)
 
     def handle_events(self):
@@ -79,7 +78,11 @@ class Game:
 
         if collisions:
             for enemy, bullets in collisions.items():
-                print(f"Enemy hit by {len(bullets)} bullet(s)!")
+                position = enemy.rect.center
+                size = enemy.bullet.sprite_info.size if hasattr(
+                    enemy, "bullet") else enemy.enemy.sprite_info.size
+                explosion = HitAnimation(position, size)
+                self.hit_group.add(explosion)
 
     def update(self):
         """
@@ -88,6 +91,7 @@ class Game:
         self.player.handle_input()
         self.player_bullet_group.update()
         self.enemy_group.update()
+        self.hit_group.update()
 
     def draw(self):
         """
@@ -98,6 +102,7 @@ class Game:
         self.player.draw(self.screen)
         self.player_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
+        self.hit_group.draw(self.screen)
         instruction_text = self.font.render(
             "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
         self.screen.blit(instruction_text, (20, 20))
@@ -143,5 +148,6 @@ class Game:
                     Point(x, y), Size(enemy_width, enemy_height), 1)
                 enemy_service = EnemyService(
                     enemy_info)
-                enemy_sprite = EnemySprite(enemy_service, self.enemy_bullet_group)
+                enemy_sprite = EnemySprite(
+                    enemy_service, self.enemy_bullet_group)
                 self.enemy_group.add(enemy_sprite)
