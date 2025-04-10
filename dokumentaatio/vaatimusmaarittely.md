@@ -53,8 +53,8 @@ Peli koostuu seuraavista osista:
 [X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa
 [X]   - Pelaaja voi ampua vihollisia
 [X]   - Viholliset ampuvat kohti pelaajaa
-[ ]   - Pelaajan ammus tuhoaa vihollisen
-[ ]   - Vihollisen ammus tuhoaa pelaajan
+[X]   - Pelaajan ammus tuhoaa vihollisen
+[X]   - Vihollisen ammus tuhoaa pelaajan
 [ ]   - Näytetään pelaajan pisteet
 [ ]   - Näytetään jäljellä olevat elämät
 [ ]   - Näytetään pelin taso.
@@ -73,11 +73,11 @@ Peli koostuu seuraavista osista:
 [X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
 [X] - Pelaaja voi ampua raketteja kohti vihollisia.
 [X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
-[ ] - Pelaajalla on rajoitettu määrä elämiä.
+[X] - Pelaajalla on rajoitettu määrä elämiä.
 [ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
 - **Pelin loppu**
-[ ] - Kun kaikki viholliset on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
+[ ] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
 [ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.
 
 ### Pelin tallennus ja tietokanta
@@ -97,10 +97,8 @@ Peli koostuu seuraavista osista:
 [X]  - Pelin alustaminen
 [X]  - Pelaajan liikkuminen
 [X]  - Pelaajan ampuminen
-[ ]  - Pelaajan tuhoutuminen
 [X]  - Vihollisten liikkuminen
 [X]  - Vihollisten ampuminen 
-[ ]  - Vihollisten tuhoutuminen 
 [ ]  - Pelin lopetus
 [ ]  - Tulosten tallentaminen tietokantaan
 
