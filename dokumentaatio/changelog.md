@@ -20,3 +20,4 @@ näppäimistöllä
 - Lisätty pelaajan ja vihollisten luotien väliset törmäystarkastelut
 - Lisätty pelin lopetus, kun pelaajaan osuu 3 vihollisen luotia. 
 - Lisätty animaatiot osumiselle ja pelaajan tuhoutumiselle
+- Lisätty pelin loppuminen jos pelaaja kuolee
