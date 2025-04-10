@@ -2,6 +2,7 @@ import unittest
 from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
+from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 
@@ -9,7 +10,8 @@ from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 def create_bullet_service(y=500, direction="up", speed=5):
     position = Point(100, y)
     size = Size(10, 10)
-    sprite_info = SpriteInfo(position, size, speed)
+    hit = Hit(0, 1)
+    sprite_info = SpriteInfo(position, size, speed, hit)
     return BulletService(sprite_info, direction=direction)
 
 

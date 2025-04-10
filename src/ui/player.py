@@ -65,3 +65,6 @@ class PlayerSprite(pygame.sprite.Sprite):
     def draw(self, screen):
         self.update()
         screen.blit(self.image, self.rect)
+
+    def is_dead(self):
+        return self.player.is_dead()

@@ -13,3 +13,10 @@ näppäimistöllä
 - Toteutettu pelaajan ampumislogiikka
 - Lisätty yksikkötestit pelaajan ampumiselle ja refaktoroitu yksikkötestejä yleisesti 
 - Lisätty projektiin koodin laadunvarmistus (lint) ja korjattu koodista kaikki löydetyt laatuvirheet
+
+## Viikko 5 
+
+- Lisätty pelaajan luotien ja vihollisten välinen törmäystarkastelu 
+- Lisätty pelaajan ja vihollisten luotien väliset törmäystarkastelut
+- Lisätty pelin lopetus, kun pelaajaan osuu 3 vihollisen luotia. 
+- Lisätty animaatiot osumiselle ja pelaajan tuhoutumiselle

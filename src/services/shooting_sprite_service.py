@@ -3,8 +3,10 @@ from services.base_sprite_service import BaseSpriteService
 from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
+from models.hit import Hit
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN
+from config import (LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT,
+                    PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN)
 
 
 class ShootingSpriteService(BaseSpriteService):
@@ -29,7 +31,7 @@ class ShootingSpriteService(BaseSpriteService):
             return self.shoot(direction)
         return None
 
-    def shoot(self, direction="up", bullet_width=5, bullet_height=10):
+    def shoot(self, direction="up", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
         """
         Create a new bullet.
         """
@@ -42,7 +44,7 @@ class ShootingSpriteService(BaseSpriteService):
         bullet_size = Size(bullet_width, bullet_height)
         bullet_speed = PLAYER_BULLET_SPEED if direction == "up" else ENEMY_BULLET_SPEED
         bullet_sprite_info = SpriteInfo(
-            bullet_position, bullet_size, bullet_speed)
+            bullet_position, bullet_size, bullet_speed, Hit(0, 1))
 
         return BulletService(sprite_info=bullet_sprite_info, direction=direction)
 

@@ -6,7 +6,7 @@ from ui.animations.animation import AnimationSprite
 
 class HitAnimation(AnimationSprite):
     def __init__(self, position, size: Size):
-        image_paths = [os.path.join(
+        self.image_paths = [os.path.join(
             ASSETS_DIR, f"hit{i}.png") for i in range(1, 5)]
 
-        super().__init__(position, size, image_paths, duration=200)
+        super().__init__(position, size, self.image_paths, duration=200)

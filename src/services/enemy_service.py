@@ -1,6 +1,9 @@
 from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY, ENEMY_SPEED, ENEMY_COOLDOWN
+from config import (
+    LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY,
+    ENEMY_COOLDOWN, BULLET_WIDTH, BULLET_HEIGHT
+)
 
 
 class EnemyService(ShootingSpriteService):
@@ -10,8 +13,8 @@ class EnemyService(ShootingSpriteService):
         super().__init__(sprite_info, cooldown=cooldown)
         self.direction = "right"
 
-    def shoot(self, direction="down", bullet_width=5, bullet_height=10):
-        return super().shoot(direction, bullet_width, bullet_height)
+    def shoot(self, direction="down", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
+        return super().shoot(direction)
 
     def move(self):
         """

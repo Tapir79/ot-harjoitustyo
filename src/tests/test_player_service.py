@@ -3,6 +3,7 @@ import unittest
 from services.player_service import PlayerService
 from models.point import Point
 from models.size import Size
+from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import RIGHT_BOUNDARY
 from services.bullet_service import BulletService
@@ -12,7 +13,8 @@ class TestPlayer(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
         size = Size(10, 10)
-        self.sprite_info = SpriteInfo(position, size, 5)
+        hit = Hit(0, 3)
+        self.sprite_info = SpriteInfo(position, size, 5, hit)
         self.player_service = PlayerService(sprite_info=self.sprite_info)
 
     def test_player_shoot_creates_new_bullet(self):
@@ -22,18 +24,25 @@ class TestPlayer(unittest.TestCase):
         bullet_height = 10
         player_x, player_y = self.player_service.get_position()
 
-        bullet_x = player_x + self.player_service.sprite_info.size.width // 2 - bullet_width // 2
+        # self.player_service.sprite_info.size.width
+        player_width = self.player_service.sprite_info.get_width()
+
+        bullet_x = player_x + player_width // 2 - bullet_width // 2
         bullet_y = player_y - bullet_height
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5)
+        hit = Hit(0, 1)
+        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5, hit)
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="up")
 
+        actual_speed = bullet.sprite_info.get_speed()
+        expected_speed = expected_bullet.sprite_info.get_speed()
+
         self.assertEqual(bullet.direction, expected_bullet.direction,
                          "Expected a bullet direction up")
-        self.assertEqual(bullet.sprite_info.speed, expected_bullet.sprite_info.speed,
+        self.assertEqual(actual_speed, expected_speed,
                          "Expected a bullet speed 5")
 
     def test_player_moves_left(self):
@@ -96,3 +105,15 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(can_shoot, False)
 
     # collisions don't need tests because they are handled by pygame
+
+    def test_player_is_not_dead_if_one_hit(self):
+        self.player_service.sprite_info.add_hit()
+        is_dead = self.player_service.is_dead()
+        self.assertEqual(is_dead, False)
+
+    def test_player_is_dead_if_three_hits(self):
+        self.player_service.sprite_info.add_hit()
+        self.player_service.sprite_info.add_hit()
+        self.player_service.sprite_info.add_hit()
+        is_dead = self.player_service.is_dead()
+        self.assertEqual(is_dead, True)

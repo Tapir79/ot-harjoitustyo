@@ -3,6 +3,7 @@ from services.enemy_service import EnemyService
 from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
+from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY, ENEMY_BULLET_SPEED
 
@@ -11,7 +12,8 @@ class TestEnemy(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
         size = Size(10, 10)
-        self.sprite_info = SpriteInfo(position, size, 1)
+        hit = Hit(0, 1)
+        self.sprite_info = SpriteInfo(position, size, 1, hit)
         self.enemy_service = EnemyService(sprite_info=self.sprite_info)
 
     def test_enemy_shoot_creates_new_bullet(self):
@@ -26,8 +28,9 @@ class TestEnemy(unittest.TestCase):
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
+        hit = Hit(0, 1)
         bullet_sprite_info = SpriteInfo(
-            bullet_position, bullet_size, ENEMY_BULLET_SPEED)
+            bullet_position, bullet_size, ENEMY_BULLET_SPEED, hit)
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="down")
 
