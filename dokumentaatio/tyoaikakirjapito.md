@@ -25,5 +25,8 @@
 |  6.4 | 10  | vihollisluokka, vihollisten generointi ja liikkuminen. Pylint, coverage ja koodin rakenteen refaktorointi  |
 |  7.4 | 4  | Ammuksen jäähdytysaika. Vihollisen ampuminen. Arkkitehtuuri ja vaatimusmäärittely. |
 | yht | 54.5| |
-| 8.4 | 4   | Vihollisen ja pelaajan luodin törmäykset. Vihollisen ja pelaajan luotien törmäykset. Törmäysten animointi.|
-| yht | 59.5| |
+| 8.4 | 4   | Vihollisen ja pelaajan luodin törmäykset. Vihollisen luotien ja pelaajan luotien törmäykset. Törmäysten animointi.|
+| 9.4 | 3 | Koodin refaktorointia, logiikan eriyttämistä UI:sta, testikattavuus, koodin laadunparannus. |
+| 10.4 | 4 | Pelin lopetus ja random-animaatiot. Dokumentaation päivitys. |
+| 11.4 | 3.5 | Tasomekanismi ja tasojen vaihtojen logiikka |
+| yht | 73| |
