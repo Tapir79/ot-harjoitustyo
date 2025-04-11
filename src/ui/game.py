@@ -1,6 +1,7 @@
 import pygame
 import random
 from pygame.sprite import Group
+from utils.position_helpers import get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.enemy import EnemySprite
@@ -81,7 +82,6 @@ class Game:
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
-            print("player is dead:", self.player.is_dead())
             if self.player.is_dead():
                 self.player.kill()
 
@@ -100,7 +100,6 @@ class Game:
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
-            print("player is dead:", self.player.is_dead())
             if self.player.is_dead():
                 self.player.kill()
 
@@ -164,10 +163,11 @@ class Game:
         self.player_bullet_group.draw(self.screen)
         self.enemy_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
-        self.hit_group.draw(self.screen)
+
         instruction_text = self.font.render(
             "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
         self.screen.blit(instruction_text, (20, 20))
+        self.hit_group.draw(self.screen)
         pygame.display.update()
 
     def run(self):
@@ -179,19 +179,7 @@ class Game:
         while self.running:
             self.handle_events()
             if self.is_game_over() and self.gameover == False:
-                position = self.player.rect.center
-                positions = self.get_random_positions_above_player(position)
-                size = self.player.player.sprite_info.size
-                player_size = size.get_buffered_size(20)
-                explosion = PlayerHitAnimation(position, player_size)
-                self.play_animation_once(explosion)
-
-                for pos in positions:
-                    explosion = HitAnimation(pos, size)
-                    self.play_animation_once(explosion)
-                    self.wait(5)
-
-                self.gameover = True
+                self.end_game()
             elif self.gameover == True:
                 self.game_over()
             else:
@@ -200,31 +188,26 @@ class Game:
                 self.draw()
                 self.clock.tick(60)
 
+    def end_game(self):
+        position = self.player.rect.center
+        center_x, center_y = position
+        positions = get_random_positions_around_center_point(
+            Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
+        size = self.player.player.sprite_info.size
+        player_size = size.get_buffered_size(20)
+        explosion = PlayerHitAnimation(position, player_size)
+        self.play_animation_once(explosion)
+
+        for pos in positions:
+            explosion = HitAnimation(pos, size)
+            self.play_animation_once(explosion)
+            self.wait(5)
+
+        self.gameover = True
+
     def wait(self, n):
         for i in range(0, n):
             self.clock.tick(60)
-
-    def get_random_positions_above_player(self, center, count=5, y_offset=100, max_spread=150):
-        """
-        Returns a list of random positions above the player within screen bounds.
-
-        - center: the (x, y) center of the player
-        - count: how many positions to generate
-        - y_offset: how high above the player the effects appear
-        - max_spread: max horizontal spread from center
-        """
-        cx, cy = center
-        positions = []
-
-        for _ in range(count):
-            rand_x = random.randint(
-                max(0, cx - max_spread),
-                min(self.screen.get_width(), cx + max_spread)
-            )
-            rand_y = max(0, cy - y_offset - random.randint(0, 40))
-            positions.append((rand_x, rand_y))
-
-        return positions
 
     def play_animation_once(self, animation_sprite):
         """
