@@ -39,6 +39,3 @@ class PlayerService(ShootingSpriteService):
 
         self.sprite_info.set_x(new_x)
         return new_x
-
-    def is_dead(self):
-        return self.sprite_info.is_dead()

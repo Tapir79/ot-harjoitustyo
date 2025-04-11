@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from utils.position_helpers import get_random_positions_around_center_point, get_random_x, get_random_y
+from utils.game_helpers import (get_random_positions_around_center_point, 
+                                get_random_x, 
+                                get_random_y)
 from models.point import Point
 from models.size import Size
 

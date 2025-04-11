@@ -1,7 +1,7 @@
 import pygame
 import random
 from pygame.sprite import Group
-from utils.position_helpers import get_random_positions_around_center_point
+from utils.game_helpers import get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.enemy import EnemySprite
@@ -12,7 +12,11 @@ from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import LOWER_BOUNDARY, RIGHT_BOUNDARY, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, ENEMY_SPEED, PLAYER_MAX_HITS, ENEMY_MAX_HITS, ENEMY_COUNT_COLS, ENEMY_ROWS
+from config import (LOWER_BOUNDARY, RIGHT_BOUNDARY,
+                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, 
+                    ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_SPEED, 
+                    PLAYER_MAX_HITS, ENEMY_MAX_HITS, 
+                    ENEMY_COUNT_COLS, ENEMY_ROWS)
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -47,13 +51,26 @@ class Game:
         # player
         self.player = self.create_player()
 
-        # enemies
-        self.create_enemies()
+        # level info
+        self.level = 1
+        self.level_started = False
+        self.level_transition_timer = 0
+        self.level_countdown = 3
 
+        # game info
         self.clock = pygame.time.Clock()
         self.running = True
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
+
+    def reset_level_attributes(self):
+        self.player_bullet_group.empty()
+        self.enemy_bullet_group.empty()
+        self.enemy_group.empty()
+        self.hit_group.empty()
+        self.level_transition_timer = 0
+        self.level_countdown = 3
+
 
     def handle_events(self):
         """
@@ -89,10 +106,10 @@ class Game:
         """
         Handle player collisions with enemy bullets.
         """
-        hits = pygame.sprite.spritecollide(
+        collisions = pygame.sprite.spritecollide(
             self.player, self.enemy_bullet_group, dokill=True)
 
-        if hits:
+        if collisions:
             self.player.player.sprite_info.add_hit()
 
             position = self.player.rect.center
@@ -113,12 +130,17 @@ class Game:
         collisions = pygame.sprite.groupcollide(
             self.enemy_group,
             self.player_bullet_group,
-            True,  # remove enemy
+            False,  # remove enemy
             True   # remove bullet
         )
 
         if collisions:
             for enemy, bullets in collisions.items():
+                for _ in bullets:
+                    enemy.enemy.sprite_info.add_hit()
+                    if enemy.enemy.sprite_info.is_dead():
+                        enemy.remove(self.enemy_group)
+
                 position = enemy.rect.center
                 size = enemy.enemy.sprite_info.size
                 explosion = HitAnimation(position, size)
@@ -178,15 +200,49 @@ class Game:
         """
         while self.running:
             self.handle_events()
-            if self.is_game_over() and self.gameover == False:
+
+            if self.is_game_over() and not self.gameover:
                 self.end_game()
-            elif self.gameover == True:
+            elif self.gameover:
                 self.game_over()
+            elif not self.level_started:
+                self.start_new_level()
             else:
                 self.update()
                 self.check_sprite_collisions()
+
+                if not self.enemy_group:
+                    self.level +=1
+                    # load next level
+                    self.reset_level_attributes()
+                    self.level_started = False
+
                 self.draw()
                 self.clock.tick(60)
+
+    def start_new_level(self):
+        if self.level_transition_timer == 0:
+            self.level_transition_timer = pygame.time.get_ticks()
+
+        elapsed = pygame.time.get_ticks() - self.level_transition_timer
+        seconds_passed = elapsed // 1000
+        countdown = max(0, self.level_countdown - seconds_passed)
+
+        self.screen.fill(BLACK)
+
+        if countdown > 0:
+            text = self.font.render(f"Level {self.level} - Starting in {countdown}", True, WHITE)
+        else:
+            text = self.font.render("START!", True, WHITE)
+
+        text_rect = text.get_rect(center=(self.display_width // 2, self.display_height // 2))
+        self.screen.blit(text, text_rect)
+        pygame.display.update()
+
+        if seconds_passed > self.level_countdown:
+            self.level_started = True
+            self.level_transition_timer = 0
+            self.create_enemies()
 
     def end_game(self):
         position = self.player.rect.center
@@ -255,12 +311,15 @@ class Game:
 
         return PlayerSprite(player_service, self.player_bullet_group)
 
-    def create_enemies(self, rows=ENEMY_ROWS, cols=ENEMY_COUNT_COLS, spacing=60):
+    def create_enemies(self, spacing=60):
         """
         Create enemies on screen. 
         """
-        enemy_width = 40
-        enemy_height = 40
+        enemy_width = ENEMY_WIDTH
+        enemy_height = ENEMY_HEIGHT
+        rows = ENEMY_ROWS
+        cols = ENEMY_COUNT_COLS
+        speed = ENEMY_SPEED
         margin_x = 50
         margin_y = 50
 
@@ -270,7 +329,7 @@ class Game:
                 y = margin_y + row * spacing
 
                 enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), ENEMY_SPEED, Hit(0, ENEMY_MAX_HITS))
+                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, ENEMY_MAX_HITS))
                 enemy_service = EnemyService(
                     enemy_info)
                 enemy_sprite = EnemySprite(

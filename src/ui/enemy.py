@@ -41,7 +41,6 @@ class EnemySprite(pygame.sprite.Sprite):
 
     def update(self):
         self.enemy.move()
-        # TODO refactor when adding levels
         if random.random() < ENEMY_SHOOTING_PROBABILITY:
             self.shoot()
         x, y = self.enemy.get_position()

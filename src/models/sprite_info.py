@@ -1,8 +1,6 @@
-
 from models.point import Point
 from models.size import Size
 from models.hit import Hit
-
 
 class SpriteInfo:
     def __init__(self, position: Point, size: Size, speed: int, hit: Hit):
