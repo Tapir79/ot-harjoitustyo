@@ -15,7 +15,9 @@ class EnemySprite(pygame.sprite.Sprite):
     dimensions, and the boundaries within which the player is allowed to move.
     """
 
-    def __init__(self, enemy_service: EnemyService, bullet_group: pygame.sprite.Group):
+    def __init__(self, enemy_service: EnemyService,
+                 bullet_group: pygame.sprite.Group,
+                 image_path: str = "enemy.png"):
         super().__init__()
         self.enemy = enemy_service
         self.bullet_group = bullet_group
@@ -24,7 +26,7 @@ class EnemySprite(pygame.sprite.Sprite):
         height = self.enemy.sprite_info.size.get_height()
 
         self.image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "enemy.png")
+            os.path.join(ASSETS_DIR, image_path)
         ).convert_alpha()
         self.image = pygame.transform.scale(
             self.image, (width, height)

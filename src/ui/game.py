@@ -8,15 +8,14 @@ from ui.enemy import EnemySprite
 from ui.player import PlayerSprite
 from services.player_service import PlayerService
 from services.enemy_service import EnemyService
+from services.level_service import LevelService
 from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
 from config import (LOWER_BOUNDARY, RIGHT_BOUNDARY,
-                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, 
-                    ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_SPEED, 
-                    PLAYER_MAX_HITS, ENEMY_MAX_HITS, 
-                    ENEMY_COUNT_COLS, ENEMY_ROWS)
+                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
+                    ENEMY_WIDTH, ENEMY_HEIGHT, PLAYER_MAX_HITS)
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -42,6 +41,14 @@ class Game:
             (self.display_width, self.display_height))
         pygame.display.set_caption("Alien Attack")
 
+        # level info
+        self.level = 1
+        self.level_started = False
+        self.level_transition_timer = 0
+        self.level_countdown = 3
+        self.levels = LevelService()
+        self.set_new_level_attributes()
+
         # bullets
         self.player_bullet_group = Group()
         self.enemy_bullet_group = Group()
@@ -51,26 +58,31 @@ class Game:
         # player
         self.player = self.create_player()
 
-        # level info
-        self.level = 1
-        self.level_started = False
-        self.level_transition_timer = 0
-        self.level_countdown = 3
-
         # game info
         self.clock = pygame.time.Clock()
         self.running = True
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
 
-    def reset_level_attributes(self):
+    def set_new_level_attributes(self):
+        current_level = self.levels.get_level(self.level)
+        self.cooldown = current_level["enemy_cooldown"]
+        self.enemy_shooting_probability = current_level["enemy_shoot_prob"]
+        self.enemy_count_cols = current_level["enemy_cols"]
+        self.enemy_rows = current_level["enemy_rows"]
+        self.enemy_speed = current_level["enemy_speed"]
+        self.enemy_bullet_speed = current_level["enemy_bullet_speed"]
+        self.enemy_max_hits = current_level["enemy_max_hits"]
+        self.enemy_image = current_level["enemy_image"]
+
+    def new_level_reset(self):
         self.player_bullet_group.empty()
         self.enemy_bullet_group.empty()
         self.enemy_group.empty()
         self.hit_group.empty()
         self.level_transition_timer = 0
         self.level_countdown = 3
-
+        self.set_new_level_attributes()
 
     def handle_events(self):
         """
@@ -212,9 +224,9 @@ class Game:
                 self.check_sprite_collisions()
 
                 if not self.enemy_group:
-                    self.level +=1
+                    self.level += 1
                     # load next level
-                    self.reset_level_attributes()
+                    self.new_level_reset()
                     self.level_started = False
 
                 self.draw()
@@ -231,11 +243,13 @@ class Game:
         self.screen.fill(BLACK)
 
         if countdown > 0:
-            text = self.font.render(f"Level {self.level} - Starting in {countdown}", True, WHITE)
+            text = self.font.render(
+                f"Level {self.level} - Starting in {countdown}", True, WHITE)
         else:
             text = self.font.render("START!", True, WHITE)
 
-        text_rect = text.get_rect(center=(self.display_width // 2, self.display_height // 2))
+        text_rect = text.get_rect(
+            center=(self.display_width // 2, self.display_height // 2))
         self.screen.blit(text, text_rect)
         pygame.display.update()
 
@@ -317,9 +331,11 @@ class Game:
         """
         enemy_width = ENEMY_WIDTH
         enemy_height = ENEMY_HEIGHT
-        rows = ENEMY_ROWS
-        cols = ENEMY_COUNT_COLS
-        speed = ENEMY_SPEED
+        rows = self.enemy_rows
+        cols = self.enemy_count_cols
+        speed = self.enemy_speed
+        enemy_max_hits = self.enemy_max_hits
+        enemy_image = self.enemy_image
         margin_x = 50
         margin_y = 50
 
@@ -329,9 +345,9 @@ class Game:
                 y = margin_y + row * spacing
 
                 enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, ENEMY_MAX_HITS))
+                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
                 enemy_service = EnemyService(
                     enemy_info)
                 enemy_sprite = EnemySprite(
-                    enemy_service, self.enemy_bullet_group)
+                    enemy_service, self.enemy_bullet_group, enemy_image)
                 self.enemy_group.add(enemy_sprite)
