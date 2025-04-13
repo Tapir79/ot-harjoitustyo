@@ -132,11 +132,11 @@ sequenceDiagram
     participant BulletSprite
     participant EnemySprite
 
-    Main->>Game: aloita peli
-    Game->>Level: luo pelitasot
+    Main->>Game: aloita peli()
+    Game->>Level: luo pelitasot()
     Game->>PlayerSprite:luo pelaaja()
-    Game->>Game: luo pelisimukka
-    Game->>Game: Aloita 1. taso
+    Game->>Game: luo pelisimukka()
+    Game->>Game: Aloita 1. taso()
     Game->>EnemySprite: luo viholliset()
     
     loop peli-iteraatio
@@ -163,9 +163,9 @@ sequenceDiagram
     participant BulletService
     participant BulletSprite
 
-    Main->>Game: aloita peli
+    Main->>Game: aloita peli()
     Game->>PlayerSprite:luo pelaaja()
-    Game->>Game: luo pelisimukka
+    Game->>Game: luo pelisimukka()
 
     loop peli-iteraatio
         PlayerSprite->>PlayerService: painaa "a" / "d"
@@ -190,9 +190,9 @@ sequenceDiagram
     participant BulletService
     participant BulletSprite
 
-    Main->>Game: aloita peli
+    Main->>Game: aloita peli()
     Game->>EnemySprite:luo viholliset()
-    Game->>Game: luo pelisimukka
+    Game->>Game: luo pelisimukka()
 
     loop peli-iteraatio jokainen vihollinen ja luoti
         EnemySprite->>EnemyService: liiku() 
