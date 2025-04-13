@@ -28,5 +28,7 @@
 | 8.4 | 4   | Vihollisen ja pelaajan luodin törmäykset. Vihollisen luotien ja pelaajan luotien törmäykset. Törmäysten animointi.|
 | 9.4 | 3 | Koodin refaktorointia, logiikan eriyttämistä UI:sta, testikattavuus, koodin laadunparannus. |
 | 10.4 | 4 | Pelin lopetus ja random-animaatiot. Dokumentaation päivitys. |
-| 11.4 | 3.5 | Tasomekanismi ja tasojen vaihtojen logiikka |
-| yht | 73| |
+| 11.4 | 3.5 | Tasomekanismi ja tasojen vaihtamislogiikka |
+| 12.4 | 5 | Tasoparametrien konfigurointi ja yhdistäminen tasojen vaihtamislogiikkaan |
+| 13.4 | | Arkkitehtuuridokumentin ja changelogin päivitys. |
+| yht | 78 | |

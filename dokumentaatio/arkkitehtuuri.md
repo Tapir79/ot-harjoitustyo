@@ -42,6 +42,7 @@ classDiagram
         +move(key)
         +shoot()
         +update()
+        +is_dead()
     }
 
     class PlayerService {
@@ -60,7 +61,8 @@ classDiagram
     class SpriteInfo{
         +size:Size
         +position:Point
-        +speed: int
+        +hit: Hit
+        +speed: int     
     }
 
     class Size{
@@ -72,6 +74,11 @@ classDiagram
         +x:int
         +y:int
     }
+
+    class  Hit{
+        +hitcount:int
+        +max_hits:int
+    }
  
 
     BaseSpriteService <|-- ShootingSpriteService
@@ -82,6 +89,7 @@ classDiagram
 
     SpriteInfo --> Size
     SpriteInfo --> Point
+    SpriteInfo --> Hit
     BaseSpriteService --> SpriteInfo
 ```
 
@@ -93,7 +101,7 @@ Tämä osio on vielä toteuttamatta, mutta tietokantaan tallennetaan jatkossa re
 
 ## Ohjaustiedostot 
 
-Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. 
+Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. Lisäksi tasojen vakiottiedot on tallennettu level config-tiedostoon. Tasovakioilla ohjataan pelille oikea arvo esim. vihollisen kestävyys pelin edetessä. 
 
 Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto. 
 
@@ -119,21 +127,30 @@ Pelin ylätasokaavio:
 sequenceDiagram
     participant Main
     participant Game
+    participant Level
     participant PlayerSprite
     participant BulletSprite
     participant EnemySprite
 
     Main->>Game: aloita peli
+    Game->>Level: luo pelitasot
     Game->>PlayerSprite:luo pelaaja()
-    Game->>EnemySprite: luo viholliset()
     Game->>Game: luo pelisimukka
-
+    Game->>Game: Aloita 1. taso
+    Game->>EnemySprite: luo viholliset()
+    
     loop peli-iteraatio
         PlayerSprite->>Game: liiku ja ammu
         EnemySprite->>Game: liiku ja ammu
         BulletSprite->>Game: liiku
+        PlayerSprite->>Main: Pelaaja kuolee. GAME OVER
+        EnemySprite->>Level: Viimeinen tason vihollinen kuolee
+        Level->>Game: tuhoa vanha taso ja luo uusi taso
     end
 ```
+---
+
+### Pelaajan ja vihollisen perustoiminnot
 
 Pelin käynnistyminen ja pelaajan toiminnot:
 
@@ -156,12 +173,12 @@ sequenceDiagram
         PlayerSprite->>Game: piirrä pelaajan sijainti
         PlayerSprite->>PlayerService: painaa "SPACE"
         PlayerService->>BulletService: luo uusi bullet
-        BulletService-->>BulletSprite: uusi bullet sprite
+        BulletService->>BulletSprite: uusi bullet sprite
         BulletService->>BulletService: päivitä sijainti
         BulletSprite->>Game: piirrä luoti
     end
 ```
-
+---
 Pelin käynnistyminen ja vihollisen toiminnot:
 
 ```mermaid
@@ -188,6 +205,99 @@ sequenceDiagram
         BulletSprite->>Game: piirrä luoti()
     end
 ```
+---
+
+### Yhteentörmäystarkistukset:
+
+Pelaajan luoti ja vihollisen luoti
+
+```mermaid
+
+sequenceDiagram
+    participant Game
+    participant PlayerBullet
+    participant EnemyBullet
+    participant EnemySprite
+    participant HitAnimation
+
+    loop peli-iteraatio
+        Game->>PlayerBullet: päivitä sijainti()
+        Game->>EnemyBullet: päivitä sijainti()
+        Game->>Game: tarkista luotien törmäykset()
+
+        alt pelaajan luodin törmäys vihollisluotiin
+            EnemyBullet-->>Game: tuhoa vihollisluoti
+            PlayerBullet-->>Game: tuhoa pelaajan luoti
+            Game->>HitAnimation: luo pieni räjähdys
+        end
+    end
+```
+---
+
+Pelaajan luoti ja viholliset:
+
+```mermaid
+sequenceDiagram
+    participant Game
+    participant PlayerBullet
+    participant EnemySprite
+    participant HitAnimation
+    participant Level
+
+    loop peli-iteraatio
+        Game->>PlayerBullet: päivitä sijainti()
+        Game->>PlayerBullet: tarkista törmäykset()
+
+        alt törmäys viholliseen
+            PlayerBullet-->>EnemySprite: osuma
+            EnemySprite->>EnemySprite: lisää osuma viholliselle
+            alt vihollinen kuolee
+                EnemySprite-->>Game: poista vihollinen ryhmästä
+                Game-->>PlayerBullet: poista luoti
+                Game->>HitAnimation: luo räjähdys
+            end
+            alt viimeinen vihollinen tason ryhmässä kuolee
+                Game->>Level: Luo uusi taso
+                Level->>Level: Tuhoa kaikki luodit
+                Level->>Level: Tuhoa kaikki tason viholliset
+                Level->>Level: TUhoa kaikki tason animaatiot
+                Level->>Level: Nollaa kaikki tasoattribuutit
+                Level->>Game: Aloita uusi taso
+            end
+            
+        end  
+    end
+
+```
+---
+
+Vihollisen  luoti ja pelaaja:
+
+```mermaid
+sequenceDiagram
+    participant Game
+    participant EnemyBullet
+    participant PlayerSprite
+    participant EnemyBullet
+    participant HitAnimation
+
+    loop peli-iteraatio
+        Game->>EnemyBullet: päivitä sijainti()
+        Game->>EnemyBullet: tarkista törmäykset()
+
+        alt törmäys pelaajaan
+            EnemyBullet-->>PlayerSprite: osuma
+            PlayerSprite->>PlayerSprite: lisää osuma pelaajalle
+            Game-->>EnemyBullet: poista luoti
+            Game->>HitAnimation: luo räjähdys
+            alt pelaaja kuolee
+                PlayerSprite-->>Game: siirry pelin lopetukseen, GAME OVER
+            end
+        end
+    end
+
+```
+
 
 # Jatkokehitystä vaativat toiminnallisuudet ja rakenteelliset heikkoudet
 

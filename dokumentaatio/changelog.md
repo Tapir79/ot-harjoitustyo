@@ -21,3 +21,4 @@ näppäimistöllä
 - Lisätty pelin lopetus, kun pelaajaan osuu 3 vihollisen luotia. 
 - Lisätty animaatiot osumiselle ja pelaajan tuhoutumiselle
 - Lisätty pelin loppuminen jos pelaaja kuolee
+- Lisätty peliin tasot ja tasokonfguraatio, jolla generoidaan tasot pelin alkaessa
