@@ -45,6 +45,7 @@ class Game:
         self.level = 1
         self.level_started = False
         self.level_transition_timer = 0
+        self.level_ticks_remaining = 180
         self.level_countdown = 3
         self.levels = LevelService()
         self.set_new_level_attributes()
@@ -83,6 +84,7 @@ class Game:
         self.hit_group.empty()
         self.level_transition_timer = 0
         self.level_countdown = 3
+        self.level_ticks_remaining = 180
         self.set_new_level_attributes()
 
     def handle_events(self):
@@ -238,27 +240,23 @@ class Game:
                 self.clock.tick(60)
 
     def start_new_level(self):
-        if self.level_transition_timer == 0:
-            self.level_transition_timer = pygame.time.get_ticks()
 
-        elapsed = pygame.time.get_ticks() - self.level_transition_timer
-        seconds_passed = elapsed // 1000
-        countdown = max(0, self.level_countdown - seconds_passed)
+        if self.level_transition_timer == 0:
+            self.level_transition_timer = 1
+            self.level_ticks_remaining = 60  # show for 1 second at 60 FPS
 
         self.screen.fill(BLACK)
 
-        if countdown > 0:
+        if self.level_ticks_remaining > 0:
             text = self.font.render(
-                f"Level {self.level} - Starting in {countdown}", True, WHITE)
+                f"Level {self.level}", True, WHITE)
+            self.screen.blit(
+                text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
+            pygame.display.update()
+
+            self.level_ticks_remaining -= 1
+            self.clock.tick(60)
         else:
-            text = self.font.render("START!", True, WHITE)
-
-        text_rect = text.get_rect(
-            center=(self.display_width // 2, self.display_height // 2))
-        self.screen.blit(text, text_rect)
-        pygame.display.update()
-
-        if seconds_passed > self.level_countdown:
             self.level_started = True
             self.level_transition_timer = 0
             self.create_enemies()
