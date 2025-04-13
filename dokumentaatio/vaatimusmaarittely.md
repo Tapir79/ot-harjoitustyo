@@ -74,10 +74,13 @@ Peli koostuu seuraavista osista:
 [X] - Pelaaja voi ampua raketteja kohti vihollisia.
 [X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
 [X] - Pelaajalla on rajoitettu määrä elämiä.
+[X] - Tason vihollisten tuhoutuessa aloitetaan uusi taso
 [ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
 - **Pelin loppu**
-[ ] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
+[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
+[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu, pelaaja voittaa.
+[X] - Kun pelaaja menettää kaikki elämänsä pelaaja häviää.
 [ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.
 
 ### Pelin tallennus ja tietokanta
@@ -99,7 +102,6 @@ Peli koostuu seuraavista osista:
 [X]  - Pelaajan ampuminen
 [X]  - Vihollisten liikkuminen
 [X]  - Vihollisten ampuminen 
-[ ]  - Pelin lopetus
 [ ]  - Tulosten tallentaminen tietokantaan
 
 ## Jatkokehitysideoita (tai jos aikaa jää)
