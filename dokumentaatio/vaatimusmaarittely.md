@@ -38,28 +38,32 @@ Peli koostuu seuraavista osista:
 [X] = toteutettu
 
 1. **Aloitusnäkymä**
-[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
-[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.
-[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen
-[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa
+
+[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.       
+[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.          
+[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen         
+[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa           
 [ ]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
 
 2. **Rekisteröitymisnäkymä**
+
 [ ]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen
 [ ]   - Ohjaa takaisin kirjautumisnäkymään 
 
 3. **Pelinäkymä**
-[X]   - Pelaaja ohjaa alusta näppäimistöllä.
-[X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa
-[X]   - Pelaaja voi ampua vihollisia
-[X]   - Viholliset ampuvat kohti pelaajaa
-[X]   - Pelaajan ammus tuhoaa vihollisen
-[X]   - Vihollisen ammus tuhoaa pelaajan
-[ ]   - Näytetään pelaajan pisteet
-[ ]   - Näytetään jäljellä olevat elämät
-[ ]   - Näytetään pelin taso.
+
+[X]   - Pelaaja ohjaa alusta näppäimistöllä.         
+[X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa           
+[X]   - Pelaaja voi ampua vihollisia           
+[X]   - Viholliset ampuvat kohti pelaajaa            
+[X]   - Pelaajan ammus tuhoaa vihollisen             
+[X]   - Vihollisen ammus tuhoaa pelaajan                  
+[ ]   - Näytetään pelaajan pisteet         
+[ ]   - Näytetään jäljellä olevat elämät            
+[ ]   - Näytetään pelin taso.                
  
 4. **Pelin lopetusnäkymä**
+
 [ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
 
 ## Perusversion tarjoama toiminnallisuus
@@ -67,9 +71,11 @@ Peli koostuu seuraavista osista:
 ### Pelin toiminnot
 
 - **Aloitusnäyttö**
+
 [ ]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
   
 - **Pelin aikana**
+
 [X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
 [X] - Pelaaja voi ampua raketteja kohti vihollisia.
 [X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
@@ -78,31 +84,34 @@ Peli koostuu seuraavista osista:
 [ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
 - **Pelin loppu**
-[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.
-[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu, pelaaja voittaa.
-[X] - Kun pelaaja menettää kaikki elämänsä pelaaja häviää.
-[ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.
+
+[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.          
+[X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu, pelaaja voittaa.           
+[X] - Kun pelaaja menettää kaikki elämänsä pelaaja häviää.         
+[ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.         
 
 ### Pelin tallennus ja tietokanta
 
-- Pelissä on SQLite-tietokanta, johon tallennetaan:
-[ ] - Pelaajan nimi (tai nimimerkki) ja salasana.
-[ ] - Pelaajan paras pistemäärä.
-[ ] - Pelin aikaleima.
+- Pelissä on SQLite-tietokanta, johon tallennetaan:           
+[ ] - Pelaajan nimi (tai nimimerkki) ja salasana.        
+[ ] - Pelaajan paras pistemäärä.     
+[ ] - Pelin aikaleima.      
 
 ### Pelin testaus
 
 - **Testaus**:
-[X]  - Pelin logiikkaa testataan **unittest**-kirjastolla.
+
+[X]  - Pelin logiikkaa testataan **unittest**-kirjastolla.         
 [X]  - Käytetään **coverage**-työkalua, jotta voidaan varmistaa koodin kattavuus.
   
 - **Testattavat osa-alueet**:
-[X]  - Pelin alustaminen
-[X]  - Pelaajan liikkuminen
-[X]  - Pelaajan ampuminen
-[X]  - Vihollisten liikkuminen
-[X]  - Vihollisten ampuminen 
-[ ]  - Tulosten tallentaminen tietokantaan
+
+[X]  - Pelin alustaminen          
+[X]  - Pelaajan liikkuminen        
+[X]  - Pelaajan ampuminen          
+[X]  - Vihollisten liikkuminen           
+[X]  - Vihollisten ampuminen            
+[ ]  - Tulosten tallentaminen tietokantaan         
 
 ## Jatkokehitysideoita (tai jos aikaa jää)
 
