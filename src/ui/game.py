@@ -13,7 +13,7 @@ from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import (LOWER_BOUNDARY, RIGHT_BOUNDARY,
+from config import (LOWER_BOUNDARY, RIGHT_BOUNDARY, UPPER_BOUNDARY,
                     PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
                     ENEMY_WIDTH, ENEMY_HEIGHT, PLAYER_MAX_HITS)
 
@@ -63,6 +63,7 @@ class Game:
         self.running = True
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
+        self.gameover_text = ""
 
     def set_new_level_attributes(self):
         current_level = self.levels.get_level(self.level)
@@ -225,9 +226,13 @@ class Game:
 
                 if not self.enemy_group:
                     self.level += 1
+                    # passed final level
+                    if self.level > self.levels.get_final_level():
+                        self.win_game()
                     # load next level
-                    self.new_level_reset()
-                    self.level_started = False
+                    else:
+                        self.new_level_reset()
+                        self.level_started = False
 
                 self.draw()
                 self.clock.tick(60)
@@ -258,21 +263,14 @@ class Game:
             self.level_transition_timer = 0
             self.create_enemies()
 
+    def win_game(self):
+        self.fly_player_over_bounds_animation()
+        self.gameover_text = "YOU WIN!"
+        self.gameover = True
+
     def end_game(self):
-        position = self.player.rect.center
-        center_x, center_y = position
-        positions = get_random_positions_around_center_point(
-            Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
-        size = self.player.player.sprite_info.size
-        player_size = size.get_buffered_size(20)
-        explosion = PlayerHitAnimation(position, player_size)
-        self.play_animation_once(explosion)
-
-        for pos in positions:
-            explosion = HitAnimation(pos, size)
-            self.play_animation_once(explosion)
-            self.wait(5)
-
+        self.destroy_player_animation()
+        self.gameover_text = "GAME OVER"
         self.gameover = True
 
     def wait(self, n):
@@ -296,10 +294,40 @@ class Game:
             pygame.display.update()
             clock.tick(60)
 
+    def destroy_player_animation(self):
+        position = self.player.rect.center
+        center_x, center_y = position
+        positions = get_random_positions_around_center_point(
+            Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
+        size = self.player.player.sprite_info.size
+        player_size = size.get_buffered_size(20)
+        explosion = PlayerHitAnimation(position, player_size)
+        self.play_animation_once(explosion)
+
+        for pos in positions:
+            explosion = HitAnimation(pos, size)
+            self.play_animation_once(explosion)
+            self.wait(5)
+
+    def fly_player_over_bounds_animation(self):
+        clock = pygame.time.Clock()
+        current_y = self.player.player.sprite_info.get_y()
+
+        while current_y > UPPER_BOUNDARY:
+            self.handle_events()
+            current_y = self.player.player.sprite_info.get_y()
+            self.player.player.sprite_info.set_y(current_y - PLAYER_SPEED)
+
+            self.screen.fill(BLACK)
+            self.player.update()
+            self.player.draw(self.screen)
+            pygame.display.update()
+            clock.tick(60)
+
     def game_over(self):
         self.screen.fill(BLACK)
         instruction_text = self.font.render(
-            "GAME OVER", True, WHITE)
+            self.gameover_text, True, WHITE)
         text_rect = instruction_text.get_rect(
             center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
         self.screen.blit(instruction_text, text_rect)

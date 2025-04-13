@@ -4,8 +4,6 @@ from models.point import Point
 from models.size import Size
 
 
-
-
 def get_random_positions_around_center_point(center: Point,
                                              screen_size: Size,
                                              offset: Size = Size(100, 150),

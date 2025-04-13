@@ -121,6 +121,6 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(hits_count, 3)
 
     def add_player_hits(self, n):
-        for i in range(0,n):
-           hits_count = self.player_service.sprite_info.add_hit()
+        for i in range(0, n):
+            hits_count = self.player_service.sprite_info.add_hit()
         return hits_count

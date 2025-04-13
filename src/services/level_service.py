@@ -1,5 +1,5 @@
 from level_config import (ENEMY_COOLDOWN, ENEMY_SHOOTING_PROBABILITY,
-                          ENEMY_COLS, ENEMY_ROWS, ENEMY_SPEED,
+                          ENEMY_COLS, ENEMY_ROWS, ENEMY_SPEED, FINAL_LEVEL,
                           ENEMY_BULLET_SPEED, ENEMY_MAX_HITS, ENEMY_IMAGE,
                           ENEMY_BULLET_SPEED_2, ENEMY_MAX_HITS_2, ENEMY_IMAGE_2,
                           ENEMY_BULLET_SPEED_3, ENEMY_MAX_HITS_3, ENEMY_IMAGE_3)
@@ -8,13 +8,17 @@ from level_config import (ENEMY_COOLDOWN, ENEMY_SHOOTING_PROBABILITY,
 class LevelService():
     def __init__(self):
         self.levels = {}
+        self.final_level = FINAL_LEVEL
         self.initialize_levels()
 
     def get_level(self, level):
         return self.levels[level]
 
+    def get_final_level(self):
+        return self.final_level
+
     def initialize_levels(self):
-        for level in range(1, 16):
+        for level in range(1, FINAL_LEVEL + 1):
             self.levels[level] = {}
             self.create_common_level_attributes(level)
             self.create_specific_level_attributes(level)
@@ -47,7 +51,7 @@ class LevelService():
             return (ENEMY_BULLET_SPEED, ENEMY_MAX_HITS, ENEMY_IMAGE)
         if 6 <= level <= 10:
             return (ENEMY_BULLET_SPEED_2, ENEMY_MAX_HITS_2, ENEMY_IMAGE_2)
-        
+
         return (ENEMY_BULLET_SPEED_3, ENEMY_MAX_HITS_3, ENEMY_IMAGE_3)
 
     def is_starting_level(self, level):
