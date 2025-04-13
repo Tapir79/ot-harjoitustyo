@@ -2,6 +2,12 @@
 # Alien Attack
 [Space Invadersin](https://fi.wikipedia.org/wiki/Space_Invaders) kaltainen peli on sovellus, jossa pelaaja ohjaa avaruusalusta ja yrittää estää avaruusolentoja pääsemästä maahan. Peli sisältää erilaisia tasoja, joissa vihollisten määrä, voima ja nopeus kasvavat, ja pelaajan tavoitteena on selviytyä mahdollisimman pitkään hengissä.
 
+## Lataus
+
+Lataa uusin julkaisu täältä:  
+[![GitHub release](https://img.shields.io/github/v/release/Tapir79/ot-harjoitustyo?label=Release)](https://github.com/Tapir79/ot-harjoitustyo/releases/latest)
+
+
 ## Dokumentaatio
 * **TODO**: Käyttöohje
 * [Vaatimusmäärittely](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/vaatimusmaarittely.md)
