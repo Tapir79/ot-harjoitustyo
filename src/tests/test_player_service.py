@@ -112,8 +112,15 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(is_dead, False)
 
     def test_player_is_dead_if_three_hits(self):
-        self.player_service.sprite_info.add_hit()
-        self.player_service.sprite_info.add_hit()
-        self.player_service.sprite_info.add_hit()
+        self.add_player_hits(3)
         is_dead = self.player_service.is_dead()
         self.assertEqual(is_dead, True)
+
+    def test_player_is_dead_with_3_hits(self):
+        hits_count = self.add_player_hits(4)
+        self.assertEqual(hits_count, 3)
+
+    def add_player_hits(self, n):
+        for i in range(0,n):
+           hits_count = self.player_service.sprite_info.add_hit()
+        return hits_count

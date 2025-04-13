@@ -10,9 +10,6 @@ class LevelService():
         self.levels = {}
         self.initialize_levels()
 
-    def get_levels(self):
-        return self.levels
-
     def get_level(self, level):
         return self.levels[level]
 
@@ -50,10 +47,8 @@ class LevelService():
             return (ENEMY_BULLET_SPEED, ENEMY_MAX_HITS, ENEMY_IMAGE)
         if 6 <= level <= 10:
             return (ENEMY_BULLET_SPEED_2, ENEMY_MAX_HITS_2, ENEMY_IMAGE_2)
-        if level >= 11:
-            return (ENEMY_BULLET_SPEED_3, ENEMY_MAX_HITS_3, ENEMY_IMAGE_3)
-
-        return None
+        
+        return (ENEMY_BULLET_SPEED_3, ENEMY_MAX_HITS_3, ENEMY_IMAGE_3)
 
     def is_starting_level(self, level):
         return level in (1, 6, 11)

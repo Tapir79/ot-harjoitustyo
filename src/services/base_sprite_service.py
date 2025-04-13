@@ -9,7 +9,7 @@ class BaseSpriteService:
         return self.sprite_info.position.as_tuple()
 
     def set_speed(self, amount=1):
-        self.sprite_info.speed = amount
+        self.sprite_info.set_speed(amount)
 
     def increase_speed(self, amount=1):
         self.sprite_info.speed += amount
