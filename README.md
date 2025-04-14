@@ -40,7 +40,8 @@ Projektissa käytetyn [.pylinrc](https://github.com/Tapir79/ot-harjoitustyo/tree
 
 ## Lisenssit
 ### Kuvat: 
-- Kenney: https://kenney.nl/assets/space-shooter-extension 
+- Kenney Space Shooter Extension: https://kenney.nl/assets/space-shooter-extension 
+- Kenney Board Game Icons: https://kenney.nl/assets/board-game-icons     
 CC lisenssi: https://creativecommons.org/publicdomain/zero/1.0/
 
 ## Tekoälyn käyttö 
