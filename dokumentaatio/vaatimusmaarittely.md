@@ -57,9 +57,9 @@ Peli koostuu seuraavista osista:
 [X]   - Pelaaja voi ampua vihollisia           
 [X]   - Viholliset ampuvat kohti pelaajaa            
 [X]   - Pelaajan ammus tuhoaa vihollisen             
-[X]   - Vihollisen ammus tuhoaa pelaajan                  
+[X]   - Vihollisen ammus tuhoaa pelaajan  
+[X]   - Näytetään jäljellä olevat elämät                  
 [ ]   - Näytetään pelaajan pisteet         
-[ ]   - Näytetään jäljellä olevat elämät            
 [ ]   - Näytetään pelin taso.                
  
 4. **Pelin lopetusnäkymä**

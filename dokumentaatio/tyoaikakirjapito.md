@@ -30,5 +30,6 @@
 | 10.4 | 4 | Pelin lopetus ja random-animaatiot. Dokumentaation päivitys. |
 | 11.4 | 3.5 | Tasomekanismi ja tasojen vaihtamislogiikka |
 | 12.4 | 5 | Tasoparametrien konfigurointi ja yhdistäminen tasojen vaihtamislogiikkaan |
-| 13.4 | | Arkkitehtuuridokumentin ja changelogin päivitys. |
-| yht | 78 | |
+| 13.4 | 4 | Arkkitehtuuridokumentin ja changelogin päivitys. Github Release ja linkki |
+| 14.4 | 3 | Pelaajan elämien laskeminen ja näyttäminen käyttöliittymässä. Github Releasen päivittäminen. Dokumentaation päivittäminen.|
+| yht | 81 | |

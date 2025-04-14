@@ -16,9 +16,13 @@ näppäimistöllä
 
 ## Viikko 5 
 
-- Lisätty pelaajan luotien ja vihollisten välinen törmäystarkastelu 
-- Lisätty pelaajan ja vihollisten luotien väliset törmäystarkastelut
+- Lisätty pelaajan luotien ja vihollisten välinen törmäystarkastelu pygamella
+- Lisätty pelaajan ja vihollisten luotien väliset törmäystarkastelut pygamella
 - Lisätty pelin lopetus, kun pelaajaan osuu 3 vihollisen luotia. 
 - Lisätty animaatiot osumiselle ja pelaajan tuhoutumiselle
 - Lisätty pelin loppuminen jos pelaaja kuolee
-- Lisätty peliin tasot ja tasokonfguraatio, jolla generoidaan tasot pelin alkaessa
+- Lisätty peliin tasot ja tasokonfiguraatio, jolla generoidaan tasot pelin alkaessa
+- Lisätty pelaajan elämät ja niiden näyttäminen käyttöliittymässä
+- Lisätty pelille apumetodeja, jotka eivät suoraan sovi tietyn luokan alle
+- Lisätty yksikkötestejä pelaajalle ja apumetodeille 
+- Korjattu koodista kaikki löydetyt laatuvirheet
