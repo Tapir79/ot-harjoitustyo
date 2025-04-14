@@ -2,6 +2,24 @@ import random
 
 from models.point import Point
 from models.size import Size
+from services.player_service import PlayerService
+
+
+def get_player_lives(player: PlayerService):
+
+    current_hits = player.sprite_info.hit.get_hitcount()
+    max_hits = player.sprite_info.hit.get_max_hits()
+
+    hearts = 0
+    broken_hearts = 0
+
+    for i in range(max_hits):
+        if i < max_hits - current_hits:
+            hearts += 1
+        else:
+            broken_hearts += 1
+
+    return hearts, broken_hearts
 
 
 def get_random_positions_around_center_point(center: Point,

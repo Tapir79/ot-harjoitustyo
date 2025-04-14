@@ -1,7 +1,8 @@
 import pygame
-import random
+import os
+from config import ASSETS_DIR
 from pygame.sprite import Group
-from utils.game_helpers import get_random_positions_around_center_point
+from utils.game_helpers import get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.enemy import EnemySprite
@@ -35,28 +36,16 @@ class Game:
         Sets up the game window and player object.
         """
         pygame.init()
+
         self.display_height = LOWER_BOUNDARY
         self.display_width = RIGHT_BOUNDARY
         self.screen = pygame.display.set_mode(
             (self.display_width, self.display_height))
         pygame.display.set_caption("Alien Attack")
 
-        # level info
-        self.level = 1
-        self.level_started = False
-        self.level_transition_timer = 0
-        self.level_ticks_remaining = 180
-        self.level_countdown = 3
-        self.levels = LevelService()
-        self.set_new_level_attributes()
-
-        # bullets
-        self.player_bullet_group = Group()
-        self.enemy_bullet_group = Group()
-        self.enemy_group = Group()
-        self.hit_group = pygame.sprite.Group()
-
-        # player
+        self.init_ui_images()
+        self.init_levels()
+        self.init_bullets()
         self.player = self.create_player()
 
         # game info
@@ -65,6 +54,71 @@ class Game:
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
         self.gameover_text = ""
+
+    def create_player(self):
+        player_position = Point(self.display_width // 2,
+                                self.display_height - 50)
+        player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
+        hit = Hit(0, PLAYER_MAX_HITS)
+        player_info = SpriteInfo(
+            player_position, player_size, PLAYER_SPEED, hit)
+
+        player_service = PlayerService(
+            sprite_info=player_info
+        )
+
+        return PlayerSprite(player_service, self.player_bullet_group)
+
+    def create_enemies(self, spacing=60):
+        """
+        Create enemies on screen. 
+        """
+        enemy_width = ENEMY_WIDTH
+        enemy_height = ENEMY_HEIGHT
+        rows = self.enemy_rows
+        cols = self.enemy_count_cols
+        speed = self.enemy_speed
+        enemy_max_hits = self.enemy_max_hits
+        enemy_image = self.enemy_image
+        margin_x = 50
+        margin_y = 50
+
+        for row in range(rows):
+            for col in range(cols):
+                x = margin_x + col * spacing
+                y = margin_y + row * spacing
+
+                enemy_info = SpriteInfo(
+                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
+                enemy_service = EnemyService(
+                    enemy_info)
+                enemy_sprite = EnemySprite(
+                    enemy_service, self.enemy_bullet_group, enemy_image)
+                self.enemy_group.add(enemy_sprite)
+
+    def init_ui_images(self):
+        self.heart_image = pygame.image.load(
+            os.path.join(ASSETS_DIR, "heart.png")).convert_alpha()
+        self.broken_heart_image = pygame.image.load(
+            os.path.join(ASSETS_DIR, "broken_heart.png")).convert_alpha()
+        self.heart_image = pygame.transform.scale(self.heart_image, (25, 25))
+        self.broken_heart_image = pygame.transform.scale(
+            self.broken_heart_image, (25, 25))
+
+    def init_levels(self):
+        self.level = 1
+        self.level_started = False
+        self.level_transition_timer = 0
+        self.level_ticks_remaining = 180
+        self.level_countdown = 3
+        self.levels = LevelService()
+        self.set_new_level_attributes()
+
+    def init_bullets(self):
+        self.player_bullet_group = Group()
+        self.enemy_bullet_group = Group()
+        self.enemy_group = Group()
+        self.hit_group = pygame.sprite.Group()
 
     def set_new_level_attributes(self):
         current_level = self.levels.get_level(self.level)
@@ -205,7 +259,28 @@ class Game:
             "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
         self.screen.blit(instruction_text, (20, 20))
         self.hit_group.draw(self.screen)
+        self.draw_player_hearts()
         pygame.display.update()
+
+    def draw_player_hearts(self):
+        hearts, broken_hearts = get_player_lives(self.player.player)
+        x_offset = self.display_width - 30
+        y_position = 20
+
+        total_hearts = []
+        for h in range(0, hearts):
+            total_hearts.append(1)
+
+        for h in range(0, broken_hearts):
+            total_hearts.append(0)
+
+        for i, h in enumerate(total_hearts):
+            if h == 1:
+                self.screen.blit(self.heart_image,
+                                 (x_offset - i * 30, y_position))
+            else:
+                self.screen.blit(self.broken_heart_image,
+                                 (x_offset - i * 30, y_position))
 
     def run(self):
         """
@@ -336,44 +411,3 @@ class Game:
         if self.player.is_dead():
             return True
         return False
-
-    def create_player(self):
-        player_position = Point(self.display_width // 2,
-                                self.display_height - 50)
-        player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
-        hit = Hit(0, PLAYER_MAX_HITS)
-        player_info = SpriteInfo(
-            player_position, player_size, PLAYER_SPEED, hit)
-
-        player_service = PlayerService(
-            sprite_info=player_info
-        )
-
-        return PlayerSprite(player_service, self.player_bullet_group)
-
-    def create_enemies(self, spacing=60):
-        """
-        Create enemies on screen. 
-        """
-        enemy_width = ENEMY_WIDTH
-        enemy_height = ENEMY_HEIGHT
-        rows = self.enemy_rows
-        cols = self.enemy_count_cols
-        speed = self.enemy_speed
-        enemy_max_hits = self.enemy_max_hits
-        enemy_image = self.enemy_image
-        margin_x = 50
-        margin_y = 50
-
-        for row in range(rows):
-            for col in range(cols):
-                x = margin_x + col * spacing
-                y = margin_y + row * spacing
-
-                enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
-                enemy_service = EnemyService(
-                    enemy_info)
-                enemy_sprite = EnemySprite(
-                    enemy_service, self.enemy_bullet_group, enemy_image)
-                self.enemy_group.add(enemy_sprite)
