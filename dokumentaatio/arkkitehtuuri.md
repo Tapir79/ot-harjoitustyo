@@ -7,6 +7,7 @@ Pelin rakenne neudattaa seuraavanlaista kolmikerrosarkkitehtuuria:
 ```mermaid
 graph TD
     UI[UI - Pygame] --> Services
+    UI[UI - Pygame] --> Utils
     Services[Services - Logiikka] --> Models
     Services --> Repositories[Repositories - Tulossa]
     Repositories --> Entities[Entities - Tulossa]
@@ -16,6 +17,7 @@ graph TD
 - ui-pakkaus sisältää käyttöliittymän eli pygame-osuuden 
 - services-pakkaus sisältää pelilogiikan
 - models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
+- utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata (tämä rakenne saattaa vielä muuttua ja olisi ehkä hyvä refaktoroida esim. game_serviceksi)
 - TODO vaiheessa on repositories ja entities, jonne tulee myöhemmin tietojen pysyväistallennuksesta vastaava koodi ja tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
 
 ## Käyttöliittymä 
