@@ -26,3 +26,4 @@ näppäimistöllä
 - Lisätty pelille apumetodeja, jotka eivät suoraan sovi tietyn luokan alle
 - Lisätty yksikkötestejä pelaajalle ja apumetodeille 
 - Korjattu koodista kaikki löydetyt laatuvirheet
+- Päivitetty arkkitehtuuridokumentaatio muutosten osalta ja lisätty uusia sekvenssikaavioita kuvaamaan yhteentörmäyksiä
