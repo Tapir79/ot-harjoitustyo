@@ -32,4 +32,5 @@
 | 12.4 | 5 | Tasoparametrien konfigurointi ja yhdistäminen tasojen vaihtamislogiikkaan |
 | 13.4 | 4 | Arkkitehtuuridokumentin ja changelogin päivitys. Github Release ja linkki |
 | 14.4 | 3 | Pelaajan elämien laskeminen ja näyttäminen käyttöliittymässä. Github Releasen päivittäminen. Dokumentaation päivittäminen.|
-| yht | 81 | |
+| 15.4 | 1 | Dokumentaation päivittäminen|
+| yht | 82 | |
