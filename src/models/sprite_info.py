@@ -6,9 +6,13 @@ from models.hit import Hit
 class SpriteInfo:
     def __init__(self, position: Point, size: Size, speed: int, hit: Hit):
         self.position = position
-        self.size = size
+        self._size = size
         self.speed = speed
         self.hit = hit
+
+    @property
+    def size(self):
+        return self._size
 
     def get_x(self):
         return self.position.x

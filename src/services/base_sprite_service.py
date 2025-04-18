@@ -1,9 +1,14 @@
 from models.sprite_info import SpriteInfo
+from models.size import Size
 
 
 class BaseSpriteService:
     def __init__(self, sprite_info: SpriteInfo):
         self.sprite_info = sprite_info
+
+    @property
+    def size(self):
+        return self.sprite_info.size
 
     def get_position(self):
         return self.sprite_info.get_position()
