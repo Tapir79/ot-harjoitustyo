@@ -24,8 +24,8 @@ class PlayerSprite(pygame.sprite.Sprite):
         self.player = player_service
         self.bullet_group = bullet_group
 
-        width = self.player.sprite_info.size.get_width()
-        height = self.player.sprite_info.size.get_height()
+        width = self.player.get_width()
+        height = self.player.get_height()
 
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, "player.png")
