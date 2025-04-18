@@ -23,7 +23,7 @@ class TestEnemy(unittest.TestCase):
         bullet_height = 10
         player_x, player_y = self.enemy_service.get_position()
 
-        bullet_x = player_x + self.enemy_service.sprite_info.size.width // 2 - bullet_width // 2
+        bullet_x = player_x + self.enemy_service.get_width() // 2 - bullet_width // 2
         bullet_y = player_y - bullet_height
 
         bullet_position = Point(bullet_x, bullet_y)
@@ -70,29 +70,29 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(new_y, 15)
 
     def test_enemy_changes_direction_if_hits_right_wall(self):
-        self.enemy_service.sprite_info.set_x(RIGHT_BOUNDARY + 1)
+        self.enemy_service.set_x(RIGHT_BOUNDARY + 1)
         self.enemy_service.move()
         new_dir = self.enemy_service.get_direction()
         self.assertEqual(new_dir, "left")
 
     def test_enemy_changes_direction_if_hits_left_wall(self):
-        self.enemy_service.sprite_info.set_x(LEFT_BOUNDARY - 1)
+        self.enemy_service.set_x(LEFT_BOUNDARY - 1)
         self.enemy_service.set_direction("left")
         self.enemy_service.move()
         new_dir = self.enemy_service.get_direction()
         self.assertEqual(new_dir, "right")
 
     def test_enemy_speed_increases_if_hits_right_wall(self):
-        self.enemy_service.sprite_info.set_x(RIGHT_BOUNDARY + 1)
+        self.enemy_service.set_x(RIGHT_BOUNDARY + 1)
         self.enemy_service.move()
-        new_speed = self.enemy_service.sprite_info.speed
+        new_speed = self.enemy_service.get_speed()
         self.assertEqual(new_speed, 2)
 
     def test_enemy_stops_moving_if_touched_bottom(self):
-        height = self.enemy_service.sprite_info.get_height()
-        self.enemy_service.sprite_info.set_y(LOWER_BOUNDARY - height + 5)
+        height = self.enemy_service.get_height()
+        self.enemy_service.set_y(LOWER_BOUNDARY - height + 5)
         self.enemy_service.move()
-        self.assertEqual(self.enemy_service.sprite_info.get_y(),
+        self.assertEqual(self.enemy_service.get_y(),
                          LOWER_BOUNDARY - height)
 
      # collisions don't need tests because they are handled by pygame

@@ -73,7 +73,7 @@ class TestPositionsHelpers(unittest.TestCase):
         hit = Hit(0, 3)
         sprite_info = SpriteInfo(position, size, 5, hit)
         player_service = PlayerService(sprite_info=sprite_info)
-        player_service.sprite_info.add_hit()
+        player_service.add_hit()
 
         hearts, broken_hearts = get_player_lives(player_service)
         self.assertEqual(hearts, 2)

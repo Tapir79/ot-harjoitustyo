@@ -23,9 +23,7 @@ class TestPlayer(unittest.TestCase):
         bullet_width = 5
         bullet_height = 10
         player_x, player_y = self.player_service.get_position()
-
-        # self.player_service.sprite_info.size.width
-        player_width = self.player_service.sprite_info.get_width()
+        player_width = self.player_service.get_width()
 
         bullet_x = player_x + player_width // 2 - bullet_width // 2
         bullet_y = player_y - bullet_height
@@ -37,8 +35,8 @@ class TestPlayer(unittest.TestCase):
         expected_bullet = BulletService(
             sprite_info=bullet_sprite_info, direction="up")
 
-        actual_speed = bullet.sprite_info.get_speed()
-        expected_speed = expected_bullet.sprite_info.get_speed()
+        actual_speed = bullet.get_speed()
+        expected_speed = expected_bullet.get_speed()
 
         self.assertEqual(bullet.direction, expected_bullet.direction,
                          "Expected a bullet direction up")
@@ -47,41 +45,41 @@ class TestPlayer(unittest.TestCase):
 
     def test_player_moves_left(self):
         self.player_service.move('a')
-        self.assertEqual(self.player_service.sprite_info.get_x(),
+        self.assertEqual(self.player_service.get_x(),
                          0, "Player should move left")
 
     def test_player_cannot_move_out_of_bounds_to_left(self):
         self.player_service.set_speed(10)
         self.player_service.move('a')
-        self.assertEqual(self.player_service.sprite_info.get_x(), 0,
+        self.assertEqual(self.player_service.get_x(), 0,
                          "Player should not move out of bounds to left")
 
     def test_player_moves_right(self):
         self.player_service.move('d')
-        self.assertEqual(self.player_service.sprite_info.get_x(),
+        self.assertEqual(self.player_service.get_x(),
                          10, "Player should move right")
 
     def test_player_cannot_move_out_of_bounds_to_right(self):
         self.player_service.set_speed(RIGHT_BOUNDARY + 1)
         self.player_service.move('d')
-        max_x = RIGHT_BOUNDARY - self.player_service.sprite_info.size.width
-        self.assertEqual(self.player_service.sprite_info.get_x(), max_x,
+        max_x = RIGHT_BOUNDARY - self.player_service.get_width()
+        self.assertEqual(self.player_service.get_x(), max_x,
                          "Player should not move out of bounds to right")
 
     def test_invalid_key_does_nothing(self):
-        player_pos_x = self.player_service.sprite_info.get_x()
+        player_pos_x = self.player_service.get_x()
         self.player_service.move('w')
-        self.assertEqual(self.player_service.sprite_info.get_x(), player_pos_x,
+        self.assertEqual(self.player_service.get_x(), player_pos_x,
                          "Player position should not change if a or d is not pressed")
 
     def test_player_speed_increases(self):
         self.player_service.increase_speed(2)
-        self.assertEqual(self.player_service.sprite_info.speed, 7,
+        self.assertEqual(self.player_service.get_speed(), 7,
                          "Player speed should increase")
 
     def test_player_speed_decreases(self):
         self.player_service.decrease_speed(2)
-        self.assertEqual(self.player_service.sprite_info.speed, 3,
+        self.assertEqual(self.player_service.get_speed(), 3,
                          "Player speed should decrease")
 
     def test_shooting_after_cooldown(self):
