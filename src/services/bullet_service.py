@@ -12,6 +12,10 @@ class BulletService(BaseSpriteService):
         self._upper_boundary = UPPER_BOUNDARY - self.get_height()
         self._direction = direction
 
+    @property
+    def direction(self):
+        return self._direction
+
     def move(self):
         y = self.get_y()
 
