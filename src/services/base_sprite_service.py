@@ -39,3 +39,6 @@ class BaseSpriteService:
     def decrease_speed(self, amount=1):
         current_speed = self.sprite_info.get_speed()
         self.sprite_info.set_speed(max(1, current_speed - amount))
+
+    def add_hit(self):
+        self.sprite_info.add_hit()
