@@ -26,16 +26,16 @@ class PlayerService(ShootingSpriteService):
         Returns:
             int: The updated x-coordinate after movement.
         """
-        x = self.sprite_info.get_x()
-        width = self.sprite_info.get_width()
+        x = self.get_x()
+        width = self.get_width()
 
         if key == "a":
-            new_x = max(self.left_boundary, x - self.sprite_info.speed)
+            new_x = max(self.left_boundary, x - self.get_speed())
         elif key == "d":
             new_x = min(self.right_boundary - width,
-                        x + self.sprite_info.speed)
+                        x + self.get_speed())
         else:
             new_x = x
 
-        self.sprite_info.set_x(new_x)
+        self.set_x(new_x)
         return new_x
