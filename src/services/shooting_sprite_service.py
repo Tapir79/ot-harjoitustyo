@@ -37,7 +37,7 @@ class ShootingSpriteService(BaseSpriteService):
         """
         sprite_x, sprite_y = self.get_position()
 
-        bullet_x = sprite_x + self.sprite_info.size.width // 2 - bullet_width // 2
+        bullet_x = sprite_x + self.get_width() // 2 - bullet_width // 2
         bullet_y = self.get_bullet_y(direction, sprite_y, bullet_height)
 
         bullet_position = Point(bullet_x, bullet_y)
@@ -50,7 +50,7 @@ class ShootingSpriteService(BaseSpriteService):
 
     def get_bullet_y(self, direction, sprite_y, bullet_height):
         if direction == "down":
-            return sprite_y + self.sprite_info.size.height + bullet_height
+            return sprite_y + self.get_height() + bullet_height
         return sprite_y - bullet_height
 
     def is_dead(self):
