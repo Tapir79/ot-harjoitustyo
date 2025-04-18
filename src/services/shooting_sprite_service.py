@@ -16,12 +16,20 @@ class ShootingSpriteService(BaseSpriteService):
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
         self.cooldown = cooldown
-        self.last_shot = 0
+        self._last_shot = 0
+
+    @property
+    def last_shot(self):
+        return self._last_shot
+
+    @last_shot.setter
+    def last_shot(self, value):
+        self._last_shot = value
 
     def can_shoot(self):
         current_time = time.time()
-        if current_time - self.last_shot >= self.cooldown:
-            self.last_shot = current_time
+        if current_time - self._last_shot >= self.cooldown:
+            self._last_shot = current_time
             return True
 
         return False
