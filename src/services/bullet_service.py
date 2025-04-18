@@ -8,17 +8,17 @@ class BulletService(BaseSpriteService):
                  sprite_info: SpriteInfo,
                  direction="up"):
         super().__init__(sprite_info)
-        self.lower_boundary = LOWER_BOUNDARY + self.get_height()
-        self.upper_boundary = UPPER_BOUNDARY - self.get_height()
-        self.direction = direction
+        self._lower_boundary = LOWER_BOUNDARY + self.get_height()
+        self._upper_boundary = UPPER_BOUNDARY - self.get_height()
+        self._direction = direction
 
     def move(self):
         y = self.get_y()
 
-        if self.direction == "up":
-            new_y = max(self.upper_boundary, y - self.get_speed())
-        elif self.direction == "down":
-            new_y = min(self.lower_boundary, y + self.get_speed())
+        if self._direction == "up":
+            new_y = max(self._upper_boundary, y - self.get_speed())
+        elif self._direction == "down":
+            new_y = min(self._lower_boundary, y + self.get_speed())
         else:
             new_y = y  # do nothing
 
@@ -31,8 +31,8 @@ class BulletService(BaseSpriteService):
 
     def is_moving(self):
         y = self.get_y()
-        if y > LOWER_BOUNDARY and self.direction == "down":
+        if y > LOWER_BOUNDARY and self._direction == "down":
             return False
-        if y < UPPER_BOUNDARY and self.direction == "up":
+        if y < UPPER_BOUNDARY and self._direction == "up":
             return False
         return True
