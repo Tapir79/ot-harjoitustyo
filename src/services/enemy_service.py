@@ -31,51 +31,51 @@ class EnemyService(ShootingSpriteService):
 
         self._move_in_current_direction()
 
-        return self.sprite_info.get_x(), self.sprite_info.get_y()
+        return self.get_x(), self.get_y()
 
     def _has_hit_bottom(self):
-        y = self.sprite_info.get_y()
-        height = self.sprite_info.get_height()
+        y = self.get_y()
+        height = self.get_height()
         return y + height >= LOWER_BOUNDARY
 
     def _limit_to_bottom(self):
-        height = self.sprite_info.get_height()
-        self.sprite_info.set_y(LOWER_BOUNDARY - height)
-        return self.sprite_info.get_x(), self.sprite_info.get_y()
+        height = self.get_height()
+        self.set_y(LOWER_BOUNDARY - height)
+        return self.get_x(), self.get_y()
 
     def _hit_left_wall(self):
-        return self.sprite_info.get_x() <= LEFT_BOUNDARY and self.direction == "left"
+        return self.get_x() <= LEFT_BOUNDARY and self.direction == "left"
 
     def _drop_and_turn_right(self):
-        y = self.sprite_info.get_y()
-        height = self.sprite_info.get_height()
-        self.sprite_info.set_y(y + height)
-        self.sprite_info.set_x(LEFT_BOUNDARY)
+        y = self.get_y()
+        height = self.get_height()
+        self.set_y(y + height)
+        self.set_x(LEFT_BOUNDARY)
         self.set_direction("right")
         self.increase_speed()
-        return self.sprite_info.get_x(), self.sprite_info.get_y()
+        return self.get_x(), self.get_y()
 
     def _hit_right_wall(self):
-        x = self.sprite_info.get_x()
-        width = self.sprite_info.get_width()
+        x = self.get_x()
+        width = self.get_width()
         return x + width >= RIGHT_BOUNDARY and self.direction == "right"
 
     def _drop_and_turn_left(self):
-        y = self.sprite_info.get_y()
-        height = self.sprite_info.get_height()
-        width = self.sprite_info.get_width()
-        self.sprite_info.set_x(RIGHT_BOUNDARY - width)
-        self.sprite_info.set_y(y + height)
+        y = self.get_y()
+        height = self.get_height()
+        width = self.get_width()
+        self.set_x(RIGHT_BOUNDARY - width)
+        self.set_y(y + height)
         self.set_direction("left")
         self.increase_speed()
-        return self.sprite_info.get_x(), self.sprite_info.get_y()
+        return self.get_x(), self.get_y()
 
     def _move_in_current_direction(self):
-        x = self.sprite_info.get_x()
+        x = self.get_x()
         if self.direction == "left":
-            self.sprite_info.set_x(x - self.sprite_info.speed)
+            self.set_x(x - self.get_speed())
         if self.direction == "right":
-            self.sprite_info.set_x(x + self.sprite_info.speed)
+            self.set_x(x + self.get_speed())
 
     def set_direction(self, direction):
         self.direction = direction

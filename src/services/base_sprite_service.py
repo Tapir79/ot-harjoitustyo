@@ -8,6 +8,12 @@ class BaseSpriteService:
     def get_position(self):
         return self.sprite_info.get_position()
 
+    def get_x(self):
+        return self.sprite_info.get_x()
+
+    def set_x(self, new_x):
+        self.sprite_info.set_x(new_x)
+
     def get_y(self):
         return self.sprite_info.get_y()
 
@@ -21,10 +27,10 @@ class BaseSpriteService:
         self.sprite_info.set_speed(amount)
 
     def get_height(self):
-        return self.sprite_info.size.height
+        return self.sprite_info.get_height()
 
     def get_width(self):
-        return self.sprite_info.size.width
+        return self.sprite_info.get_width()
 
     def increase_speed(self, amount=1):
         current_speed = self.sprite_info.get_speed()
