@@ -11,7 +11,7 @@ class EnemyService(ShootingSpriteService):
                  cooldown=ENEMY_COOLDOWN  # 1
                  ):
         super().__init__(sprite_info, cooldown=cooldown)
-        self.direction = "right"
+        self._direction = "right"
 
     def shoot(self, direction="down", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
         return super().shoot(direction)
@@ -44,7 +44,7 @@ class EnemyService(ShootingSpriteService):
         return self.get_x(), self.get_y()
 
     def _hit_left_wall(self):
-        return self.get_x() <= LEFT_BOUNDARY and self.direction == "left"
+        return self.get_x() <= LEFT_BOUNDARY and self._direction == "left"
 
     def _drop_and_turn_right(self):
         y = self.get_y()
@@ -58,7 +58,7 @@ class EnemyService(ShootingSpriteService):
     def _hit_right_wall(self):
         x = self.get_x()
         width = self.get_width()
-        return x + width >= RIGHT_BOUNDARY and self.direction == "right"
+        return x + width >= RIGHT_BOUNDARY and self._direction == "right"
 
     def _drop_and_turn_left(self):
         y = self.get_y()
@@ -72,13 +72,13 @@ class EnemyService(ShootingSpriteService):
 
     def _move_in_current_direction(self):
         x = self.get_x()
-        if self.direction == "left":
+        if self._direction == "left":
             self.set_x(x - self.get_speed())
-        if self.direction == "right":
+        if self._direction == "right":
             self.set_x(x + self.get_speed())
 
     def set_direction(self, direction):
-        self.direction = direction
+        self._direction = direction
 
     def get_direction(self):
-        return self.direction
+        return self._direction
