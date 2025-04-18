@@ -22,6 +22,9 @@ class SpriteInfo:
     def set_y(self, y):
         self.position.y = y
 
+    def get_position(self):
+        return self.position.as_tuple()
+
     def get_width(self):
         return self.size.get_width()
 
