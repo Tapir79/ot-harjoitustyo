@@ -12,8 +12,8 @@ class BulletSprite (pygame.sprite.Sprite):
         super().__init__()
         self.bullet = bullet_service
 
-        width = self.bullet.sprite_info.size.get_width()
-        height = self.bullet.sprite_info.size.get_height()
+        width = self.bullet.get_width()
+        height = self.bullet.get_height()
 
         if self.bullet.direction == "up":
             image_name = "player_bullet.png"
