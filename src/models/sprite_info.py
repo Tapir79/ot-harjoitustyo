@@ -30,10 +30,10 @@ class SpriteInfo:
         return self.position.as_tuple()
 
     def get_width(self):
-        return self.size.get_width()
+        return self.size.width
 
     def get_height(self):
-        return self.size.get_height()
+        return self.size.height
 
     def get_speed(self):
         return self.speed

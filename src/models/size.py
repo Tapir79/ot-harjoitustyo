@@ -1,13 +1,15 @@
 class Size:
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
+        self._width = width
+        self._height = height
 
-    def get_width(self):
-        return self.width
+    @property
+    def width(self):
+        return self._width
 
-    def get_height(self):
-        return self.height
+    @property
+    def height(self):
+        return self._height
 
     def get_buffered_size(self, buffer):
         """
@@ -27,4 +29,4 @@ class Size:
         [x,o,o,o,x]
         [x,x,x,x,x]
         """
-        return Size(self.width + buffer * 2, self.height + buffer * 2)
+        return Size(self._width + buffer * 2, self._height + buffer * 2)

@@ -37,10 +37,10 @@ def get_random_positions_around_center_point(center: Point,
     - x_offset: max horizontal spread from center
     """
 
-    screen_width = screen_size.get_width()
-    screen_height = screen_size.get_height()
-    x_offset = offset.get_width()
-    y_offset = offset.get_height()
+    screen_width = screen_size.width
+    screen_height = screen_size.height
+    x_offset = offset.width
+    y_offset = offset.height
     positions = []
 
     for _ in range(count):

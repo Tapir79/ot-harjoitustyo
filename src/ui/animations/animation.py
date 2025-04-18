@@ -7,7 +7,7 @@ class AnimationSprite(pygame.sprite.Sprite):
         self.images = [pygame.image.load(
             path).convert_alpha() for path in image_paths]
         self.images = [pygame.transform.scale(
-            img, (size.get_width(), size.get_height())) for img in self.images]
+            img, (size.width, size.height)) for img in self.images]
 
         self.index = 0
         self.image = self.images[self.index]
