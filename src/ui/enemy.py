@@ -22,8 +22,8 @@ class EnemySprite(pygame.sprite.Sprite):
         self.enemy = enemy_service
         self.bullet_group = bullet_group
 
-        width = self.enemy.sprite_info.size.get_width()
-        height = self.enemy.sprite_info.size.get_height()
+        width = self.enemy.get_width()
+        height = self.enemy.get_height()
 
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, image_path)
