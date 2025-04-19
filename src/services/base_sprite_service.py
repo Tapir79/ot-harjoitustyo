@@ -54,7 +54,7 @@ class BaseSpriteService:
     @property
     def is_dead(self):
         return self._sprite_info.is_dead()
-    
+
     @property
     def speed(self):
         return self._sprite_info.speed
