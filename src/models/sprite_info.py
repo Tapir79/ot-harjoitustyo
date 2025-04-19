@@ -42,10 +42,10 @@ class SpriteInfo:
         self.speed = speed
 
     def add_hit(self):
-        current_hits = self.hit.get_hitcount()
-        if current_hits < self.hit.get_max_hits():
-            self.hit.set_hit_count(current_hits + 1)
-        return self.hit.get_hitcount()
+        current_hits = self.hit.hitcount
+        if current_hits < self.hit.max_hits:
+            self.hit.hitcount = current_hits + 1
+        return self.hit.hitcount
 
     def is_dead(self):
-        return self.hit.get_hitcount() == self.hit.get_max_hits()
+        return self.hit.hitcount == self.hit.max_hits
