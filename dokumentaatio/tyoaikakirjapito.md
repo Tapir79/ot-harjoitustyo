@@ -34,3 +34,6 @@
 | 14.4 | 3 | Pelaajan elämien laskeminen ja näyttäminen käyttöliittymässä. Github Releasen päivittäminen. Dokumentaation päivittäminen.|
 | 15.4 | 1 | Dokumentaation päivittäminen|
 | yht | 82 | |
+| 17.4 | 1 | Koodin refaktoroinnin suunnittelu |
+| 18.4 | 5 | Koodin refaktorointia. Muuttujat yksityisiksi ja yksityisten muuttujien property/setter-metodit | 
+| 19.4 | 5 | Koodin refaktorointia. Muuttujat yksityisiksi ja yksityisten muuttujien property/setter-metodit | 

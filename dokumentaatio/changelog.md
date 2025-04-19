@@ -27,3 +27,7 @@ näppäimistöllä
 - Lisätty yksikkötestejä pelaajalle ja apumetodeille 
 - Korjattu koodista kaikki löydetyt laatuvirheet
 - Päivitetty arkkitehtuuridokumentaatio muutosten osalta ja lisätty uusia sekvenssikaavioita kuvaamaan yhteentörmäyksiä
+
+## Viikko 6 
+
+- Refaktoroitu kaikki models-luokat ja service-luokat siten, että muuttujista on pythonin suositusten mukaisesti tehty yksityisiä ja kaikille yksityisille muuttujille property/setter-metodit. 
