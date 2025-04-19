@@ -1,5 +1,4 @@
 from models.sprite_info import SpriteInfo
-from models.size import Size
 
 
 class BaseSpriteService:
@@ -11,39 +10,39 @@ class BaseSpriteService:
         return self.sprite_info.size
 
     def get_position(self):
-        return self.sprite_info.get_position()
+        return self.sprite_info.position_tuple
 
     def get_x(self):
-        return self.sprite_info.get_x()
+        return self.sprite_info.x
 
     def set_x(self, new_x):
-        self.sprite_info.set_x(new_x)
+        self.sprite_info.x = new_x
 
     def get_y(self):
-        return self.sprite_info.get_y()
+        return self.sprite_info.y
 
     def set_y(self, new_y):
-        self.sprite_info.set_y(new_y)
+        self.sprite_info.y = new_y
 
     def get_speed(self):
         return self.sprite_info.speed
 
     def set_speed(self, amount=1):
-        self.sprite_info.set_speed(amount)
+        self.sprite_info.speed = amount
 
     def get_height(self):
-        return self.sprite_info.get_height()
+        return self.sprite_info.height
 
     def get_width(self):
-        return self.sprite_info.get_width()
+        return self.sprite_info.width
 
     def increase_speed(self, amount=1):
-        current_speed = self.sprite_info.get_speed()
-        self.sprite_info.set_speed(current_speed + amount)
+        current_speed = self.sprite_info.speed
+        self.sprite_info.speed = current_speed + amount
 
     def decrease_speed(self, amount=1):
-        current_speed = self.sprite_info.get_speed()
-        self.sprite_info.set_speed(max(1, current_speed - amount))
+        current_speed = self.sprite_info.speed
+        self.sprite_info.speed = max(1, current_speed - amount)
 
     def add_hit(self):
         self.sprite_info.add_hit()

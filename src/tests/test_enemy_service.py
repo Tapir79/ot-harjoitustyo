@@ -55,14 +55,14 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(new_dir, "left")
 
     def test_enemy_moves_down_if_hits_right_wall(self):
-        self.enemy_service.sprite_info.set_x(RIGHT_BOUNDARY + 1)
+        self.enemy_service.set_x(RIGHT_BOUNDARY + 1)
         self.enemy_service.move()
         new_x, new_y = self.enemy_service.get_position()
         self.assertEqual(new_x, RIGHT_BOUNDARY - 10)
         self.assertEqual(new_y, 15)
 
     def test_enemy_moves_down_if_hits_left_wall(self):
-        self.enemy_service.sprite_info.set_x(LEFT_BOUNDARY - 1)
+        self.enemy_service.set_x(LEFT_BOUNDARY - 1)
         self.enemy_service.set_direction("left")
         self.enemy_service.move()
         new_x, new_y = self.enemy_service.get_position()

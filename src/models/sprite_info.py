@@ -10,36 +10,60 @@ class SpriteInfo:
         self.speed = speed
         self.hit = hit
 
+        self._position = position
+        self._size = size
+        self._speed = speed
+        self._hit = hit
+
     @property
     def size(self):
         return self._size
 
-    def get_x(self):
-        return self.position.x
+    @property
+    def x(self):
+        return self._position.x
 
-    def get_y(self):
-        return self.position.y
+    @x.setter
+    def x(self, value):
+        self._position.x = value
 
-    def set_x(self, x):
-        self.position.x = x
+    @property
+    def y(self):
+        return self._position.y
 
-    def set_y(self, y):
-        self.position.y = y
+    @y.setter
+    def y(self, value):
+        self._position.y = value
 
-    def get_position(self):
-        return self.position.as_tuple()
+    @property
+    def position(self):
+        return self._position
 
-    def get_width(self):
-        return self.size.width
+    @position.setter
+    def position(self, value: Point):
+        if not isinstance(value, Point):
+            raise TypeError("position must be a Point instance")
+        self._position = value
 
-    def get_height(self):
-        return self.size.height
+    @property
+    def position_tuple(self):
+        return self._position.as_tuple()
 
-    def get_speed(self):
-        return self.speed
+    @property
+    def width(self):
+        return self._size.width
 
-    def set_speed(self, speed):
-        self.speed = speed
+    @property
+    def height(self):
+        return self._size.height
+
+    @property
+    def speed(self):
+        return self._speed
+
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
 
     def add_hit(self):
         current_hits = self.hit.hitcount
