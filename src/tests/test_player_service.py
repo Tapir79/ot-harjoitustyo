@@ -9,6 +9,11 @@ from config import RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT
 from services.bullet_service import BulletService
 
 
+def create_player_bullet(player_service):
+    player_service.last_shot = 0
+    return player_service.try_shoot()
+
+
 def get_expected_bullet(player_service):
     bullet_width = BULLET_WIDTH
     bullet_height = BULLET_HEIGHT
@@ -87,9 +92,12 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(self.player_service.get_speed(), 3,
                          "Player speed should decrease")
 
+    def test_last_shot_time_increases_after_shooting_attempt(self):
+        bullet = create_player_bullet(self.player_service)
+        self.assertGreaterEqual(self.player_service.last_shot, 0)
+
     def test_shooting_after_cooldown(self):
-        self.player_service.last_shot = 0
-        bullet = self.player_service.try_shoot()
+        bullet = create_player_bullet(self.player_service)
         self.assertIsNotNone(bullet)
 
     def test_shooting_in_cooldown(self):

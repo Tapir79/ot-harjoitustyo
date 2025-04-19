@@ -31,16 +31,6 @@ class SpriteInfo:
         self._position.y = value
 
     @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def position(self, value: Point):
-        if not isinstance(value, Point):
-            raise TypeError("position must be a Point instance")
-        self._position = value
-
-    @property
     def position_tuple(self):
         return self._position.as_tuple()
 
