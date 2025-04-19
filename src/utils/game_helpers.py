@@ -7,8 +7,8 @@ from services.player_service import PlayerService
 
 def get_player_lives(player: PlayerService):
 
-    current_hits = player.sprite_info.hit.hitcount
-    max_hits = player.sprite_info.hit.max_hits
+    current_hits = player.get_hitcount()
+    max_hits = player.get_max_hits()
 
     hearts = 0
     broken_hearts = 0

@@ -161,10 +161,10 @@ class Game:
             self.player, self.enemy_group, dokill=True)
 
         if hits:
-            self.player.player.add_hit()
+            self.player.player_service.add_hit()
 
             position = self.player.rect.center
-            size = self.player.player.size
+            size = self.player.player_service.get_size()
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
@@ -179,10 +179,10 @@ class Game:
             self.player, self.enemy_bullet_group, dokill=True)
 
         if collisions:
-            self.player.player.add_hit()
+            self.player.player_service.add_hit()
 
             position = self.player.rect.center
-            size = self.player.player.size
+            size = self.player.player_service.get_size()
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
@@ -206,12 +206,12 @@ class Game:
         if collisions:
             for enemy, bullets in collisions.items():
                 for _ in bullets:
-                    enemy.enemy.add_hit()
-                    if enemy.enemy.is_dead():
+                    enemy.enemy_service.add_hit()
+                    if enemy.enemy_service.is_dead():
                         enemy.remove(self.enemy_group)
 
                 position = enemy.rect.center
-                size = enemy.enemy.size
+                size = enemy.enemy_service.get_size()
                 explosion = HitAnimation(position, size)
                 self.hit_group.add(explosion)
 
@@ -229,7 +229,7 @@ class Game:
         if collisions:
             for enemy_bullet, player_bullet in collisions.items():
                 position = enemy_bullet.rect.center
-                buffered_size = enemy_bullet.bullet.sprite_info.size.get_buffered_size(
+                buffered_size = enemy_bullet.bullet.get_buffered_size(
                     10)
                 explosion = HitAnimation(position, buffered_size)
                 self.hit_group.add(explosion)
@@ -263,7 +263,7 @@ class Game:
         pygame.display.update()
 
     def draw_player_hearts(self):
-        hearts, broken_hearts = get_player_lives(self.player.player)
+        hearts, broken_hearts = get_player_lives(self.player.player_service)
         x_offset = self.display_width - 30
         y_position = 20
 
@@ -372,8 +372,8 @@ class Game:
         center_x, center_y = position
         positions = get_random_positions_around_center_point(
             Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
-        size = self.player.player.size
-        player_size = size.get_buffered_size(20)
+        size = self.player.player_service.get_size()
+        player_size = self.player.player_service.get_buffered_size(20)
         explosion = PlayerHitAnimation(position, player_size)
         self.play_animation_once(explosion)
 
@@ -384,12 +384,12 @@ class Game:
 
     def fly_player_over_bounds_animation(self):
         clock = pygame.time.Clock()
-        current_y = self.player.player.get_y()
+        current_y = self.player.player_service.get_y()
 
         while current_y > UPPER_BOUNDARY:
             self.handle_events()
-            current_y = self.player.player.get_y()
-            self.player.player.set_y(current_y - PLAYER_SPEED)
+            current_y = self.player.player_service.get_y()
+            self.player.player_service.set_y(current_y - PLAYER_SPEED)
 
             self.screen.fill(BLACK)
             self.player.update()

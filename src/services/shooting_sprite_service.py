@@ -60,6 +60,3 @@ class ShootingSpriteService(BaseSpriteService):
         if direction == "down":
             return sprite_y + self.get_height() + bullet_height
         return sprite_y - bullet_height
-
-    def is_dead(self):
-        return self.sprite_info.is_dead()

@@ -44,13 +44,13 @@ class TestPlayer(unittest.TestCase):
     def test_player_shoot_creates_new_bullet(self):
         bullet = self.player_service.shoot()
         actual_speed = bullet.get_speed()
-        actual_size = bullet.size
+        actual_height = bullet.get_size().height
 
         self.assertEqual(bullet.direction, self.expected_bullet.direction,
                          "Expected a bullet direction up")
         self.assertEqual(actual_speed, self.expected_bullet.get_speed(),
                          "Expected a bullet speed 5")
-        self.assertEqual(actual_size.height, self.expected_bullet.size.height,
+        self.assertEqual(actual_height, self.expected_bullet.get_height(),
                          "Expected a bullet height 20")
 
     def test_player_moves_left(self):
@@ -118,7 +118,7 @@ class TestPlayer(unittest.TestCase):
     # collisions don't need tests because they are handled by pygame
 
     def test_player_is_not_dead_if_one_hit(self):
-        self.player_service.sprite_info.add_hit()
+        self.player_service.add_hit()
         is_dead = self.player_service.is_dead()
         self.assertEqual(is_dead, False)
 
@@ -133,5 +133,5 @@ class TestPlayer(unittest.TestCase):
 
     def add_player_hits(self, n):
         for i in range(0, n):
-            hits_count = self.player_service.sprite_info.add_hit()
+            hits_count = self.player_service.add_hit()
         return hits_count

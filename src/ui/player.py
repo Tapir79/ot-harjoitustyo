@@ -21,11 +21,11 @@ class PlayerSprite(pygame.sprite.Sprite):
 
     def __init__(self, player_service: PlayerService, bullet_group: pygame.sprite.Group):
         super().__init__()
-        self.player = player_service
+        self.player_service = player_service
         self.bullet_group = bullet_group
 
-        width = self.player.get_width()
-        height = self.player.get_height()
+        width = self.player_service.get_width()
+        height = self.player_service.get_height()
 
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, "player.png")
@@ -45,20 +45,20 @@ class PlayerSprite(pygame.sprite.Sprite):
         """
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.player.move('a')
+            self.player_service.move('a')
         if keys[pygame.K_d]:
-            self.player.move('d')
+            self.player_service.move('d')
         if keys[pygame.K_SPACE]:
             self.shoot()
 
     def shoot(self):
-        bullet_service = self.player.try_shoot()
+        bullet_service = self.player_service.try_shoot()
         if bullet_service:
             bullet_sprite = BulletSprite(bullet_service)
             self.bullet_group.add(bullet_sprite)
 
     def update(self):
-        x, y = self.player.get_position()
+        x, y = self.player_service.get_position()
         self.rect.x = x
         self.rect.y = y
 
@@ -67,4 +67,4 @@ class PlayerSprite(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
     def is_dead(self):
-        return self.player.is_dead()
+        return self.player_service.is_dead()

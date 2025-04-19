@@ -69,7 +69,7 @@ class TestBulletService(unittest.TestCase):
 
     def test_bullet_size_buffer_works_correctly(self):
         bullet = create_bullet_service(y=10, direction="down")
-        buffered_size = bullet.sprite_info.size.get_buffered_size(10)
+        buffered_size = bullet.get_buffered_size(10)
         self.assertEqual(buffered_size.height, 30)
 
     # collisions don't need tests because they are handled by pygame
