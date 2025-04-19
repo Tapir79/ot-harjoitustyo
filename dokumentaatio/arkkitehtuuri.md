@@ -35,9 +35,8 @@ Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavi
 classDiagram
     class BaseSpriteService {
         +sprite_info: SpriteInfo
-        +get_position()
-        +increase_speed()
-        +decrease_speed()
+        +increase_speed(amount:int)
+        +decrease_speed(amount:int)
     }
 
     class ShootingSpriteService {
@@ -64,12 +63,15 @@ classDiagram
         +size:Size
         +position:Point
         +hit: Hit
-        +speed: int     
+        +speed: int   
+        +add_hit()
+        +is_dead()  
     }
 
     class Size{
         +width:int
         +height:int
+        +get_buffered_size(buffer):Size
     }
 
     class  Point{
