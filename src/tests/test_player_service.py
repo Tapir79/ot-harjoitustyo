@@ -5,8 +5,26 @@ from models.point import Point
 from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
-from config import RIGHT_BOUNDARY
+from config import RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT
 from services.bullet_service import BulletService
+
+
+def get_expected_bullet(player_service):
+    bullet_width = BULLET_WIDTH
+    bullet_height = BULLET_HEIGHT
+    player_x, player_y = player_service.get_position()
+    player_width = player_service.get_width()
+
+    bullet_x = player_x + player_width // 2 - bullet_width // 2
+    bullet_y = player_y - bullet_height
+
+    bullet_position = Point(bullet_x, bullet_y)
+    bullet_size = Size(bullet_width, bullet_height)
+    hit = Hit(0, 1)
+    bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5, hit)
+    expected_bullet = BulletService(
+        sprite_info=bullet_sprite_info, direction="up")
+    return expected_bullet
 
 
 class TestPlayer(unittest.TestCase):
@@ -16,32 +34,19 @@ class TestPlayer(unittest.TestCase):
         hit = Hit(0, 3)
         self.sprite_info = SpriteInfo(position, size, 5, hit)
         self.player_service = PlayerService(sprite_info=self.sprite_info)
+        self.expected_bullet = get_expected_bullet(self.player_service)
 
     def test_player_shoot_creates_new_bullet(self):
         bullet = self.player_service.shoot()
-
-        bullet_width = 5
-        bullet_height = 10
-        player_x, player_y = self.player_service.get_position()
-        player_width = self.player_service.get_width()
-
-        bullet_x = player_x + player_width // 2 - bullet_width // 2
-        bullet_y = player_y - bullet_height
-
-        bullet_position = Point(bullet_x, bullet_y)
-        bullet_size = Size(bullet_width, bullet_height)
-        hit = Hit(0, 1)
-        bullet_sprite_info = SpriteInfo(bullet_position, bullet_size, 5, hit)
-        expected_bullet = BulletService(
-            sprite_info=bullet_sprite_info, direction="up")
-
         actual_speed = bullet.get_speed()
-        expected_speed = expected_bullet.get_speed()
+        actual_size = bullet.size
 
-        self.assertEqual(bullet.direction, expected_bullet.direction,
+        self.assertEqual(bullet.direction, self.expected_bullet.direction,
                          "Expected a bullet direction up")
-        self.assertEqual(actual_speed, expected_speed,
+        self.assertEqual(actual_speed, self.expected_bullet.get_speed(),
                          "Expected a bullet speed 5")
+        self.assertEqual(actual_size.height, self.expected_bullet.size.height,
+                         "Expected a bullet height 20")
 
     def test_player_moves_left(self):
         self.player_service.move('a')
