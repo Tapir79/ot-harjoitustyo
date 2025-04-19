@@ -8,7 +8,7 @@ class PlayerService(ShootingSpriteService):
                  cooldown=PLAYER_COOLDOWN):
         super().__init__(sprite_info, cooldown=cooldown)
 
-    def move(self, key):
+    def move(self, key: int) -> int:
         """
         Move the player left or right within the screen boundaries.
 
@@ -26,16 +26,15 @@ class PlayerService(ShootingSpriteService):
         Returns:
             int: The updated x-coordinate after movement.
         """
-        x = self.get_x()
-        width = self.get_width()
+        x = self.x
+        width = self.width
 
         if key == "a":
-            new_x = max(self.left_boundary, x - self.get_speed())
+            new_x = max(self.left_boundary, x - self.speed)
         elif key == "d":
-            new_x = min(self.right_boundary - width,
-                        x + self.get_speed())
+            new_x = min(self.right_boundary - width, x + self.speed)
         else:
             new_x = x
 
-        self.set_x(new_x)
+        self.x = new_x
         return new_x

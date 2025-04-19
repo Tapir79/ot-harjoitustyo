@@ -5,8 +5,10 @@ from models.point import Point
 from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
-from config import (LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT,
-                    PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN)
+from config import (
+    LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT,
+    PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN
+)
 
 
 class ShootingSpriteService(BaseSpriteService):
@@ -31,7 +33,6 @@ class ShootingSpriteService(BaseSpriteService):
         if current_time - self._last_shot >= self.cooldown:
             self._last_shot = current_time
             return True
-
         return False
 
     def try_shoot(self, direction="up"):
@@ -43,20 +44,21 @@ class ShootingSpriteService(BaseSpriteService):
         """
         Create a new bullet.
         """
-        sprite_x, sprite_y = self.get_position()
+        sprite_x, sprite_y = self.position
 
-        bullet_x = sprite_x + self.get_width() // 2 - bullet_width // 2
-        bullet_y = self.get_bullet_y(direction, sprite_y, bullet_height)
+        bullet_x = sprite_x + self.width // 2 - bullet_width // 2
+        bullet_y = self._get_bullet_y(direction, sprite_y, bullet_height)
 
         bullet_position = Point(bullet_x, bullet_y)
         bullet_size = Size(bullet_width, bullet_height)
         bullet_speed = PLAYER_BULLET_SPEED if direction == "up" else ENEMY_BULLET_SPEED
         bullet_sprite_info = SpriteInfo(
-            bullet_position, bullet_size, bullet_speed, Hit(0, 1))
+            bullet_position, bullet_size, bullet_speed, Hit(0, 1)
+        )
 
         return BulletService(sprite_info=bullet_sprite_info, direction=direction)
 
-    def get_bullet_y(self, direction, sprite_y, bullet_height):
+    def _get_bullet_y(self, direction, sprite_y, bullet_height):
         if direction == "down":
-            return sprite_y + self.get_height() + bullet_height
+            return sprite_y + self.height + bullet_height
         return sprite_y - bullet_height

@@ -164,11 +164,11 @@ class Game:
             self.player.player_service.add_hit()
 
             position = self.player.rect.center
-            size = self.player.player_service.get_size()
+            size = self.player.player_service.size
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
-            if self.player.is_dead():
+            if self.player.player_service.is_dead:
                 self.player.kill()
 
     def check_player_and_enemy_bullet_collisions(self):
@@ -182,11 +182,11 @@ class Game:
             self.player.player_service.add_hit()
 
             position = self.player.rect.center
-            size = self.player.player_service.get_size()
+            size = self.player.player_service.size
             explosion = HitAnimation(position, size)
             self.hit_group.add(explosion)
 
-            if self.player.is_dead():
+            if self.player.player_service.is_dead:
                 self.player.kill()
 
     def check_enemy_and_player_bullet_collisions(self):
@@ -207,11 +207,11 @@ class Game:
             for enemy, bullets in collisions.items():
                 for _ in bullets:
                     enemy.enemy_service.add_hit()
-                    if enemy.enemy_service.is_dead():
+                    if enemy.enemy_service.is_dead:
                         enemy.remove(self.enemy_group)
 
                 position = enemy.rect.center
-                size = enemy.enemy_service.get_size()
+                size = enemy.enemy_service.size
                 explosion = HitAnimation(position, size)
                 self.hit_group.add(explosion)
 
@@ -236,7 +236,7 @@ class Game:
 
     def update(self):
         """
-        Updates the game state. Currently only handles player input.
+        Updates the game state. 
         """
         self.player.handle_input()
         self.player_bullet_group.update()
@@ -247,7 +247,9 @@ class Game:
     def draw(self):
         """
         Renders the game screen.
-        Clears the screen, draws the player and instruction text, and updates the display.
+        Clears the screen.
+        Draws the player, enemies, bullets, hit animations and instruction text
+        Updates the display.
         """
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
@@ -372,7 +374,7 @@ class Game:
         center_x, center_y = position
         positions = get_random_positions_around_center_point(
             Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
-        size = self.player.player_service.get_size()
+        size = self.player.player_service.size
         player_size = self.player.player_service.get_buffered_size(20)
         explosion = PlayerHitAnimation(position, player_size)
         self.play_animation_once(explosion)
@@ -384,12 +386,12 @@ class Game:
 
     def fly_player_over_bounds_animation(self):
         clock = pygame.time.Clock()
-        current_y = self.player.player_service.get_y()
+        current_y = self.player.player_service.y
 
         while current_y > UPPER_BOUNDARY:
             self.handle_events()
-            current_y = self.player.player_service.get_y()
-            self.player.player_service.set_y(current_y - PLAYER_SPEED)
+            current_y = self.player.player_service.y
+            self.player.player_service.y = current_y - PLAYER_SPEED
 
             self.screen.fill(BLACK)
             self.player.update()

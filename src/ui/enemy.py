@@ -22,8 +22,8 @@ class EnemySprite(pygame.sprite.Sprite):
         self.enemy_service = enemy_service
         self.bullet_group = bullet_group
 
-        width = self.enemy_service.get_width()
-        height = self.enemy_service.get_height()
+        width = self.enemy_service.width
+        height = self.enemy_service.height
 
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, image_path)
@@ -45,7 +45,7 @@ class EnemySprite(pygame.sprite.Sprite):
         self.enemy_service.move()
         if random.random() < ENEMY_SHOOTING_PROBABILITY:
             self.shoot()
-        x, y = self.enemy_service.get_position()
+        x, y = self.enemy_service.position
         self.rect.x = x
         self.rect.y = y
 

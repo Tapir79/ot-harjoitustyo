@@ -15,6 +15,6 @@ class TestBaseSpriteService(unittest.TestCase):
         self.base_sprite_service = BaseSpriteService(sprite_info)
 
     def test_position(self):
-        initial_position = self.base_sprite_service.get_position()
+        initial_position = self.base_sprite_service.position
         self.assertEqual(initial_position, (5, 5),
                          "Position should be as initialized")

@@ -7,14 +7,20 @@ from config import (
 
 
 class EnemyService(ShootingSpriteService):
-    def __init__(self, sprite_info: SpriteInfo,
-                 cooldown=ENEMY_COOLDOWN  # 1
-                 ):
+    def __init__(self, sprite_info: SpriteInfo, cooldown=ENEMY_COOLDOWN):
         super().__init__(sprite_info, cooldown=cooldown)
         self._direction = "right"
 
+    @property
+    def direction(self):
+        return self._direction
+
+    @direction.setter
+    def direction(self, value):
+        self._direction = value
+
     def shoot(self, direction="down", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
-        return super().shoot(direction)
+        return super().shoot(direction, bullet_width, bullet_height)
 
     def move(self):
         """
@@ -30,55 +36,37 @@ class EnemyService(ShootingSpriteService):
             return self._drop_and_turn_left()
 
         self._move_in_current_direction()
-
-        return self.get_x(), self.get_y()
+        return self.x, self.y
 
     def _has_hit_bottom(self):
-        y = self.get_y()
-        height = self.get_height()
-        return y + height >= LOWER_BOUNDARY
+        return self.y + self.height >= LOWER_BOUNDARY
 
     def _limit_to_bottom(self):
-        height = self.get_height()
-        self.set_y(LOWER_BOUNDARY - height)
-        return self.get_x(), self.get_y()
+        self.y = LOWER_BOUNDARY - self.height
+        return self.x, self.y
 
     def _hit_left_wall(self):
-        return self.get_x() <= LEFT_BOUNDARY and self._direction == "left"
+        return self.x <= LEFT_BOUNDARY and self.direction == "left"
 
     def _drop_and_turn_right(self):
-        y = self.get_y()
-        height = self.get_height()
-        self.set_y(y + height)
-        self.set_x(LEFT_BOUNDARY)
-        self.set_direction("right")
+        self.y += self.height
+        self.x = LEFT_BOUNDARY
+        self.direction = "right"
         self.increase_speed()
-        return self.get_x(), self.get_y()
+        return self.x, self.y
 
     def _hit_right_wall(self):
-        x = self.get_x()
-        width = self.get_width()
-        return x + width >= RIGHT_BOUNDARY and self._direction == "right"
+        return self.x + self.width >= RIGHT_BOUNDARY and self.direction == "right"
 
     def _drop_and_turn_left(self):
-        y = self.get_y()
-        height = self.get_height()
-        width = self.get_width()
-        self.set_x(RIGHT_BOUNDARY - width)
-        self.set_y(y + height)
-        self.set_direction("left")
+        self.x = RIGHT_BOUNDARY - self.width
+        self.y += self.height
+        self.direction = "left"
         self.increase_speed()
-        return self.get_x(), self.get_y()
+        return self.x, self.y
 
     def _move_in_current_direction(self):
-        x = self.get_x()
-        if self._direction == "left":
-            self.set_x(x - self.get_speed())
-        if self._direction == "right":
-            self.set_x(x + self.get_speed())
-
-    def set_direction(self, direction):
-        self._direction = direction
-
-    def get_direction(self):
-        return self._direction
+        if self.direction == "left":
+            self.x -= self.speed
+        else:
+            self.x += self.speed
