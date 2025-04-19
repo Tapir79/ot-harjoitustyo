@@ -4,8 +4,21 @@ from config import PLAYER_COOLDOWN
 
 
 class PlayerService(ShootingSpriteService):
+    """
+    Manages the player's movement and shooting logic.
+
+    Inherits ShootingSpriteService.
+    """
+
     def __init__(self, sprite_info: SpriteInfo,
                  cooldown=PLAYER_COOLDOWN):
+        """
+        Initialize the player with sprite information and shooting cooldown.
+
+        Args:
+            sprite_info (SpriteInfo): The player's position, size, speed, and health.
+            cooldown (float): The cooldown time between player shots.
+        """
         super().__init__(sprite_info, cooldown=cooldown)
 
     def move(self, key: int) -> int:

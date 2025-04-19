@@ -12,8 +12,21 @@ from config import (
 
 
 class ShootingSpriteService(BaseSpriteService):
+    """
+    Base class for any sprite that can shoot bullets.
+    """
+
     def __init__(self, sprite_info: SpriteInfo, cooldown=PLAYER_COOLDOWN,
                  left_boundary=LEFT_BOUNDARY, right_boundary=RIGHT_BOUNDARY):
+        """
+        Initialize the shooting sprite with sprite info and shooting behavior.
+
+        Args:
+            sprite_info (SpriteInfo): The sprite's position, size, speed, and hit state.
+            cooldown (float): Time in seconds between shots.
+            left_boundary (int): Minimum x-coordinate allowed.
+            right_boundary (int): Maximum x-coordinate allowed.
+        """
         super().__init__(sprite_info)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
@@ -22,13 +35,24 @@ class ShootingSpriteService(BaseSpriteService):
 
     @property
     def last_shot(self):
+        """
+        float: The timestamp of the last sprite shot time.
+        """
         return self._last_shot
 
     @last_shot.setter
     def last_shot(self, value):
+        """
+        Set the last sprite shot time.
+        """
         self._last_shot = value
 
     def can_shoot(self):
+        """
+        Check if the sprite is in cooldown.
+        If not, then the sprite can shoot.
+        Otherwise not. 
+        """
         current_time = time.time()
         if current_time - self._last_shot >= self.cooldown:
             self._last_shot = current_time
@@ -36,6 +60,9 @@ class ShootingSpriteService(BaseSpriteService):
         return False
 
     def try_shoot(self, direction="up"):
+        """
+        Attempt to shoot a bullet if cooldown is over.
+        """
         if self.can_shoot():
             return self.shoot(direction)
         return None
@@ -59,6 +86,9 @@ class ShootingSpriteService(BaseSpriteService):
         return BulletService(sprite_info=bullet_sprite_info, direction=direction)
 
     def _get_bullet_y(self, direction, sprite_y, bullet_height):
+        """
+        Calculate the vertical position for a new bullet.
+        """
         if direction == "down":
             return sprite_y + self.height + bullet_height
         return sprite_y - bullet_height

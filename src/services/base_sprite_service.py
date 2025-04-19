@@ -9,6 +9,7 @@ class BaseSpriteService:
 
     The class acts as a layer between game logic and raw sprite data.
     """
+
     def __init__(self, sprite_info: SpriteInfo):
         """
         Initialize the service with a SpriteInfo object.
