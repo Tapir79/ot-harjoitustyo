@@ -41,20 +41,6 @@ class BaseSpriteService:
         return self._sprite_info.height
 
     @property
-    def speed(self):
-        return self._sprite_info.speed
-
-    @speed.setter
-    def speed(self, value):
-        self._sprite_info.speed = value
-
-    def increase_speed(self, amount=1):
-        self.speed += amount
-
-    def decrease_speed(self, amount=1):
-        self.speed = max(1, self.speed - amount)
-
-    @property
     def hitcount(self):
         return self._sprite_info.hit.hitcount
 
@@ -68,3 +54,27 @@ class BaseSpriteService:
     @property
     def is_dead(self):
         return self._sprite_info.is_dead()
+    
+    @property
+    def speed(self):
+        return self._sprite_info.speed
+
+    @speed.setter
+    def speed(self, value):
+        self._sprite_info.speed = value
+
+    def increase_speed(self, amount=1):
+        """
+        Increase the sprite's speed by a given amount.
+
+        This function is in the service class because it’s about game behavior 
+        (like getting faster after a power-up). The speed value is stored in 
+        SpriteInfo, but changing it based on how the game works is handled here.
+        """
+        self.speed += amount
+
+    def decrease_speed(self, amount=1):
+        """
+        Like increase speed but opposite behaviour.
+        """
+        self.speed = max(1, self.speed - amount)
