@@ -5,11 +5,6 @@ from models.hit import Hit
 
 class SpriteInfo:
     def __init__(self, position: Point, size: Size, speed: int, hit: Hit):
-        self.position = position
-        self._size = size
-        self.speed = speed
-        self.hit = hit
-
         self._position = position
         self._size = size
         self._speed = speed
@@ -65,11 +60,15 @@ class SpriteInfo:
     def speed(self, value):
         self._speed = value
 
+    @property
+    def hit(self):
+        return self._hit
+
     def add_hit(self):
-        current_hits = self.hit.hitcount
-        if current_hits < self.hit.max_hits:
-            self.hit.hitcount = current_hits + 1
-        return self.hit.hitcount
+        current_hits = self._hit.hitcount
+        if current_hits < self._hit.max_hits:
+            self._hit.hitcount = current_hits + 1
+        return self._hit.hitcount
 
     def is_dead(self):
-        return self.hit.hitcount == self.hit.max_hits
+        return self._hit.hitcount == self._hit.max_hits
