@@ -47,7 +47,7 @@ Peli koostuu seuraavista osista:
 
 2. **Rekisteröitymisnäkymä**
 
-[ ]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen
+[ ]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen     
 [ ]   - Ohjaa takaisin kirjautumisnäkymään 
 
 3. **Pelinäkymä**
