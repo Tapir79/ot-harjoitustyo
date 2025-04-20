@@ -97,7 +97,9 @@ classDiagram
     BaseSpriteService --> SpriteInfo
 ```
 
+### Tasojen generointi
 
+Tasot generoidaan levelservice-luokassa level_config-tiedoston vakioarvojen ohjaamana. 
 
 ## Tietojen pysyväistallennus 
 
@@ -105,7 +107,7 @@ Tämä osio on vielä toteuttamatta, mutta tietokantaan tallennetaan jatkossa re
 
 ## Ohjaustiedostot 
 
-Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. Lisäksi tasojen vakiottiedot on tallennettu level config-tiedostoon. Tasovakioilla ohjataan pelille oikea arvo esim. vihollisen kestävyys pelin edetessä. 
+Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. Lisäksi tasojen vakiottiedot on tallennettu level config-tiedostoon. Tasovakioilla ohjataan pelille oikea arvo, esim. vihollisen kestävyys, pelin edetessä. 
 
 Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto. 
 

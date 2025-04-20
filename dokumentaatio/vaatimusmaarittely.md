@@ -59,8 +59,8 @@ Peli koostuu seuraavista osista:
 [X]   - Pelaajan ammus tuhoaa vihollisen             
 [X]   - Vihollisen ammus tuhoaa pelaajan  
 [X]   - Näytetään jäljellä olevat elämät                  
-[ ]   - Näytetään pelaajan pisteet         
-[ ]   - Näytetään pelin taso.                
+[X]   - Näytetään pelaajan pisteet         
+[X]   - Näytetään pelin taso.                
  
 4. **Pelin lopetusnäkymä**
 
@@ -81,7 +81,7 @@ Peli koostuu seuraavista osista:
 [X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
 [X] - Pelaajalla on rajoitettu määrä elämiä.
 [X] - Tason vihollisten tuhoutuessa aloitetaan uusi taso
-[ ] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
+[X] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
   
 - **Pelin loppu**
 
