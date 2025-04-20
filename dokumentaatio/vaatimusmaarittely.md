@@ -60,7 +60,7 @@ Peli koostuu seuraavista osista:
 [X]   - Vihollisen ammus tuhoaa pelaajan  
 [X]   - Näytetään jäljellä olevat elämät                  
 [X]   - Näytetään pelaajan pisteet         
-[X]   - Näytetään pelin taso
+[X]   - Näytetään pelin taso     
 [X]   - Näytetään sisäänkirjautuneelle pelaajalle paras tulos                
  
 4. **Pelin lopetusnäkymä**
@@ -77,20 +77,20 @@ Peli koostuu seuraavista osista:
 
 - **Aloitusnäyttö**
 
-[X]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
-[X]  - Käyttäjä voi kirjautua sisään. 
-[X]  - Käyttäjä voi luoda uuden tunnuksen.
-[X]  - Käyttäjä voi lopettaa pelin
-[X]  - Sisäänkirjautunut käyttäjä voi kirjautua ulos
+[X]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.    
+[X]  - Käyttäjä voi kirjautua sisään.     
+[X]  - Käyttäjä voi luoda uuden tunnuksen.    
+[X]  - Käyttäjä voi lopettaa pelin.    
+[X]  - Sisäänkirjautunut käyttäjä voi kirjautua ulos.    
   
 - **Pelin aikana**
 
-[X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.
-[X] - Pelaaja voi ampua raketteja kohti vihollisia.
-[X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.
-[X] - Pelaajalla on rajoitettu määrä elämiä.
-[X] - Tason vihollisten tuhoutuessa aloitetaan uusi taso
-[X] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.
+[X] - Pelaaja voi liikkua avaruusaluksella kahteen vastakkaiseen suuntaan.      
+[X] - Pelaaja voi ampua raketteja kohti vihollisia.      
+[X] - Viholliset liikkuvat nopeammin mitä lähempänä ne ovat pelaajaa.      
+[X] - Pelaajalla on rajoitettu määrä elämiä.     
+[X] - Tason vihollisten tuhoutuessa aloitetaan uusi taso.      
+[X] - Pelaaja saa pisteitä jokaisesta tuhotusta vihollisesta.      
   
 - **Pelin loppu**
 
@@ -101,7 +101,8 @@ Peli koostuu seuraavista osista:
 
 ### Pelin tallennus ja tietokanta
 
-- Pelissä on SQLite-tietokanta, johon tallennetaan:           
+- Pelissä on SQLite-tietokanta, johon tallennetaan:   
+        
 [ ] - Pelaajan nimi (tai nimimerkki) ja salasana.        
 [ ] - Pelaajan paras pistemäärä.     
 [ ] - Pelin aikaleima.      
