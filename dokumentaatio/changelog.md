@@ -31,3 +31,5 @@ näppäimistöllä
 ## Viikko 6 
 
 - Refaktoroitu kaikki models-luokat ja service-luokat siten, että muuttujista on pythonin suositusten mukaisesti tehty yksityisiä ja kaikille yksityisille muuttujille property/setter-metodit. 
+- Kaikki muu tähän asti tehty koodi dokumentoitu docstringeillä paitsi game.py-luokka.
+- Luotu aloitusvalikko ja kirjautumisnäkymien pohjat.  

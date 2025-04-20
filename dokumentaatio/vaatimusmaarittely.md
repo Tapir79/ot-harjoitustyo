@@ -60,11 +60,16 @@ Peli koostuu seuraavista osista:
 [X]   - Vihollisen ammus tuhoaa pelaajan  
 [X]   - Näytetään jäljellä olevat elämät                  
 [X]   - Näytetään pelaajan pisteet         
-[X]   - Näytetään pelin taso.                
+[X]   - Näytetään pelin taso
+[X]   - Näytetään sisäänkirjautuneelle pelaajalle paras tulos                
  
 4. **Pelin lopetusnäkymä**
 
-[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet ja vaihtoehto aloittaa peli alusta tai kirjautua ulos.
+[X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.
+[X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään. 
+[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelin high score eli kaikkien aikojen paras tulos. 
+[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan oma high score eli paras henkilökohtainen tulos. 
+
 
 ## Perusversion tarjoama toiminnallisuus
 
@@ -72,7 +77,11 @@ Peli koostuu seuraavista osista:
 
 - **Aloitusnäyttö**
 
-[ ]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
+[X]  - Käyttäjä voi aloittaa pelin valitsemalla "Aloita peli" -painikkeen.
+[X]  - Käyttäjä voi kirjautua sisään. 
+[X]  - Käyttäjä voi luoda uuden tunnuksen.
+[X]  - Käyttäjä voi lopettaa pelin
+[X]  - Sisäänkirjautunut käyttäjä voi kirjautua ulos
   
 - **Pelin aikana**
 

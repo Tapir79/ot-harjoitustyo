@@ -37,4 +37,4 @@
 | 17.4 | 1 | Koodin refaktoroinnin suunnittelu |
 | 18.4 | 5 | Koodin refaktorointia. Muuttujat yksityisiksi ja yksityisten muuttujien property/setter-metodit | 
 | 19.4 | 5 | Koodin refaktorointia. Muuttujat yksityisiksi ja yksityisten muuttujien property/setter-metodit | 
-| 20.4 | | Koodin refaktorointia, docstring-kommentteja. Pelaajan pisteiden laskenta.|
+| 20.4 | 6 | Koodin refaktorointia, docstring-kommentteja. Pelaajan pisteiden laskenta. Etusivu ja näkymäpohjat kirjautumiseen ja uuden tunnuksen luomiseen.|
