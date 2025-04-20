@@ -15,7 +15,8 @@ class PlayerSprite(pygame.sprite.Sprite):
     Represents the player character in the game.
 
     Handles movement and rendering of the player sprite. The player can move left and right
-    using the 'a' and 'd' keys. The class also manages the player's position, speed,
+    using the 'a' and 'd' keys. The player can shoot with the 'SPACE' key. 
+    The class also manages the player's position, speed,
     dimensions, and the boundaries within which the player is allowed to move.
     """
 
@@ -42,6 +43,7 @@ class PlayerSprite(pygame.sprite.Sprite):
 
         Moves the player left if 'a' is pressed, and right if 'd' is pressed.
         Movement is bounded by left and right limits of the screen.
+        If space is pressed player shooting is triggered.
         """
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -52,17 +54,30 @@ class PlayerSprite(pygame.sprite.Sprite):
             self.shoot()
 
     def shoot(self):
+        """
+        Tries to shoot. If shooting is a success a new bullet is created. 
+        The bullet is added to player bullet group.
+        """
         bullet_service = self.player_service.try_shoot()
         if bullet_service:
             bullet_sprite = BulletSprite(bullet_service)
             self.bullet_group.add(bullet_sprite)
 
     def update(self):
+        """
+        Updates the player's position.
+        """
         x, y = self.player_service.position
         self.rect.x = x
         self.rect.y = y
 
     def draw(self, screen):
+        """
+        Draws the player on the screen at its current position.
+
+        Args:
+            screen (Surface): The game screen surface to draw the player on.
+        """
         self.update()
         screen.blit(self.image, self.rect)
 

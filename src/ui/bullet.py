@@ -8,7 +8,21 @@ dirname = os.path.dirname(__file__)
 
 
 class BulletSprite (pygame.sprite.Sprite):
+    """
+    User Interface pygame bullet sprite in the game.
+
+    This class uses the logic from a BulletService and then
+    updates the sprite image and location on the screen.
+
+    Args:
+        bullet_service (BulletService): The logic class controlling bullet behavior.
+    """
+
     def __init__(self, bullet_service: BulletService):
+        """
+        Initialize the bullet sprite, load its image based on direction,
+        and set its size and starting position.
+        """
         super().__init__()
         self.bullet = bullet_service
 
@@ -30,6 +44,9 @@ class BulletSprite (pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def update(self):
+        """
+        Updates the bullet's position and checks if it should be removed from the screen.
+        """
         self.bullet.update()
         x, y = self.bullet.position
         self.rect.x = x
@@ -39,5 +56,11 @@ class BulletSprite (pygame.sprite.Sprite):
             self.kill()
 
     def draw(self, screen):
+        """
+        Draws the bullet on the screen at its current position.
+
+        Args:
+            screen (Surface): The game screen surface to draw the bullet on.
+        """
         self.update()
         screen.blit(self.image, (self.x, self.y))

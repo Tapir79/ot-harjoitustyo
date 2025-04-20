@@ -6,6 +6,11 @@ from services.player_service import PlayerService
 
 
 def get_player_lives(player: PlayerService):
+    """
+    The function counts how many hearts player has left.
+    It also counts how many hearts are broken.
+    The counts are used to draw the hearts on the game screen.
+    """
 
     current_hits = player.hitcount
     max_hits = player.max_hits
@@ -30,11 +35,11 @@ def get_random_positions_around_center_point(center: Point,
     """
     Returns a list of random positions above a given point within screen bounds.
 
-    - center: the (x, y) center point (for example, player position)
-    - screen_width: width of the screen, used to constrain horizontal bounds
-    - count: how many positions to generate
-    - y_offset: max vertical spread from the center
-    - x_offset: max horizontal spread from center
+    Args:
+        center: the (x, y) center point (for example, player position)
+        screen_width: width of the screen, used to constrain horizontal bounds
+        count: how many positions to generate
+        offset: max vertical spread from the center, max horizontal spread from center 
     """
 
     screen_width = screen_size.width
@@ -60,7 +65,7 @@ def get_random_x(center_x, x_offset, screen_width):
        0          200         300         400         500
 
                                ^             player at center_x = 300
-                    [                      ] horizontal spread = ±100
+                    [                      ] horizontal spread = +-100
                 min_x=200               max_x=400
         [       left_min       ][       right_max      ]  cannot go over bounds
     """
@@ -77,13 +82,13 @@ def get_random_y(center_y, y_offset, screen_height):
     """
     Like get_random_x but vertically
 
-    Y Axis ↓
-
-        y=300 ─── start of range (up)
-            ⋮
-        y=400 ─── center
-            ⋮
-        y=500 ─── end of range (down)
+    Y Axis 
+    |
+    |    y=300 ─── start of range (up)
+    |        ⋮
+    |    y=400 ─── center
+    |        ⋮
+    |    y=500 ─── end of range (down)
 
         Randomly chooses y within this band.
 

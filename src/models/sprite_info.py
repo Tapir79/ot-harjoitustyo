@@ -15,7 +15,8 @@ class SpriteInfo:
         position (Point): The (x, y) coordinates of the sprite.
         size (Size): The width and height of the sprite.
         speed (int): The movement speed of the sprite.
-        hit (Hit): Health data that tracks how many times the sprite has been hit and the max hits allowed.
+        hit (Hit): Health data that tracks how many times the sprite has been hit 
+                   and the max hits allowed.
     """
 
     def __init__(self, position: Point, size: Size, speed: int, hit: Hit):
