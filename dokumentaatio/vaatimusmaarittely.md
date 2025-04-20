@@ -38,11 +38,11 @@ Peli koostuu seuraavista osista:
 [X] = toteutettu
 
 1. **Aloitusnäkymä**
-
-[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.       
-[ ]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.          
-[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen         
-[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa           
+     
+[X]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.    
+[X]   - Pelin voi käynnistää anonyymina pelaajana.       
+[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
+[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa.           
 [ ]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
 
 2. **Rekisteröitymisnäkymä**
@@ -65,10 +65,10 @@ Peli koostuu seuraavista osista:
  
 4. **Pelin lopetusnäkymä**
 
-[X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.
-[X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään. 
-[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelin high score eli kaikkien aikojen paras tulos. 
-[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan oma high score eli paras henkilökohtainen tulos. 
+[X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.        
+[X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään.           
+[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelin high score eli kaikkien aikojen paras tulos.              
+[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan oma high score eli paras henkilökohtainen tulos.             
 
 
 ## Perusversion tarjoama toiminnallisuus
