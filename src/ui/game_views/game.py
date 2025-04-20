@@ -2,11 +2,12 @@ import pygame
 import os
 from config import ASSETS_DIR
 from pygame.sprite import Group
+from app_state import AppState
 from utils.game_helpers import get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
-from ui.enemy import EnemySprite
-from ui.player import PlayerSprite
+from ui.sprites.enemy import EnemySprite
+from ui.sprites.player import PlayerSprite
 from services.player_service import PlayerService
 from services.enemy_service import EnemyService
 from services.level_service import LevelService
@@ -14,9 +15,9 @@ from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import (LOWER_BOUNDARY, RIGHT_BOUNDARY, UPPER_BOUNDARY,
+from config import (UPPER_BOUNDARY,
                     PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
-                    ENEMY_WIDTH, ENEMY_HEIGHT, PLAYER_MAX_HITS)
+                    ENEMY_WIDTH, ENEMY_HEIGHT, PLAYER_MAX_HITS, BLACK, WHITE)
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -30,30 +31,29 @@ class Game:
     and rendering the screen including the player and on-screen instructions.
     """
 
-    def __init__(self):
+    def __init__(self, screen):
         """
         Initializes the game, including the display, player, clock, and font.
         Sets up the game window and player object.
         """
-        pygame.init()
 
-        self.display_height = LOWER_BOUNDARY
-        self.display_width = RIGHT_BOUNDARY
-        self.screen = pygame.display.set_mode(
-            (self.display_width, self.display_height))
-        pygame.display.set_caption("Alien Attack")
+        self.reset_game(screen)
 
-        self.init_ui_images()
-        self.init_levels()
-        self.init_bullets()
-        self.player = self.create_player()
-
+    def reset_game(self, screen):
+        self.screen = screen
+        self.display_height = screen.get_height()
+        self.display_width = screen.get_width()
         # game info
         self.clock = pygame.time.Clock()
         self.running = True
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
         self.gameover_text = ""
+
+        self.init_ui_images()
+        self.init_levels()
+        self.init_bullets()
+        self.player = self.create_player()
 
     def init_ui_images(self):
         self.heart_image = pygame.image.load(
@@ -270,13 +270,17 @@ class Game:
         self.hit_group.draw(self.screen)
         pygame.display.update()
 
-    def draw_text(self, text, position):
+    def draw_text(self, text, position, center=False):
         """
         General method for drawing text on the screen.
         """
-        text_surface = self.font.render(
-            text, True, WHITE)
-        self.screen.blit(text_surface, position)
+        text_surface = self.font.render(text, True, WHITE)
+        rect = text_surface.get_rect()
+        if center:
+            rect.center = position
+        else:
+            rect.topleft = position
+        self.screen.blit(text_surface, rect)
 
     def draw_level_title(self):
         """
@@ -291,22 +295,24 @@ class Game:
         Instructions for the player.
         """
         text = "Move the player with 'a' and 'd', Shoot with SPACE"
-        text_surface = self.font.render(text, True, WHITE)
         y_offset = 40
-        position = text_surface.get_rect(
-            center=(self.display_width // 2,
+        position = (self.display_width // 2,
                     self.display_height // 2 + y_offset)
-        )
-        self.draw_text(text, position)
+        self.draw_text(text, position, center=True)
 
-    def draw_player_points(self):
+    def draw_game_over_text(self):
+        text = self.gameover_text
+        position = (self.display_width // 2, self.display_height // 2)
+        self.draw_text(text, position, center=True)
+
+    def draw_player_points(self, position=(20, 20), center=False):
         """
         Draw current player points on screen.
         """
         points = self.player.player_service.points
         text = f"Points: {points}"
-        position = (20, 20)
-        self.draw_text(text, position)
+        position = position
+        self.draw_text(text, position, center)
 
     def draw_player_hearts(self):
         """
@@ -344,6 +350,9 @@ class Game:
                 self.end_game()
             elif self.gameover:
                 self.game_over()
+                self.reset_game(self.screen)
+                pygame.time.wait(2000)
+                return AppState.START_SCREEN
             elif not self.level_started:
                 self.start_new_level()
             else:
@@ -352,6 +361,8 @@ class Game:
                 self.move_to_next_level()
                 self.draw()
                 self.clock.tick(60)
+
+        return AppState.QUIT
 
     def move_to_next_level(self):
         """
@@ -434,7 +445,7 @@ class Game:
         position = self.player.rect.center
         center_x, center_y = position
         positions = get_random_positions_around_center_point(
-            Point(center_x, center_y), Size(self.screen.get_width(), self.screen.get_height()))
+            Point(center_x, center_y), Size(self.display_width, self.display_height))
         size = self.player.player_service.size
         player_size = self.player.player_service.get_buffered_size(20)
         explosion = PlayerHitAnimation(position, player_size)
@@ -462,12 +473,10 @@ class Game:
 
     def game_over(self):
         self.screen.fill(BLACK)
-        instruction_text = self.font.render(
-            self.gameover_text, True, WHITE)
-        text_rect = instruction_text.get_rect(
-            center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
-        self.screen.blit(instruction_text, text_rect)
+        self.draw_game_over_text()
 
+        points_position = self.display_width//2, self.display_height//2 + 40
+        self.draw_player_points(position=points_position, center=True)
         pygame.display.update()
 
     def is_game_over(self):

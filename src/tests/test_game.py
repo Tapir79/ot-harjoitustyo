@@ -1,10 +1,14 @@
 import unittest
-from ui.game import Game
+import pygame
+from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
+from ui.game_views.game import Game
 
 
 class TestGame(unittest.TestCase):
     def setUp(self):
-        self.game = Game()
+        pygame.init()
+        self.screen = pygame.display.set_mode((RIGHT_BOUNDARY, LOWER_BOUNDARY))
+        self.game = Game(self.screen)
 
     def test_game_is_initialized_correctly(self):
         self.assertEqual(self.game.running, True)

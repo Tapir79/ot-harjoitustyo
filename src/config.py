@@ -3,6 +3,9 @@ import os
 PROJECT_ROOT = os.path.dirname(__file__)
 ASSETS_DIR = os.path.join(PROJECT_ROOT, "assets")
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
 PLAYER_WIDTH = 40
 PLAYER_HEIGHT = 40
 BULLET_WIDTH = 10

@@ -6,7 +6,12 @@ clean-up operations like quitting Pygame and exiting the system.
 """
 import sys
 import pygame
-from ui.game import Game
+from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
+from app_state import AppState
+from ui.game_views.create_user import draw_create_user_view
+from ui.game_views.start_screen import draw_start_screen
+from ui.game_views.login import draw_login_view
+from ui.game_views.game import Game
 
 
 def main():
@@ -16,10 +21,35 @@ def main():
     Initializes the Game object, runs the game loop,
     and performs cleanup operations after the game ends.
     """
-    game = Game()
-    game.run()
+
+    screen = init_main()
+
+    state = AppState.START_SCREEN
+    game = Game(screen)
+
+    while state != AppState.QUIT:
+        if state == AppState.START_SCREEN:
+            state = draw_start_screen(screen)
+        elif state == AppState.LOGIN_VIEW:
+            state = draw_login_view(screen)
+        elif state == AppState.CREATE_USER_VIEW:
+            state = draw_create_user_view(screen)
+        elif state == AppState.GAME_RUNNING:
+            game.run()
+            state = AppState.START_SCREEN
+
     pygame.quit()
     sys.exit()
+
+
+def init_main():
+    pygame.init()
+    display_width = RIGHT_BOUNDARY
+    display_height = LOWER_BOUNDARY
+    screen = pygame.display.set_mode((display_width, display_height))
+    pygame.display.set_caption("Alien Attack")
+
+    return screen
 
 
 if __name__ == "__main__":

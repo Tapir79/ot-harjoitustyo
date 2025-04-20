@@ -3,7 +3,7 @@ import pygame
 from services.player_service import PlayerService
 from config import ASSETS_DIR
 
-from ui.bullet import BulletSprite  # import the sprite class
+from ui.sprites.bullet import BulletSprite  # import the sprite class
 from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
