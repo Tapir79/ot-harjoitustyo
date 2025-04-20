@@ -55,6 +55,30 @@ class Game:
         self.gameover = False
         self.gameover_text = ""
 
+    def init_ui_images(self):
+        self.heart_image = pygame.image.load(
+            os.path.join(ASSETS_DIR, "heart.png")).convert_alpha()
+        self.broken_heart_image = pygame.image.load(
+            os.path.join(ASSETS_DIR, "broken_heart.png")).convert_alpha()
+        self.heart_image = pygame.transform.scale(self.heart_image, (25, 25))
+        self.broken_heart_image = pygame.transform.scale(
+            self.broken_heart_image, (25, 25))
+
+    def init_levels(self):
+        self.level = 1
+        self.level_started = False
+        self.level_transition_timer = 0
+        self.level_ticks_remaining = 180
+        self.level_countdown = 3
+        self.levels = LevelService()
+        self.set_new_level_attributes()
+
+    def init_bullets(self):
+        self.player_bullet_group = Group()
+        self.enemy_bullet_group = Group()
+        self.enemy_group = Group()
+        self.hit_group = pygame.sprite.Group()
+
     def create_player(self):
         player_position = Point(self.display_width // 2,
                                 self.display_height - 50)
@@ -95,30 +119,6 @@ class Game:
                 enemy_sprite = EnemySprite(
                     enemy_service, self.enemy_bullet_group, enemy_image)
                 self.enemy_group.add(enemy_sprite)
-
-    def init_ui_images(self):
-        self.heart_image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "heart.png")).convert_alpha()
-        self.broken_heart_image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "broken_heart.png")).convert_alpha()
-        self.heart_image = pygame.transform.scale(self.heart_image, (25, 25))
-        self.broken_heart_image = pygame.transform.scale(
-            self.broken_heart_image, (25, 25))
-
-    def init_levels(self):
-        self.level = 1
-        self.level_started = False
-        self.level_transition_timer = 0
-        self.level_ticks_remaining = 180
-        self.level_countdown = 3
-        self.levels = LevelService()
-        self.set_new_level_attributes()
-
-    def init_bullets(self):
-        self.player_bullet_group = Group()
-        self.enemy_bullet_group = Group()
-        self.enemy_group = Group()
-        self.hit_group = pygame.sprite.Group()
 
     def set_new_level_attributes(self):
         current_level = self.levels.get_level(self.level)
@@ -208,12 +208,20 @@ class Game:
                 for _ in bullets:
                     enemy.enemy_service.add_hit()
                     if enemy.enemy_service.is_dead:
+                        self.increase_player_points()
                         enemy.remove(self.enemy_group)
 
                 position = enemy.rect.center
                 size = enemy.enemy_service.size
                 explosion = HitAnimation(position, size)
                 self.hit_group.add(explosion)
+
+    def increase_player_points(self):
+        """
+        Add points to player per shot enemy.
+        The player gets more points per enemy from higher levels. 
+        """
+        self.player.player_service.add_points(self.level)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
@@ -256,15 +264,54 @@ class Game:
         self.player_bullet_group.draw(self.screen)
         self.enemy_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
-
-        instruction_text = self.font.render(
-            "Move the player with 'a' and 'd', Shoot with SPACE", True, WHITE)
-        self.screen.blit(instruction_text, (20, 20))
-        self.hit_group.draw(self.screen)
+        self.draw_player_points()
+        self.draw_level_title()
         self.draw_player_hearts()
+        self.hit_group.draw(self.screen)
         pygame.display.update()
 
+    def draw_text(self, text, position):
+        """
+        General method for drawing text on the screen.
+        """
+        text_surface = self.font.render(
+            text, True, WHITE)
+        self.screen.blit(text_surface, position)
+
+    def draw_level_title(self):
+        """
+        Draw current level on screen
+        """
+        text = f"Level {self.level}"
+        position = ((self.display_width // 2 - len(text) // 2), 20)
+        self.draw_text(text, position)
+
+    def draw_instructions_text(self):
+        """
+        Instructions for the player.
+        """
+        text = "Move the player with 'a' and 'd', Shoot with SPACE"
+        text_surface = self.font.render(text, True, WHITE)
+        y_offset = 40
+        position = text_surface.get_rect(
+            center=(self.display_width // 2,
+                    self.display_height // 2 + y_offset)
+        )
+        self.draw_text(text, position)
+
+    def draw_player_points(self):
+        """
+        Draw current player points on screen.
+        """
+        points = self.player.player_service.points
+        text = f"Points: {points}"
+        position = (20, 20)
+        self.draw_text(text, position)
+
     def draw_player_hearts(self):
+        """
+        Draw current player hearts and broken hearts on screen.
+        """
         hearts, broken_hearts = get_player_lives(self.player.player_service)
         x_offset = self.display_width - 30
         y_position = 20
@@ -302,21 +349,31 @@ class Game:
             else:
                 self.update()
                 self.check_sprite_collisions()
-
-                if not self.enemy_group:
-                    self.level += 1
-                    # passed final level
-                    if self.level > self.levels.get_final_level():
-                        self.win_game()
-                    # load next level
-                    else:
-                        self.new_level_reset()
-                        self.level_started = False
-
+                self.move_to_next_level()
                 self.draw()
                 self.clock.tick(60)
 
+    def move_to_next_level(self):
+        """
+        Check if all enemies in the level are dead. 
+        If the level was the last, player won the game.
+        Else move to the next level.
+        """
+        if not self.enemy_group:
+            self.level += 1
+            # passed final level
+            if self.level > self.levels.get_final_level():
+                self.win_game()
+            # load next level
+            else:
+                self.new_level_reset()
+                self.level_started = False
+
     def start_new_level(self):
+        """
+        When level changes, this is drawn before the new level starts.
+        It resets level timer, clears the screen and shows the next level.
+        """
 
         if self.level_transition_timer == 0:
             self.level_transition_timer = 1
@@ -325,10 +382,8 @@ class Game:
         self.screen.fill(BLACK)
 
         if self.level_ticks_remaining > 0:
-            text = self.font.render(
-                f"Level {self.level}", True, WHITE)
-            self.screen.blit(
-                text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
+            self.draw_next_level_title()
+            self.draw_instructions_text()
             pygame.display.update()
 
             self.level_ticks_remaining -= 1
@@ -337,6 +392,12 @@ class Game:
             self.level_started = True
             self.level_transition_timer = 0
             self.create_enemies()
+
+    def draw_next_level_title(self):
+        text = self.font.render(
+            f"Level {self.level}", True, WHITE)
+        self.screen.blit(
+            text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
 
     def win_game(self):
         self.fly_player_over_bounds_animation()

@@ -32,6 +32,12 @@ def get_expected_bullet(player_service):
     return expected_bullet
 
 
+def add_player_hits(n, player_service):
+    for i in range(0, n):
+        hits_count = player_service.add_hit()
+    return hits_count
+
+
 class TestPlayer(unittest.TestCase):
     def setUp(self):
         position = Point(5, 5)
@@ -126,17 +132,18 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(is_dead, False)
 
     def test_player_is_dead_if_three_hits(self):
-        self.add_player_hits(3)
+        add_player_hits(3, self.player_service)
         is_dead = self.player_service.is_dead
         self.assertEqual(is_dead, True)
 
     def test_player_is_dead_with_3_hits(self):
-        hits_count = self.add_player_hits(4)
+        hits_count = add_player_hits(4, self.player_service)
         self.assertEqual(hits_count, 3)
 
-    def add_player_hits(self, n):
-        for i in range(0, n):
-            hits_count = self.player_service.add_hit()
-        return hits_count
+    def test_add_player_points(self):
+        self.player_service.add_points(10)
+        actual_points = self.player_service.points
+        expected_points = 10
+        self.assertEqual(actual_points, expected_points)
 
     # collisions don't need tests because they are handled by pygame

@@ -11,7 +11,8 @@ class PlayerService(ShootingSpriteService):
     """
 
     def __init__(self, sprite_info: SpriteInfo,
-                 cooldown=PLAYER_COOLDOWN):
+                 cooldown=PLAYER_COOLDOWN,
+                 points: int = 0):
         """
         Initialize the player with sprite information and shooting cooldown.
 
@@ -20,6 +21,7 @@ class PlayerService(ShootingSpriteService):
             cooldown (float): The cooldown time between player shots.
         """
         super().__init__(sprite_info, cooldown=cooldown)
+        self._points = points
 
     def move(self, key: int) -> int:
         """
@@ -51,3 +53,26 @@ class PlayerService(ShootingSpriteService):
 
         self.x = new_x
         return new_x
+
+    @property
+    def points(self):
+        """
+        int: The current amount of points
+        """
+        return self._points
+
+    @points.setter
+    def points(self, value: int):
+        """
+        Set the value of points 
+
+        Args:
+            points (int): The new value of points
+        """
+        self._points = value
+
+    def add_points(self, value: int):
+        """
+        Increase total points by the value
+        """
+        self.points = self.points + value
