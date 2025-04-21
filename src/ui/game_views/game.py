@@ -2,7 +2,7 @@ import pygame
 import os
 from config import ASSETS_DIR
 from pygame.sprite import Group
-from app_state import AppState
+from app_enums import AppState
 from utils.game_helpers import get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation

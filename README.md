@@ -20,7 +20,9 @@ Lataa uusin julkaisu täältä:
 ## Ohjelman asentaminen ja käynnistäminen
 1. ``poetry install``
 
-2. ``poetry run invoke start``
+2. ``poetry run invoke build``
+
+3. ``poetry run invoke start``
 
 ## Komentorivitoiminnot
 

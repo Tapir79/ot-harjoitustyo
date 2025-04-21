@@ -1,7 +1,9 @@
 import os
 
-PROJECT_ROOT = os.path.dirname(__file__)
-ASSETS_DIR = os.path.join(PROJECT_ROOT, "assets")
+SRC_ROOT = os.path.dirname(__file__)
+PROJECT_ROOT = SRC_ROOT[:-4]
+DATABASE_FILE_PATH = os.path.join(PROJECT_ROOT, "data", "database.db")
+ASSETS_DIR = os.path.join(SRC_ROOT, "assets")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

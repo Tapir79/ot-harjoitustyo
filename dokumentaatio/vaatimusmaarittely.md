@@ -41,9 +41,9 @@ Peli koostuu seuraavista osista:
      
 [X]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.    
 [X]   - Pelin voi käynnistää anonyymina pelaajana.       
-[ ]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
-[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, peli alkaa.           
-[ ]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
+[X]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
+[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.           
+[X]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
 
 2. **Rekisteröitymisnäkymä**
 

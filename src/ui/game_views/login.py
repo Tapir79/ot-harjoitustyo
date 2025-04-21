@@ -1,5 +1,5 @@
 import pygame
-from app_state import AppState
+from app_enums import AppState
 from config import BLACK, WHITE
 
 

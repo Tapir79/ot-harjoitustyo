@@ -8,3 +8,4 @@ htmlcov
 src/assets/Effects
 src/assets/Missiles
 src/assets/Ships
+data/database.db

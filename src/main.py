@@ -7,8 +7,8 @@ clean-up operations like quitting Pygame and exiting the system.
 import sys
 import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
-from app_state import AppState
-from ui.game_views.create_user import draw_create_user_view
+from app_enums import AppState
+from ui.game_views.create_user import create_user_view
 from ui.game_views.start_screen import draw_start_screen
 from ui.game_views.login import draw_login_view
 from ui.game_views.game import Game
@@ -33,7 +33,7 @@ def main():
         elif state == AppState.LOGIN_VIEW:
             state = draw_login_view(screen)
         elif state == AppState.CREATE_USER_VIEW:
-            state = draw_create_user_view(screen)
+            state = create_user_view(screen)
         elif state == AppState.GAME_RUNNING:
             game.run()
             state = AppState.START_SCREEN

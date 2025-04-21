@@ -35,4 +35,8 @@ def check(ctx):
     lint(ctx)
     test(ctx)
     coverage(ctx)
+
+@task
+def build(ctx):
+    ctx.run("python3 src/build.py", pty=True)
     
