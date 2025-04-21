@@ -9,7 +9,7 @@ graph TD
     UI[UI - Pygame] --> Services
     UI[UI - Pygame] --> Utils
     Services[Services - Logiikka] --> Models
-    Services --> Repositories[Repositories - Tulossa]
+    Services --> Repositories[Repositories]
     Repositories --> Entities[Entities - Tulossa]
 
 ```
@@ -18,12 +18,15 @@ graph TD
 - services-pakkaus sisältää pelilogiikan
 - models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
 - utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata (tämä rakenne saattaa vielä muuttua ja olisi ehkä hyvä refaktoroida esim. game_serviceksi)
-- TODO vaiheessa on repositories ja entities, jonne tulee myöhemmin tietojen pysyväistallennuksesta vastaava koodi ja tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
+- repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
+- TODO vaiheessa on entities, jonne tulee myöhemmin tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
 
 ## Käyttöliittymä 
 
-Käyttöliittymä sisältää Pygame-pelin. Se sisältää tällä hetkellä pelkän pelinäkymän, joka alkaa suoraan, kun sovellus käynnistetään. 
-TODO vaiheessa ovat käyttäjän luominen ja kirjautuminen eli aloitusnäkymä ja kirjautumisnäkymä. Näkymät sijaitsevat ui-kansiossa, jonne on eristetty kaikki Pygame-koodi. Kansion entrypoint on game.py. Peli käynnistetään src-kansion juuresta, tiedostosta main.py.  
+Käyttöliittymä sisältää Pygame-pelin. Se sisältää tällä hetkellä aloitusnäkymän. Aloitusnäkymässä voi siirtyä suoraan pelinäkymään, jolloin tuloksia ei tallenneta. Käyttäjä voi myös luoda uuden käyttäjätunnuksen. 
+TODO vaiheessa ovat kirjautuminen ja kirjautumisnäkymä sekä kirjautuneen käyttäjän aloitusnäkymä. Näkymät sijaitsevat ui-kansiossa, jonne on eristetty kaikki Pygame-koodi. Kansion entrypoint on main.py. Peli käynnistetään src-kansion juuresta, tiedostosta main.py.  
+
+TODO käyttöliittymän näkymät kaavio
 
 ## Sovelluslogiikka 
 
