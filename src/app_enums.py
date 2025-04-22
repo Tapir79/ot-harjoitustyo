@@ -15,3 +15,10 @@ class CurrentField(str, Enum):
     CREATE = "create"
     USERNAME = "username"
     PASSWORD = "password"
+
+
+class ErrorMessages(str, Enum):
+    FIELDS_REQUIRED = "Both fields are required."
+    USERNAME_TOO_SHORT = "Username must be at least 3 characters."
+    PASSWORD_TOO_SHORT = "Password must be at least 3 characters."
+    USERNAME_EXISTS = "Username already exists."

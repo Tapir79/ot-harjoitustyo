@@ -39,4 +39,5 @@
 | 19.4 | 5 | Koodin refaktorointia. Muuttujat yksityisiksi ja yksityisten muuttujien property/setter-metodit | 
 | 20.4 | 6 | Koodin refaktorointia, docstring-kommentteja. Pelaajan pisteiden laskenta. Etusivu ja näkymäpohjat kirjautumiseen ja uuden tunnuksen luomiseen.|
 | 21.4 | 7 | Etusivun ja uuden tunnuksen luomisen näkymäpohjan refaktorointi. Uuden tunnuksen luominen tietokantaan. Sqlite:n ja werkzeug:n lisääminen projektiin. |
+| 22.4 | 1  | Käyttäjän luomisen tietokantatestit. |
 | yht | | |
