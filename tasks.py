@@ -38,5 +38,5 @@ def check(ctx):
 
 @task
 def build(ctx):
-    ctx.run("python3 src/build.py", pty=True)
+    ctx.run("python3 src/ui/build.py", pty=True)
     
