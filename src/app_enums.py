@@ -21,4 +21,6 @@ class ErrorMessages(str, Enum):
     FIELDS_REQUIRED = "Both fields are required."
     USERNAME_TOO_SHORT = "Username must be at least 3 characters."
     PASSWORD_TOO_SHORT = "Password must be at least 3 characters."
+    USERNAME_OR_PASSWORD_FAILED = "Username and/or password failed."
     USERNAME_EXISTS = "Username already exists."
+    USER_NOT_FOUND = "Could not find user "
