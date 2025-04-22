@@ -1,41 +1,42 @@
 import sqlite3
 from config import DATABASE_FILE_PATH
 
-_connection = None
 
+class Database:
+    def __init__(self, db_path=DATABASE_FILE_PATH, connection=None):
+        self._db_path = db_path
+        self._injected_connection = connection
 
-def set_connection(conn):
-    global _connection
-    _connection = conn
+    def get_connection(self):
+        if self._injected_connection is not None:
+            return self._injected_connection
 
+        con = sqlite3.connect(self._db_path)
+        con.execute("PRAGMA foreign_keys = ON")
+        con.row_factory = sqlite3.Row
+        return con
 
-def get_connection():
-    global _connection
-    if _connection is not None:
-        return _connection  # use injected test connection
+    def execute(self, sql, params=None):
+        if params is None:
+            params = []
 
-    con = sqlite3.connect(DATABASE_FILE_PATH)
-    con.execute("PRAGMA foreign_keys = ON")
-    con.row_factory = sqlite3.Row
-    return con
+        con = self.get_connection()
+        result = con.execute(sql, params)
 
+        if self._injected_connection is None:
+            con.commit()
+            con.close()
 
-def execute(sql, params=None):
-    if params is None:
-        params = []
-    con = get_connection()
-    result = con.execute(sql, params)
-    if _connection is None:
-        con.commit()
-        con.close()
-    return result.lastrowid
+        return result.lastrowid
 
+    def query(self, sql, params=None):
+        if params is None:
+            params = []
 
-def query(sql, params=None):
-    if params is None:
-        params = []
-    con = get_connection()
-    result = con.execute(sql, params).fetchall()
-    if _connection is None:
-        con.close()
-    return result
+        con = self.get_connection()
+        result = con.execute(sql, params).fetchall()
+
+        if self._injected_connection is None:
+            con.close()
+
+        return result

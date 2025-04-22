@@ -1,7 +1,9 @@
 import pygame
 from app_enums import AppState, CurrentField
 from config import BLACK, WHITE
+from db import Database
 from services.user_service import UserService
+from repositories.user_repository import UserRepository
 
 
 class CreateUserView:
@@ -19,7 +21,7 @@ class CreateUserView:
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
         self.borders = {"thick": 3, "thin": 1}
-        self.user_service = UserService()
+        self.user_service = UserService(UserRepository(Database()))
 
     def run(self):
         while True:
@@ -102,7 +104,8 @@ class CreateUserView:
         username = self.input_boxes[CurrentField.USERNAME].strip()
         password = self.input_boxes[CurrentField.PASSWORD].strip()
 
-        success, message = self.user_service.register_user(username, password)
+        success, message, _ = self.user_service.register_user(
+            username, password)
         self.message = message
         if success:
             self.render()
