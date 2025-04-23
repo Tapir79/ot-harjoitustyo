@@ -6,11 +6,11 @@ from ui.game_views.base_view import BaseView
 
 class StartScreenView(BaseView):
     def __init__(self, screen):
-        super().__init__(screen)
+        super().__init__(screen, esc_state=AppState.QUIT)
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
-        self.init_mouse_click_areas()
         self.current_field = CurrentField.START
+        self.init_mouse_click_areas()
 
     def init_mouse_click_areas(self):
         self.start_rect = pygame.Rect(250, 200, 350, 36)
@@ -23,45 +23,24 @@ class StartScreenView(BaseView):
         pygame.display.flip()
 
     def draw_labels(self):
-        self.screen.blit(self.font.render(
-            "Alien Attack", True, WHITE), (250, 100))
-        self.screen.blit(self.small_font.render(
-            "1. Start Game", True, WHITE), (250, 200))
-        self.screen.blit(self.small_font.render(
-            "2. Login", True, WHITE), (250, 250))
-        self.screen.blit(self.small_font.render(
-            "3. Create Account", True, WHITE), (250, 300))
-        self.screen.blit(self.small_font.render(
-            "ESC: Quit", True, WHITE), (250, 350))
+        self.draw_text("Alien Attack", (250, 100), self.font)
+        self.draw_text("1. Start Game", (250, 200), self.small_font)
+        self.draw_text("2. Login", (250, 250), self.small_font)
+        self.draw_text("3. Create Account", (250, 300), self.small_font)
+        self.draw_text("ESC: Quit", (250, 350), self.small_font)
 
-    def handle_event(self, event):
-        if event.type == pygame.QUIT:
-            return AppState.QUIT
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                return AppState.GAME_RUNNING
-            elif event.key == pygame.K_2:
-                return AppState.LOGIN_VIEW
-            elif event.key == pygame.K_3:
-                return AppState.CREATE_USER_VIEW
-            elif event.key == pygame.K_ESCAPE:
-                return AppState.QUIT
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            return self.handle_mouse_click(event)
+    def handle_keydown(self, event):
+        if event.key == pygame.K_1:
+            return AppState.GAME_RUNNING
+        elif event.key == pygame.K_2:
+            return AppState.LOGIN_VIEW
+        elif event.key == pygame.K_3:
+            return AppState.CREATE_USER_VIEW
 
     def handle_mouse_click(self, event):
         if self.start_rect.collidepoint(event.pos):
-            self.current_field = CurrentField.START
             return AppState.GAME_RUNNING
         elif self.login_rect.collidepoint(event.pos):
-            self.current_field = CurrentField.LOGIN
             return AppState.LOGIN_VIEW
         elif self.create_account_rect.collidepoint(event.pos):
-            self.current_field = CurrentField.CREATE
             return AppState.CREATE_USER_VIEW
-
-# Entry point
-
-
-def start_screen(screen):
-    return StartScreenView(screen).run()

@@ -8,9 +8,9 @@ import sys
 import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 from app_enums import AppState
-from ui.game_views.create_user import create_user_view
-from ui.game_views.start_screen import start_screen
-from ui.game_views.login import login_view
+from ui.game_views.create_user import CreateUserView
+from ui.game_views.start_screen import StartScreenView
+from ui.game_views.login import LoginView
 from ui.game_views.game import Game
 
 
@@ -29,11 +29,11 @@ def main():
 
     while state != AppState.QUIT:
         if state == AppState.START_SCREEN:
-            state = start_screen(screen)
+            state = StartScreenView(screen).run()
         elif state == AppState.LOGIN_VIEW:
-            state = login_view(screen)
+            state = LoginView(screen).run()
         elif state == AppState.CREATE_USER_VIEW:
-            state = create_user_view(screen)
+            state = CreateUserView(screen).run()
         elif state == AppState.GAME_RUNNING:
             game.run()
             state = AppState.START_SCREEN
