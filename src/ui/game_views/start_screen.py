@@ -1,11 +1,12 @@
 import pygame
 from config import BLACK, WHITE
 from app_enums import AppState, CurrentField
+from ui.game_views.base_view import BaseView
 
 
-class StartScreenView:
+class StartScreenView(BaseView):
     def __init__(self, screen):
-        self.screen = screen
+        super().__init__(screen)
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
         self.init_mouse_click_areas()
@@ -15,14 +16,6 @@ class StartScreenView:
         self.start_rect = pygame.Rect(250, 200, 350, 36)
         self.login_rect = pygame.Rect(250, 250, 350, 36)
         self.create_account_rect = pygame.Rect(250, 300, 350, 36)
-
-    def run(self):
-        while True:
-            self.render()
-            for event in pygame.event.get():
-                state = self.handle_event(event)
-                if state is not None:
-                    return state
 
     def render(self):
         self.screen.fill(BLACK)
@@ -70,5 +63,5 @@ class StartScreenView:
 # Entry point
 
 
-def draw_start_screen(screen):
+def start_screen(screen):
     return StartScreenView(screen).run()

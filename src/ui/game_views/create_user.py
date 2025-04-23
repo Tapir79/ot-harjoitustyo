@@ -4,15 +4,16 @@ from config import BLACK, WHITE
 from db import Database
 from services.user_service import UserService
 from repositories.user_repository import UserRepository
+from ui.game_views.base_view import BaseView
 
 
-class CreateUserView:
+class CreateUserView(BaseView):
     """
-    A UI view to create a new user with a password.
+    An UI view to create a new user with a password.
     """
 
     def __init__(self, screen):
-        self.screen = screen
+        super().__init__(screen)
         self.input_boxes = {CurrentField.USERNAME: "",
                             CurrentField.PASSWORD: ""}
         self.current_field = CurrentField.USERNAME
@@ -22,14 +23,6 @@ class CreateUserView:
         self.password_rect = pygame.Rect(250, 200, 300, 36)
         self.borders = {"thick": 3, "thin": 1}
         self.user_service = UserService(UserRepository(Database()))
-
-    def run(self):
-        while True:
-            self.render()
-            for event in pygame.event.get():
-                result = self.handle_event(event)
-                if result is not None:
-                    return result
 
     def render(self):
         self.screen.fill(BLACK)
