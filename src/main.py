@@ -27,14 +27,20 @@ def main():
     state = AppState.START_SCREEN
     game = Game(screen)
 
+    user = None
+
     while state != AppState.QUIT:
         if state == AppState.START_SCREEN:
-            state = StartScreenView(screen).run()
+            state = StartScreenView(screen, user).run()
         elif state == AppState.LOGIN_VIEW:
-            state = LoginView(screen).run()
+            login_view = LoginView(screen)
+            state = login_view.run()
+            if login_view.user:
+                user = login_view.user
         elif state == AppState.CREATE_USER_VIEW:
             state = CreateUserView(screen).run()
         elif state == AppState.GAME_RUNNING:
+            game.set_user(user)
             game.run()
             state = AppState.START_SCREEN
 

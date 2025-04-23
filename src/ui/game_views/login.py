@@ -12,6 +12,7 @@ class LoginView(BaseView):
         super().__init__(screen, esc_state=AppState.START_SCREEN)
         self.username = ""
         self.password = ""
+        self.user = None
 
     def render(self):
         self.screen.fill(BLACK)
@@ -36,6 +37,7 @@ class LoginView(BaseView):
         user_id, msg = self.user_service.login(username, password)
         if user_id:
             self.message = f"Welcome, {username}!"
+            self.user = username
             self.render()
             pygame.time.wait(1500)
             return AppState.START_SCREEN

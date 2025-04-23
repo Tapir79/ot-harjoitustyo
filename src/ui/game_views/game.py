@@ -31,13 +31,17 @@ class Game:
     and rendering the screen including the player and on-screen instructions.
     """
 
-    def __init__(self, screen):
+    def __init__(self, screen, user=None):
         """
         Initializes the game, including the display, player, clock, and font.
         Sets up the game window and player object.
         """
 
         self.reset_game(screen)
+        self.user = self.set_user(user)
+
+    def set_user(self, user):
+        self.user = user if user else ""
 
     def reset_game(self, screen):
         self.screen = screen
@@ -310,7 +314,7 @@ class Game:
         Draw current player points on screen.
         """
         points = self.player.player_service.points
-        text = f"Points: {points}"
+        text = f"{self.user} points: {points}"
         position = position
         self.draw_text(text, position, center)
 
