@@ -52,7 +52,6 @@ class LoginView(BaseView):
         self.screen.blit(self.font.render(
             "Press ENTER to submit", True, WHITE), (100, 250))
 
-
     def handle_event(self, event):
         if event.type == pygame.QUIT:
             return AppState.QUIT
@@ -99,5 +98,7 @@ class LoginView(BaseView):
         return None
 
 # Entry point
+
+
 def login_view(screen):
     return LoginView(screen).run()
