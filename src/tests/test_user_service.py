@@ -64,13 +64,13 @@ class TestUserService(unittest.TestCase):
     def test_get_existing_user(self):
         success, _, user = self.service.register_user("elaine", "marley")
         self.assertTrue(success)
-        actual_user, _ = self.service.get_user(user.userid)
+        actual_user, _ = self.service.get_user(user.user_id)
         self.assertEqual(actual_user.username, "elaine")
 
     def test_get_non_existing_user(self):
         success, _, user = self.service.register_user("elaine", "marley")
         self.assertTrue(success)
-        _, msg = self.service.get_user(user.userid + 1)
+        _, msg = self.service.get_user(user.user_id + 1)
         self.assertEqual(msg, ErrorMessages.USER_NOT_FOUND)
 
     def test_user_login_success(self):
@@ -79,7 +79,7 @@ class TestUserService(unittest.TestCase):
         user_id, msg = self.service.login("elaine", "marley")
         logged_in_user, _ = self.service.get_user(user_id)
         self.assertEqual(logged_in_user.username, user.username)
-        self.assertEqual(logged_in_user.userid, user_id)
+        self.assertEqual(logged_in_user.user_id, user_id)
 
     def test_user_login_fails(self):
         success, _, user = self.service.register_user("elaine", "marley")

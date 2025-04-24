@@ -11,7 +11,8 @@ class UserRepository:
         sql = """SELECT id, username FROM users WHERE id = ?"""
         result = self._db.query(sql, [user_id])
         if result:
-            return User(result[0]["id"], result[0]["username"])
+            result = result[0]
+            return User(result["id"], result["username"])
         return None
 
     def create_user(self, username, password):
