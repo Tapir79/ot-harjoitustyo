@@ -23,4 +23,5 @@ class ErrorMessages(str, Enum):
     PASSWORD_TOO_SHORT = "Password must be at least 3 characters."
     USERNAME_OR_PASSWORD_FAILED = "Username and/or password failed."
     USERNAME_EXISTS = "Username already exists."
-    USER_NOT_FOUND = "Could not find user "
+    USER_NOT_FOUND = "Could not find user."
+    USER_STATISTICS_EXISTS = "User statistics already exists."
