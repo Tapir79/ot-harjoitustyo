@@ -8,6 +8,8 @@ CREATE TABLE user_statistics(
     id INTEGER PRIMARY KEY,
     high_score INTEGER,
     level INTEGER,
+    created_at TEXT DEFAULT (DATETIME('now')),
+    updated_at TEXT DEFAULT (DATETIME('now')), 
     user_id INTEGER REFERENCES users ON DELETE CASCADE
 );
 

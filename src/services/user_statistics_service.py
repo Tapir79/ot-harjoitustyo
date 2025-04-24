@@ -31,11 +31,13 @@ class UserStatisticsService:
 
         try:
             if not user_statistics:
-                user_statistics = self.user_statistics_repository.create_user_statistics(
+                self.user_statistics_repository.create_user_statistics(
                     high_score, stage, user_id)
             elif high_score > user_statistics.high_score:
-                user_statistics = self.user_statistics_repository.update_user_statistics(
+                self.user_statistics_repository.update_user_statistics(
                     high_score, stage, user_id)
+            user_statistics = self.user_statistics_repository.get_user_statistics(
+                user_id)
             return user_statistics, None
         except sqlite3.IntegrityError:
             return None, ErrorMessages.USER_NOT_FOUND
