@@ -47,8 +47,8 @@ Peli koostuu seuraavista osista:
 
 2. **Rekisteröitymisnäkymä**
 
-[ ]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen     
-[ ]   - Ohjaa takaisin kirjautumisnäkymään 
+[X]   - Lomake, jolla voi luoda uuden käyttäjätunnuksen     
+[X]   - Ohjaa takaisin kirjautumisnäkymään 
 
 3. **Pelinäkymä**
 
@@ -67,8 +67,8 @@ Peli koostuu seuraavista osista:
 
 [X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.        
 [X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään.           
-[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelin high score eli kaikkien aikojen paras tulos.              
-[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan oma high score eli paras henkilökohtainen tulos.             
+[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan tulos ja pelin high score eli kaikkien aikojen paras tulos.              
+[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy myös pelaajan oma high score eli paras henkilökohtainen tulos.             
 
 
 ## Perusversion tarjoama toiminnallisuus
@@ -103,7 +103,7 @@ Peli koostuu seuraavista osista:
 
 - Pelissä on SQLite-tietokanta, johon tallennetaan:   
         
-[ ] - Pelaajan nimi (tai nimimerkki) ja salasana.        
+[X] - Pelaajan nimi (tai nimimerkki) ja salasana.        
 [ ] - Pelaajan paras pistemäärä.     
 [ ] - Pelin aikaleima.      
 
