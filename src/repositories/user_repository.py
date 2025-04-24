@@ -12,14 +12,14 @@ class UserRepository:
         result = self._db.query(sql, [user_id])
         if result:
             result = result[0]
-            return User(result["id"], result["username"])
+            return User(user_id=result["id"], username=result["username"])
         return None
 
     def create_user(self, username, password):
         password_hash = generate_password_hash(password)
         sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
         user_id = self._db.execute(sql, [username, password_hash])
-        return User(user_id, username)
+        return User(user_id=user_id, username=username)
 
     def check_login(self, username, password):
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
