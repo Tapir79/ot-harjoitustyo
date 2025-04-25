@@ -39,7 +39,7 @@ class StartScreenView(BaseView):
 
     def handle_keydown(self, event):
         if event.key == pygame.K_1:
-            return AppState.GAME_RUNNING
+            return AppState.RUN_GAME
         elif event.key == pygame.K_2:
             return AppState.LOGIN_VIEW
         elif event.key == pygame.K_3:
@@ -47,7 +47,7 @@ class StartScreenView(BaseView):
 
     def handle_mouse_click(self, event):
         if self.start_rect.collidepoint(event.pos):
-            return AppState.GAME_RUNNING
+            return AppState.RUN_GAME
         elif self.login_rect.collidepoint(event.pos):
             return AppState.LOGIN_VIEW
         elif self.create_account_rect.collidepoint(event.pos):

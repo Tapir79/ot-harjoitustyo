@@ -5,7 +5,7 @@ class AppState(str, Enum):
     START_SCREEN = "start"
     LOGIN_VIEW = "login"
     CREATE_USER_VIEW = "create_user"
-    GAME_RUNNING = "game"
+    RUN_GAME = "game"
     QUIT = "quit"
 
 

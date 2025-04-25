@@ -39,8 +39,9 @@ def main():
                 user = login_view.user
         elif state == AppState.CREATE_USER_VIEW:
             state = CreateUserView(screen).run()
-        elif state == AppState.GAME_RUNNING:
+        elif state == AppState.RUN_GAME:
             game.set_user(user)
+            game.reset_game(screen)
             game.run()
             state = AppState.START_SCREEN
 
