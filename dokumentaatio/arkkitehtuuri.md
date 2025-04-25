@@ -23,10 +23,59 @@ graph TD
 
 ## Käyttöliittymä 
 
-Käyttöliittymä sisältää Pygame-pelin. Se sisältää tällä hetkellä aloitusnäkymän. Aloitusnäkymässä voi siirtyä suoraan pelinäkymään, jolloin tuloksia ei tallenneta. Käyttäjä voi myös luoda uuden käyttäjätunnuksen. 
-TODO vaiheessa ovat kirjautuminen ja kirjautumisnäkymä sekä kirjautuneen käyttäjän aloitusnäkymä. Näkymät sijaitsevat ui-kansiossa, jonne on eristetty kaikki Pygame-koodi. Kansion entrypoint on main.py. Peli käynnistetään src-kansion juuresta, tiedostosta main.py.  
+Käyttöliittymä koostuu uuden käyttäjän luomisesta, kirjautumisesta ja itse pelistä. Näkymät sijaitsevat "ui/game_views"-kansiossa, jonne on eristetty kaikki Pygame-koodi. Kansion entrypoint on main.py. Peli käynnistetään src-kansion juuresta, tiedostosta main.py. Aloitusnäkymässä voi siirtyä suoraan pelinäkymään, jolloin pelaajan henkilökohtaisia tuloksia ei tallenneta. Käyttäjä voi myös luoda uuden käyttäjätunnuksen ja kirjautua sisään, jolloin tulokset tallennetaan tietokantaan.   
 
-TODO käyttöliittymän näkymät kaavio
+Käyttöliittymän flowchart-kaavio:
+```mermaid
+flowchart TD
+    StartScreenView -->|Luo uusi käyttäjä| CreateUserView
+    CreateUserView -->|Success| StartScreenView
+    StartScreenView -->|Login| LoginView
+    LoginView -->|Success| StartScreenView
+    StartScreenView -->|Aloita peli| Game
+```
+---
+
+Käyttäjähallintanäkymät:
+
+```mermaid 
+classDiagram
+
+    class BaseView {
+        +screen
+        +run()
+        +render()
+        +handle_event()
+        +handle_keydown()
+        +handle_mouse_click()
+        +on_submit()
+    }
+
+    class CreateUserView {
+        +input_boxes
+        +on_submit()
+    }
+
+    class LoginView {
+        +username
+        +password
+        +user
+        +on_submit()
+    }
+
+    class StartScreenView {
+        +user
+        +render()
+        +handle_keydown()
+        +handle_mouse_click()
+    }
+
+    %% Inheritance
+    BaseView --|>  CreateUserView 
+    BaseView --|>  LoginView 
+    BaseView --|>  StartScreenView
+
+```
 
 ## Sovelluslogiikka 
 
@@ -106,7 +155,27 @@ Tasot generoidaan levelservice-luokassa level_config-tiedoston vakioarvojen ohja
 
 ## Tietojen pysyväistallennus 
 
-Tämä osio on vielä toteuttamatta, mutta tietokantaan tallennetaan jatkossa rekisteröityneet käyttäjät ja käyttäjät pelistatistiikat. 
+Tietokantaan tallennetaan rekisteröityneet käyttäjät ja käyttäjät pelistatistiikat. 
+
+Tietojen pysyväistallennuksen yleiskaavio: 
+
+```mermaid
+flowchart TD
+    UI[UI View: LoginView / CreateUserView]
+
+    UI <--> US[UserService]
+    UI <--> USS[UserStatisticsService]
+
+    US <--> UR[UserRepository]
+    USS <--> USR[UserStatisticsRepository]
+
+    UR <--> DB_USERS[SQLite Taulu: users]
+    USR <--> DB_STATS[SQLite Taulu: user_statistics]
+
+    style DB_USERS fill:#222222,stroke:#333,stroke-width:2px
+    style DB_STATS fill:#222222,stroke:#333,stroke-width:2px
+```
+
 
 ## Ohjaustiedostot 
 
@@ -120,13 +189,53 @@ Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto.
 Kuvataan seuraavaksi sovelluksen toimintalogiikka muutaman päätoiminnallisuuden osalta sekvenssikaaviona.
 
 
-## Käyttäjän kirjautuminen 
+## Käyttäjän kirjautuminen  
 
-Toiminnallisuus toteuttamatta 
+```mermaid 
+sequenceDiagram
+    participant Main
+    participant StartScreenView
+    participant LoginView
+    participant UserService
+    participant UserRepository
+    participant DB
+
+    Main->>StartScreenView: aloita()
+    StartScreenView->>LoginView: valitse "Login"
+    LoginView->>UserService: tarkista sisäänkirjautuminen
+    UserService->>UserRepository: suorita käyttäjän luontilause
+    UserRepository->>DB: haet käyttäjä ja varmista, että salasana täsmää
+    DB->>UserRepository: palauta käyttäjä_id
+    UserRepository->>UserService: palauta käyttäjä_id
+    LoginView-->>StartScreenView: palaa aloitusvalikkoon
+    StartScreenView->>StartScreenView: odota seuraavaa valintaa
+
+
+```
 
 ## Uuden käyttäjän luominen 
 
-Toiminnallisuus toteuttamatta
+```mermaid 
+sequenceDiagram
+    participant Main
+    participant StartScreenView
+    participant CreateUserView
+    participant UserService
+    participant UserRepository
+    participant DB
+
+    Main->>StartScreenView: aloita()
+    StartScreenView->>CreateUserView: valitse "Create Account"
+    CreateUserView->>UserService: luo uusi käyttäjä
+    UserService->>UserRepository: suorita käyttäjän luontilause
+    UserRepository->>DB: lisää uusi käyttäjä tietokantaan
+    DB->>UserRepository: palauta käyttäjä entiteetti
+    UserRepository->>UserService: palauta käyttäjä entiteetti
+    CreateUserView-->>StartScreenView: palaa aloitusvalikkoon
+    StartScreenView->>StartScreenView: odota seuraavaa valintaa
+
+
+```
 
 ## Pelin eteneminen 
 
