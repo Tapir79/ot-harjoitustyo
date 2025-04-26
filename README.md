@@ -9,7 +9,7 @@ Lataa uusin julkaisu täältä:
 
 
 ## Dokumentaatio
-* **TODO**: Käyttöohje
+* [Käyttöohje](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/kayttoohje.md)
 * [Vaatimusmäärittely](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/vaatimusmaarittely.md)
 * [Arkkitehtuuri](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/arkkitehtuuri.md)
 * **TODO**: Testausdokumentti
