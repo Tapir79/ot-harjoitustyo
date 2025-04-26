@@ -40,4 +40,8 @@
 | 20.4 | 6 | Koodin refaktorointia, docstring-kommentteja. Pelaajan pisteiden laskenta. Etusivu ja näkymäpohjat kirjautumiseen ja uuden tunnuksen luomiseen.|
 | 21.4 | 7 | Etusivun ja uuden tunnuksen luomisen näkymäpohjan refaktorointi. Uuden tunnuksen luominen tietokantaan. Sqlite:n ja werkzeug:n lisääminen projektiin. |
 | 22.4 | 5  | Käyttäjän luomisen tietokantatestit. Käyttäjän sisäänkirjautumisen tarkistaminen ja tietokantatestit. Käyttäjän hakeminen ja tietokantatestit.  |
+| 23.4 | 4 | Käyttäjätiedon jakaminen pelinäkymien kesken. Kirjautuneen pelaajan nimi pelinäkymään. Pelinäkymien refaktorointi ja perintä.|
+| 24.4 | 4 | Käyttäjätiedot ja tilastot tietokantataulut, repositorio ja palvelu.|
+| 25.4 | 2 | Pelivalikon ja näkymien arkkitehtuurikaavio.  | 
+| 26.4 | 3 | Pysyväistallennuksen docstringit. Pelinäkymien docstringit. Aiempien docstrigien päivitys ja korjailu.|
 | yht | | |
