@@ -62,9 +62,9 @@ class UserRepository:
             password (str): The plaintext password entered by the user.
 
         Returns:
-            tuple: A tuple (user_id, None) if credentials are correct, 
-            tuple: A tuple (None, ErrorMessages.USER_NOT_FOUND) if user doesn't exist
-            tuple: A tuple (None, USERNAME_OR_PASSWORD_FAILED) if login fails.
+            - success:        A tuple (user_id, None)
+            - user not found: A tuple (None, error message)
+            - login fails:    A tuple (None, error message)
         """
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
         result = self._db.query(sql, [username])
