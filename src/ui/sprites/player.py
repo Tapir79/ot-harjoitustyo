@@ -21,6 +21,13 @@ class PlayerSprite(pygame.sprite.Sprite):
     """
 
     def __init__(self, player_service: PlayerService, bullet_group: pygame.sprite.Group):
+        """
+        Initialize the player sprite.
+
+        Args:
+            player_service: Logic layer managing player movement and shooting.
+            bullet_group: Pygame group to add bullets to when shooting.
+        """
         super().__init__()
         self.player_service = player_service
         self.bullet_group = bullet_group
@@ -82,4 +89,8 @@ class PlayerSprite(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
     def is_dead(self):
+        """
+        Returns:
+            bool: Whether the player has surpassed the maximum hitcount.
+        """
         return self.player_service.is_dead

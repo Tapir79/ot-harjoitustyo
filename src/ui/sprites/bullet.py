@@ -22,6 +22,9 @@ class BulletSprite (pygame.sprite.Sprite):
         """
         Initialize the bullet sprite, load its image based on direction,
         and set its size and starting position.
+
+        Args:
+            bullet_service: The logic class controlling bullet behavior.
         """
         super().__init__()
         self.bullet = bullet_service
@@ -54,13 +57,3 @@ class BulletSprite (pygame.sprite.Sprite):
 
         if self.bullet.is_moving() == False:
             self.kill()
-
-    def draw(self, screen):
-        """
-        Draws the bullet on the screen at its current position.
-
-        Args:
-            screen (Surface): The game screen surface to draw the bullet on.
-        """
-        self.update()
-        screen.blit(self.image, (self.x, self.y))

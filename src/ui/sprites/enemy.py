@@ -57,13 +57,3 @@ class EnemySprite(pygame.sprite.Sprite):
         x, y = self.enemy_service.position
         self.rect.x = x
         self.rect.y = y
-
-    def draw(self, screen):
-        """
-        Draws the enemy on the screen at its current position.
-
-        Args:
-            screen (Surface): The game screen surface to draw the enemy on.
-        """
-        self.update()
-        screen.blit(self.image, self.rect)
