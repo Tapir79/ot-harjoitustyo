@@ -43,5 +43,5 @@
 | 23.4 | 4 | Käyttäjätiedon jakaminen pelinäkymien kesken. Kirjautuneen pelaajan nimi pelinäkymään. Pelinäkymien refaktorointi ja perintä.|
 | 24.4 | 4 | Käyttäjätiedot ja tilastot tietokantataulut, repositorio ja palvelu.|
 | 25.4 | 2 | Pelivalikon ja näkymien arkkitehtuurikaavio.  | 
-| 26.4 | 3 | Pysyväistallennuksen docstringit. Pelinäkymien docstringit. Aiempien docstrigien päivitys ja korjailu.|
+| 26.4 | 5 | Pysyväistallennuksen docstringit. Pelinäkymien docstringit. Aiempien docstrigien päivitys ja korjailu. Bugikorjailut ja koodin refaktorointi. Käyttöohje. |
 | yht | | |
