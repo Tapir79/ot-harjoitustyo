@@ -2,7 +2,7 @@ import pygame
 import os
 from config import ASSETS_DIR
 from pygame.sprite import Group
-from app_enums import AppState
+from app_enums import AppState, LevelAttributes
 from utils.game_helpers import get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
@@ -127,14 +127,14 @@ class Game:
 
     def set_new_level_attributes(self):
         current_level = self.levels.get_level(self.level)
-        self.cooldown = current_level["enemy_cooldown"]
-        self.enemy_shooting_probability = current_level["enemy_shoot_prob"]
-        self.enemy_count_cols = current_level["enemy_cols"]
-        self.enemy_rows = current_level["enemy_rows"]
-        self.enemy_speed = current_level["enemy_speed"]
-        self.enemy_bullet_speed = current_level["enemy_bullet_speed"]
-        self.enemy_max_hits = current_level["enemy_max_hits"]
-        self.enemy_image = current_level["enemy_image"]
+        self.cooldown = current_level[LevelAttributes.ENEMY_COOLDOWN]
+        self.enemy_shooting_probability = current_level[LevelAttributes.ENEMY_SHOOT_PROB]
+        self.enemy_count_cols = current_level[LevelAttributes.ENEMY_COLS]
+        self.enemy_rows = current_level[LevelAttributes.ENEMY_ROWS]
+        self.enemy_speed = current_level[LevelAttributes.ENEMY_SPEED]
+        self.enemy_bullet_speed = current_level[LevelAttributes.ENEMY_BULLET_SPEED]
+        self.enemy_max_hits = current_level[LevelAttributes.ENEMY_MAX_HITS]
+        self.enemy_image = current_level[LevelAttributes.ENEMY_IMAGE]
 
     def new_level_reset(self):
         self.player_bullet_group.empty()

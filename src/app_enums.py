@@ -25,3 +25,14 @@ class ErrorMessages(str, Enum):
     USERNAME_EXISTS = "Username already exists."
     USER_NOT_FOUND = "Could not find user."
     USER_STATISTICS_EXISTS = "User statistics already exists."
+
+
+class LevelAttributes(str, Enum):
+    ENEMY_COOLDOWN = "enemy_cooldown"
+    ENEMY_SHOOT_PROB = "enemy_shoot_prob"
+    ENEMY_COLS = "enemy_cols"
+    ENEMY_ROWS = "enemy_rows"
+    ENEMY_SPEED = "enemy_speed"
+    ENEMY_BULLET_SPEED = "enemy_bullet_speed"
+    ENEMY_MAX_HITS = "enemy_max_hits"
+    ENEMY_IMAGE = "enemy_image"

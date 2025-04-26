@@ -1,3 +1,4 @@
+from app_enums import LevelAttributes
 from level_config import (ENEMY_COOLDOWN, ENEMY_SHOOTING_PROBABILITY,
                           ENEMY_COLS, ENEMY_ROWS, ENEMY_SPEED, FINAL_LEVEL,
                           ENEMY_BULLET_SPEED, ENEMY_MAX_HITS, ENEMY_IMAGE,
@@ -63,11 +64,11 @@ class LevelService():
         Args:
             level: The level number.
         """
-        self.levels[level]["enemy_cooldown"] = ENEMY_COOLDOWN
-        self.levels[level]["enemy_shoot_prob"] = ENEMY_SHOOTING_PROBABILITY
-        self.levels[level]["enemy_cols"] = ENEMY_COLS
-        self.levels[level]["enemy_rows"] = ENEMY_ROWS
-        self.levels[level]["enemy_speed"] = ENEMY_SPEED
+        self.levels[level][LevelAttributes.ENEMY_COOLDOWN] = ENEMY_COOLDOWN
+        self.levels[level][LevelAttributes.ENEMY_SHOOT_PROB] = ENEMY_SHOOTING_PROBABILITY
+        self.levels[level][LevelAttributes.ENEMY_COLS] = ENEMY_COLS
+        self.levels[level][LevelAttributes.ENEMY_ROWS] = ENEMY_ROWS
+        self.levels[level][LevelAttributes.ENEMY_SPEED] = ENEMY_SPEED
 
     def create_specific_level_attributes(self, level):
         """
@@ -78,9 +79,9 @@ class LevelService():
         """
         level_attributes = self.get_level_specific_attributes(level)
         bullet_speed, enemy_max_hits, enemy_image = level_attributes
-        self.levels[level]["enemy_bullet_speed"] = bullet_speed
-        self.levels[level]["enemy_max_hits"] = enemy_max_hits
-        self.levels[level]["enemy_image"] = enemy_image
+        self.levels[level][LevelAttributes.ENEMY_BULLET_SPEED] = bullet_speed
+        self.levels[level][LevelAttributes.ENEMY_MAX_HITS] = enemy_max_hits
+        self.levels[level][LevelAttributes.ENEMY_IMAGE] = enemy_image
 
     def scale_from_previous_level(self, level):
         """
@@ -90,10 +91,10 @@ class LevelService():
             level: The current level number.
         """
         prev = level - 1
-        self.levels[level]["enemy_shoot_prob"] = self.levels[prev]["enemy_shoot_prob"] + 0.0001
-        self.levels[level]["enemy_cols"] = self.levels[prev]["enemy_cols"] + 1
-        self.levels[level]["enemy_rows"] = min(
-            4, self.levels[prev]["enemy_rows"] + 1)
+        self.levels[level][LevelAttributes.ENEMY_SHOOT_PROB] = self.levels[prev][LevelAttributes.ENEMY_SHOOT_PROB] + 0.0001
+        self.levels[level][LevelAttributes.ENEMY_COLS] = self.levels[prev][LevelAttributes.ENEMY_COLS] + 1
+        self.levels[level][LevelAttributes.ENEMY_ROWS] = min(
+            4, self.levels[prev][LevelAttributes.ENEMY_ROWS] + 1)
 
     def get_level_specific_attributes(self, level):
         """
