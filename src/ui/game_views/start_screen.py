@@ -1,11 +1,27 @@
 import pygame
-from config import BLACK, WHITE
+from config import BLACK
 from app_enums import AppState, CurrentField
 from ui.game_views.base_view import BaseView
 
 
 class StartScreenView(BaseView):
+    """
+    The start screen view shown when the game launches.
+
+    Allows users to choose between starting the game, logging in, or creating an account.
+    If the player is logged in only start game is visible. 
+
+    Inherits from BaseView to use common input handling and rendering functionality.
+    """
+
     def __init__(self, screen, user=None):
+        """
+        Initialize the start screen view.
+
+        Args:
+            screen: The pygame screen surface to draw on.
+            user: The currently logged-in user (optional).
+        """
         super().__init__(screen, esc_state=AppState.QUIT)
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
@@ -14,16 +30,25 @@ class StartScreenView(BaseView):
         self.init_mouse_click_areas()
 
     def init_mouse_click_areas(self):
+        """
+        Define clickable areas (start, login, create account) on the start screen.
+        """
         self.start_rect = pygame.Rect(250, 200, 350, 36)
         self.login_rect = pygame.Rect(250, 250, 350, 36)
         self.create_account_rect = pygame.Rect(250, 300, 350, 36)
 
     def render(self):
+        """
+        Render the start screen elements and update the display.
+        """
         self.screen.fill(BLACK)
         self.draw_labels()
         pygame.display.flip()
 
     def draw_labels(self):
+        """
+        Draw the main title and menu options based on whether a user is logged in.
+        """
         self.draw_text("Alien Attack", (250, 100), self.font)
 
         if self.user:
@@ -38,6 +63,15 @@ class StartScreenView(BaseView):
             self.draw_text("ESC: Quit", (250, 350), self.small_font)
 
     def handle_keydown(self, event):
+        """
+        Handle keypress events to select a menu option.
+
+        Args:
+            event: The pygame KEYDOWN event.
+
+        Returns:
+            AppState: The next application state based on user choice.
+        """
         if event.key == pygame.K_1:
             return AppState.RUN_GAME
         elif event.key == pygame.K_2:
@@ -46,6 +80,15 @@ class StartScreenView(BaseView):
             return AppState.CREATE_USER_VIEW
 
     def handle_mouse_click(self, event):
+        """
+        Handle mouse clicks on the start screen menu options.
+
+        Args:
+            event: The pygame MOUSEBUTTONDOWN event.
+
+        Returns:
+            AppState: The next application state based on which area was clicked.
+        """
         if self.start_rect.collidepoint(event.pos):
             return AppState.RUN_GAME
         elif self.login_rect.collidepoint(event.pos):

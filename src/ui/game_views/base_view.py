@@ -1,13 +1,26 @@
 import pygame
 from app_enums import AppState, CurrentField
-from config import BLACK, WHITE
+from config import WHITE
 from db import Database
 from repositories.user_repository import UserRepository
 from services.user_service import UserService
 
 
 class BaseView:
+    """
+    Base class for user interface views.
+
+    Handles basic rendering, event handling, and input field logic.
+    """
+
     def __init__(self, screen, esc_state=None):
+        """
+        Initialize the view.
+
+        Args:
+            screen: The pygame display surface.
+            esc_state: The AppState to return to if ESC is pressed.
+        """
         self.screen = screen
         self.font = pygame.font.Font(None, 36)
         self.small_font = pygame.font.Font(None, 28)
@@ -20,6 +33,13 @@ class BaseView:
         self.esc_state = esc_state
 
     def run(self):
+        """
+        Main loop for the view.
+        Renders the view and handles events until an AppState is returned.
+
+        Returns:
+            AppState: The next application state based on user actions.
+        """
         while True:
             self.render()
             for event in pygame.event.get():
@@ -28,9 +48,24 @@ class BaseView:
                     return result
 
     def render(self):
+        """
+        Draws the view content on the screen.
+
+        Raises:
+            NotImplementedError: Subclasses must implement this method.
+        """
         raise NotImplementedError("Subclass must implement render()")
 
     def handle_event(self, event):
+        """
+        Handle a pygame event (key press, mouse click, quit event).
+
+        Args:
+            event: The pygame event to handle.
+
+        Returns:
+            AppState or None: The next application state or None if no change.
+        """
         if event.type == pygame.QUIT:
             return AppState.QUIT
         elif event.type == pygame.KEYDOWN:
@@ -41,6 +76,15 @@ class BaseView:
             return self.handle_mouse_click(event)
 
     def handle_keydown(self, event):
+        """
+        Handle keyboard input for navigating fields and submitting data.
+
+        Args:
+            event: The pygame KEYDOWN event.
+
+        Returns:
+            AppState or None: The next application state or None.
+        """
         if event.key == pygame.K_TAB:
             self.current_field = (
                 CurrentField.PASSWORD if self.current_field == CurrentField.USERNAME else CurrentField.USERNAME
@@ -53,6 +97,13 @@ class BaseView:
             self._update_input_field(char=event.unicode)
 
     def _update_input_field(self, backspace=False, char=None):
+        """
+        Update the active input field with user typing or backspace.
+
+        Args:
+            backspace: Whether to delete a character.
+            char: The character to add.
+        """
         if hasattr(self, "input_boxes"):
             if backspace:
                 self.input_boxes[self.current_field] = self.input_boxes[self.current_field][:-1]
@@ -71,12 +122,30 @@ class BaseView:
                     self.password += char
 
     def handle_mouse_click(self, event):
+        """
+        Handle a mouse click event to select input fields.
+
+        Args:
+            event: The pygame MOUSEBUTTONDOWN event.
+
+        Returns:
+            None
+        """
         if self.username_rect.collidepoint(event.pos):
             self.current_field = CurrentField.USERNAME
         elif self.password_rect.collidepoint(event.pos):
             self.current_field = CurrentField.PASSWORD
 
     def draw_input_field(self, rect, text, is_active, is_password=False):
+        """
+        Draw an input box on the screen.
+
+        Args:
+            rect: The pygame.Rect defining the box position and size.
+            text: The text to display inside the box.
+            is_active: Whether the box is currently selected.
+            is_password: Whether to hide the text (for passwords).
+        """
         border = self.borders["thick"] if is_active else self.borders["thin"]
         pygame.draw.rect(self.screen, WHITE, rect, border)
         display_text = "*" * len(text) if is_password else text
@@ -84,9 +153,23 @@ class BaseView:
         self.screen.blit(surface, (rect.x + 5, rect.y + 5))
 
     def draw_text(self, text, pos, font=None):
+        """
+        Draw text on the screen.
+
+        Args:
+            text: The string to render.
+            pos: A tuple (x, y) for the text position.
+            font: A pygame.Font object to use (optional).
+        """
         f = font or self.font
         surface = f.render(text, True, WHITE)
         self.screen.blit(surface, pos)
 
     def on_submit(self):
+        """
+        Handle submission when user presses ENTER.
+
+        Raises:
+            NotImplementedError: Subclasses must implement this method.
+        """
         raise NotImplementedError("Subclass must implement on_submit()")
