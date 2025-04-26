@@ -50,6 +50,12 @@ def main():
 
 
 def init_main():
+    """
+    Initialize the main display screen and window settings.
+
+    Returns:
+        Surface: The initialized Pygame screen.
+    """
     pygame.init()
     display_width = RIGHT_BOUNDARY
     display_height = LOWER_BOUNDARY
