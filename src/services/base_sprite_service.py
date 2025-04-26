@@ -3,11 +3,14 @@ from models.sprite_info import SpriteInfo
 
 class BaseSpriteService:
     """
-    This is the shared base class for all sprite game logic service classes. 
-    It provides high-level access to sprite information and simple game behavior 
+    The shared base class for all sprite game logic service classes. 
+    Provides high-level access to sprite information and common game behavior 
     such as movement and health updates. 
 
     The class acts as a layer between game logic and raw sprite data.
+
+    Attributes:
+        _sprite_info (SpriteInfo): The underlying data object containing sprite state.
     """
 
     def __init__(self, sprite_info: SpriteInfo):
@@ -19,7 +22,10 @@ class BaseSpriteService:
     @property
     def x(self):
         """
-        int: The x-coordinate of the sprite.
+        The x-coordinate of the sprite.
+
+        Returns:
+            int: The x-coordinate of the sprite.
         """
         return self._sprite_info.x
 
@@ -27,13 +33,19 @@ class BaseSpriteService:
     def x(self, value):
         """
         Set the x-coordinate of the sprite.
+
+        Args:
+            value: The new x-coordinate.
         """
         self._sprite_info.x = value
 
     @property
     def y(self):
         """
-        int: The y-coordinate of the sprite.
+        The y-coordinate of the sprite.
+
+        Returns:
+            int: The y-coordinate of the sprite.
         """
         return self._sprite_info.y
 
@@ -41,20 +53,25 @@ class BaseSpriteService:
     def y(self, value):
         """
         Set the y-coordinate of the sprite.
+
+        Args:
+            value: The new y-coordinate.
         """
         self._sprite_info.y = value
 
     @property
     def position(self):
         """
-        tuple: The (x, y) position of the sprite.
+        Returns:
+            tuple: The (x, y) position of the sprite.
         """
         return self._sprite_info.position_tuple
 
     @property
     def size(self):
         """
-        Size: The full size object of the sprite.
+        Returns:
+            Size: The full size object of the sprite.
         """
         return self._sprite_info.size
 
@@ -73,28 +90,32 @@ class BaseSpriteService:
     @property
     def width(self):
         """
-        int: The width of the sprite.
+        Returns:
+            int: The width of the sprite.
         """
         return self._sprite_info.width
 
     @property
     def height(self):
         """
-        int: The height of the sprite.
+        Returns:    
+            int: The height of the sprite.
         """
         return self._sprite_info.height
 
     @property
     def hitcount(self):
         """
-        int: The current number of hits the sprite has taken.
+        Returns:
+            int: The current number of hits the sprite has taken.
         """
         return self._sprite_info.hit.hitcount
 
     @property
     def max_hits(self):
         """
-        int: The maximum number of hits the sprite can take.
+        Returns:
+            int: The maximum number of hits the sprite can take.
         """
         return self._sprite_info.hit.max_hits
 
@@ -110,14 +131,16 @@ class BaseSpriteService:
     @property
     def is_dead(self):
         """
-        bool: Whether the sprite has reached its max hits and is considered dead.
+        Returns:
+            bool: Whether the sprite has reached its max hits and is considered dead.
         """
         return self._sprite_info.is_dead()
 
     @property
     def speed(self):
         """
-        int: The current movement speed of the sprite.
+        Returns:
+            int: The current movement speed of the sprite.
         """
         return self._sprite_info.speed
 
@@ -127,7 +150,7 @@ class BaseSpriteService:
         Set a new movement speed for the sprite.
 
         Args:
-            value (int): The new speed value.
+            value: The new speed value.
         """
         self._sprite_info.speed = value
 
@@ -138,11 +161,17 @@ class BaseSpriteService:
         This function is in the service class because the functionality is about game behavior 
         (like getting faster after a power-up). The speed value is stored in 
         SpriteInfo, but changing it is handled here.
+
+        Args:
+            value: The increment speed value.
         """
         self.speed += amount
 
     def decrease_speed(self, amount=1):
         """
         Like increase speed but opposite behaviour.
+
+        Args:
+            value: The decrement speed value.
         """
         self.speed = max(1, self.speed - amount)

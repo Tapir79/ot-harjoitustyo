@@ -26,8 +26,10 @@ class LevelService():
         Get the configuration for a specific level.
 
         Args:
-            level (int): The level number.
+            level: The level number.
 
+        Returns:
+            dict: The configuration dictionary for the requested level.
         """
         return self.levels[level]
 
@@ -35,6 +37,9 @@ class LevelService():
         """
         Get the final level number.
         Example: levels are 1-15. This will return number 15.
+
+        Returns:
+            int: The number of the final level.
         """
         return self.final_level
 
@@ -54,6 +59,9 @@ class LevelService():
     def create_common_level_attributes(self, level):
         """
         Add shared common attributes to the given level.
+
+        Args:
+            level: The level number.
         """
         self.levels[level]["enemy_cooldown"] = ENEMY_COOLDOWN
         self.levels[level]["enemy_shoot_prob"] = ENEMY_SHOOTING_PROBABILITY
@@ -64,6 +72,9 @@ class LevelService():
     def create_specific_level_attributes(self, level):
         """
         Add level-specific attributes like enemy bullet speed and image.
+
+        Args:
+            level: The level number.
         """
         level_attributes = self.get_level_specific_attributes(level)
         bullet_speed, enemy_max_hits, enemy_image = level_attributes
@@ -74,6 +85,9 @@ class LevelService():
     def scale_from_previous_level(self, level):
         """
         Slightly increase difficulty compared to the previous level.
+
+        Args:
+            level: The current level number.
         """
         prev = level - 1
         self.levels[level]["enemy_shoot_prob"] = self.levels[prev]["enemy_shoot_prob"] + 0.0001
@@ -84,6 +98,12 @@ class LevelService():
     def get_level_specific_attributes(self, level):
         """
         Return bullet speed, max hits, and image based on level range.
+
+        Args:
+            level: The level number.
+
+        Returns:
+            tuple: (bullet_speed, enemy_max_hits, enemy_image) for the level.
         """
         if level <= 5:
             return (ENEMY_BULLET_SPEED, ENEMY_MAX_HITS, ENEMY_IMAGE)
@@ -95,5 +115,11 @@ class LevelService():
     def is_starting_level(self, level):
         """
         Check if the level is a starting point for a new level set.
+
+        Args:
+            level: The level number.
+
+        Returns:
+            bool: True if the level starts a new group, otherwise False.
         """
         return level in (1, 6, 11)

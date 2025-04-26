@@ -14,13 +14,13 @@ class EnemyService(ShootingSpriteService):
     specific to enemy movement patterns and boundary handling.
     """
 
-    def __init__(self, sprite_info: SpriteInfo, cooldown=ENEMY_COOLDOWN):
+    def __init__(self, sprite_info, cooldown=ENEMY_COOLDOWN):
         """
         Initialize the enemy with its sprite info and shooting cooldown.
 
         Args:
-            sprite_info (SpriteInfo): The enemy's position, size, speed, and hit data.
-            cooldown (float): Time in seconds between allowed shots.
+            sprite_info: The enemy's position, size, speed, and hit data.
+            cooldown: Time in seconds between allowed shots.
         """
         super().__init__(sprite_info, cooldown=cooldown)
         self._direction = "right"
@@ -28,7 +28,8 @@ class EnemyService(ShootingSpriteService):
     @property
     def direction(self):
         """
-        str: The current direction the enemy is moving ("left" or "right").
+        Returns:
+            str: The current direction the enemy is moving ("left" or "right").
         """
         return self._direction
 
@@ -37,7 +38,8 @@ class EnemyService(ShootingSpriteService):
         """
         Set the enemy's movement direction.
 
-        value (str): "left" or "right".
+        Args:
+            value: "left" or "right".
         """
         self._direction = value
 
@@ -46,11 +48,12 @@ class EnemyService(ShootingSpriteService):
         Shoot a bullet in the given direction.
 
         Args:
-            direction (str): Direction to shoot ("up" or "down").
-            bullet_width (int): Width of the bullet.
-            bullet_height (int): Height of the bullet.
+            direction: Direction to shoot ("up" or "down").
+            bullet_width: Width of the bullet.
+            bullet_height: Height of the bullet.
 
-        BulletService: The bullet that was created.
+        Returns:
+            BulletService: The bullet that was created.
         """
         return super().shoot(direction, bullet_width, bullet_height)
 
@@ -58,7 +61,8 @@ class EnemyService(ShootingSpriteService):
         """
         Handles enemy movement, including boundary checks and direction changes.
 
-        tuple: The new (x, y) position of the enemy.
+        Returns:
+            tuple: The new (x, y) position of the enemy.
         """
         if self._has_hit_bottom():
             return self._stop_at_bottom()
@@ -75,12 +79,18 @@ class EnemyService(ShootingSpriteService):
     def _has_hit_bottom(self):
         """
         Check if the enemy has reached the bottom boundary.
+
+        Returns:
+            bool: True if the enemy is at or below the bottom boundary.
         """
         return self.y + self.height >= LOWER_BOUNDARY
 
     def _stop_at_bottom(self):
         """
         Stop the enemy at the lower boundary.
+
+        Returns:
+            tuple: The adjusted (x, y) position at the bottom.
         """
         self.y = LOWER_BOUNDARY - self.height
         return self.x, self.y
@@ -88,12 +98,18 @@ class EnemyService(ShootingSpriteService):
     def _hit_left_wall(self):
         """
         Check if the enemy has reached the left edge of the screen.
+
+        Returns:
+            bool: True if at the left boundary and moving left.
         """
         return self.x <= LEFT_BOUNDARY and self.direction == "left"
 
     def _drop_and_turn_right(self):
         """
         Move the enemy down one row and change direction to right.
+
+        Returns:
+            tuple: The new (x, y) position after moving and turning.
         """
         self.y += self.height
         self.x = LEFT_BOUNDARY
@@ -104,12 +120,18 @@ class EnemyService(ShootingSpriteService):
     def _hit_right_wall(self):
         """
         Check if the enemy has reached the right edge of the screen.
+
+        Returns:
+            bool: True if at the right boundary and moving right.
         """
         return self.x + self.width >= RIGHT_BOUNDARY and self.direction == "right"
 
     def _drop_and_turn_left(self):
         """
         Move the enemy down one row and change direction to left.
+
+        Returns:
+            tuple: The new (x, y) position after moving and turning.
         """
         self.x = RIGHT_BOUNDARY - self.width
         self.y += self.height

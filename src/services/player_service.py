@@ -19,24 +19,17 @@ class PlayerService(ShootingSpriteService):
         Args:
             sprite_info (SpriteInfo): The player's position, size, speed, and health.
             cooldown (float): The cooldown time between player shots.
+            points (int, optional): The initial points of the player. Defaults to 0.
         """
         super().__init__(sprite_info, cooldown=cooldown)
         self._points = points
 
-    def move(self, key: int) -> int:
+    def move(self, key: int):
         """
         Move the player left or right within the screen boundaries.
 
         Args:
-            x (int): Current x-coordinate of the player.
-            key (str): Key pressed by the user ('a' for left, 'd' for right).
-            speed (int, optional): Movement speed in pixels. Defaults to 5.
-            left_boundary (int, optional): Minimum x-coordinate the player can reach. 
-            Defaults to 0.
-            right_boundary (int, optional): Maximum x-coordinate the player can reach. 
-            Defaults to 800.
-            player_width (int, optional): Width of the player sprite. 
-            Used to prevent moving out of bounds.
+            key: Key pressed by the user (pygame key code).
 
         Returns:
             int: The updated x-coordinate after movement.
@@ -57,22 +50,26 @@ class PlayerService(ShootingSpriteService):
     @property
     def points(self):
         """
-        int: The current amount of points
+        Returns:
+            int: The current amount of points.
         """
         return self._points
 
     @points.setter
     def points(self, value: int):
         """
-        Set the value of points 
+        Set the value of points.
 
         Args:
-            points (int): The new value of points
+            value: The new value of points.
         """
         self._points = value
 
     def add_points(self, value: int):
         """
-        Increase total points by the value
+        Increase total points by the value.
+
+        Args:
+            value: Points to add to the current score.
         """
         self.points = self.points + value

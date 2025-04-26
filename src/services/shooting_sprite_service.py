@@ -36,7 +36,8 @@ class ShootingSpriteService(BaseSpriteService):
     @property
     def last_shot(self):
         """
-        float: The timestamp of the last sprite shot time.
+        Returns:
+            float: The timestamp of the last sprite shot time.
         """
         return self._last_shot
 
@@ -44,6 +45,9 @@ class ShootingSpriteService(BaseSpriteService):
     def last_shot(self, value):
         """
         Set the last sprite shot time.
+
+        Args:
+            value: The new last shot timestamp.
         """
         self._last_shot = value
 
@@ -51,7 +55,10 @@ class ShootingSpriteService(BaseSpriteService):
         """
         Check if the sprite is in cooldown.
         If not, then the sprite can shoot.
-        Otherwise not. 
+        Otherwise not.
+
+        Returns:
+            bool: True if the sprite can shoot, False otherwise.
         """
         current_time = time.time()
         if current_time - self._last_shot >= self.cooldown:
@@ -62,6 +69,12 @@ class ShootingSpriteService(BaseSpriteService):
     def try_shoot(self, direction="up"):
         """
         Attempt to shoot a bullet if cooldown is over.
+
+        Args:
+            direction: The shooting direction ("up" or "down"). Defaults to "up".
+
+        Returns:
+            BulletService or None: The created bullet if shooting was possible, otherwise None.
         """
         if self.can_shoot():
             return self.shoot(direction)
@@ -70,6 +83,14 @@ class ShootingSpriteService(BaseSpriteService):
     def shoot(self, direction="up", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
         """
         Create a new bullet.
+
+        Args:
+            direction: The shooting direction ("up" or "down"). Defaults to "up".
+            bullet_width: Width of the bullet. Defaults to BULLET_WIDTH.
+            bullet_height: Height of the bullet. Defaults to BULLET_HEIGHT.
+
+        Returns:
+            BulletService: The created bullet object.
         """
         sprite_x, sprite_y = self.position
 
@@ -88,6 +109,14 @@ class ShootingSpriteService(BaseSpriteService):
     def _get_bullet_y(self, direction, sprite_y, bullet_height):
         """
         Calculate the vertical position for a new bullet.
+
+        Args:
+            direction: The direction the bullet is moving.
+            sprite_y: The y-coordinate of the sprite.
+            bullet_height: The height of the bullet.
+
+        Returns:
+            int: The calculated y-coordinate for the bullet.
         """
         if direction == "down":
             return sprite_y + self.height + bullet_height

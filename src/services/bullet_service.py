@@ -9,6 +9,11 @@ class BulletService(BaseSpriteService):
 
     Inherits basic sprite properties from BaseSpriteService and adds 
     behavior for bullet movement and boundary checks.
+
+    Attributes:
+        _lower_boundary (int): The lower boundary for bullet movement.
+        _upper_boundary (int): The upper boundary for bullet movement.
+        _direction (str): The movement direction ("up" or "down").
     """
 
     def __init__(self, sprite_info: SpriteInfo, direction="up"):
@@ -16,8 +21,8 @@ class BulletService(BaseSpriteService):
         Initialize the bullet with its sprite info and movement direction.
 
         Args:
-            sprite_info (SpriteInfo): The bullet's position, size, speed, and hit data.
-            direction (str): The direction the bullet moves ("up" or "down").
+            sprite_info: The bullet's position, size, speed, and hit data.
+            direction: The direction the bullet moves ("up" or "down").
         """
         super().__init__(sprite_info)
         self._lower_boundary = LOWER_BOUNDARY + self.height
@@ -27,7 +32,8 @@ class BulletService(BaseSpriteService):
     @property
     def direction(self):
         """
-        str: The direction the bullet is moving ("up" or "down").
+        Returns:
+            str: The direction the bullet is moving ("up" or "down").
         """
         return self._direction
 
@@ -35,7 +41,8 @@ class BulletService(BaseSpriteService):
         """
         Move the bullet in its direction, limited by screen boundaries.
 
-        int: The updated y-position after moving.
+        Returns:
+            int: The updated y-position after moving.
         """
         if self.direction == "up":
             self.y = max(self._upper_boundary, self.y - self.speed)
@@ -48,7 +55,8 @@ class BulletService(BaseSpriteService):
         """
         Update the bullet's position every frame.
 
-        tuple: The new (x, y) position after moving.
+        Returns:
+            tuple: The new (x, y) position after moving.
         """
         self.move()
         return self.position
@@ -58,7 +66,8 @@ class BulletService(BaseSpriteService):
         Check if the bullet is still moving. Bullet needs to be in the allowed move area 
         (inside boundaries).
 
-        bool: If the bullet has reached its end boundary -> False, otherwise -> True.
+        Returns:
+            bool: If the bullet has reached its end boundary -> False, otherwise -> True.
         """
         if self.direction == "down" and self.y > LOWER_BOUNDARY:
             return False
