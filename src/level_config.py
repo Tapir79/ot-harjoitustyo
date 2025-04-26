@@ -1,3 +1,10 @@
+"""
+Configuration constants for enemy attributes across different game levels.
+
+Defines shooting cooldowns, enemy movement speeds, bullet speeds, enemy images,
+and level difficulty scaling.
+"""
+
 # Common starting attributes
 ENEMY_COOLDOWN = 30
 ENEMY_SHOOTING_PROBABILITY = 0.0006
