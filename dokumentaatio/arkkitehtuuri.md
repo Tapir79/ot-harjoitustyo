@@ -171,9 +171,6 @@ flowchart TD
 
     UR <--> DB_USERS[SQLite Taulu: users]
     USR <--> DB_STATS[SQLite Taulu: user_statistics]
-
-    style DB_USERS fill:#222222,stroke:#fff,stroke-width:2px
-    style DB_STATS fill:#222222,stroke:#fff,stroke-width:2px
 ```
 
 
