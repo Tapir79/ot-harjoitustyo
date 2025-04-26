@@ -5,7 +5,8 @@
 ## Julkaisu (release)
 
 Lataa uusin julkaisu täältä:  
-[![GitHub release](https://img.shields.io/github/v/release/Tapir79/ot-harjoitustyo?label=Release)](https://github.com/Tapir79/ot-harjoitustyo/releases/latest)
+[![GitHub release](https://img.shields.io/github/v/release/Tapir79/ot-harjoitustyo?label=Release&cacheSeconds=0)](https://github.com/Tapir79/ot-harjoitustyo/releases/latest)
+
 
 
 ## Dokumentaatio
