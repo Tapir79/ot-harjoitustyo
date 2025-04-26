@@ -21,7 +21,8 @@ class Hit:
     @property
     def hitcount(self):
         """
-        int: The current number of hits.
+        Returns:
+            int: The current number of hits the sprite has taken.
         """
         return self._hitcount
 
@@ -38,6 +39,7 @@ class Hit:
     @property
     def max_hits(self):
         """
-        int: The maximum number of hits allowed.
+        Returns:
+            int: The maximum number of hits the sprite can take.
         """
         return self._max_hits

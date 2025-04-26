@@ -37,80 +37,103 @@ class SpriteInfo:
     @property
     def size(self):
         """
-        Size: The size object representing the width and height of the sprite.
+        Returns:
+            Size: The size object representing the width and height of the sprite.
         """
         return self._size
 
     @property
     def x(self):
         """
-        int: The x-coordinate of the sprite.
+        Returns:
+            int: The x-coordinate of the sprite.
         """
         return self._position.x
 
     @x.setter
     def x(self, value):
         """
-        Set the x-coordinate of the sprite.
+        Sets a new x-coordinate.
+
+        Args:
+            value (int): The new x-coordinate.
         """
         self._position.x = value
 
     @property
     def y(self):
         """
-        int: The y-coordinate of the sprite.
+        Returns:
+            int: The y-coordinate of the sprite.
         """
         return self._position.y
 
     @y.setter
     def y(self, value):
         """
-        Set the y-coordinate of the sprite.
+        Sets a new y-coordinate.
+
+        Args:
+            value (int): The new y-coordinate.
         """
         self._position.y = value
 
     @property
     def position_tuple(self):
         """
-        tuple: The (x, y) coordinates of the sprite as a tuple.
+        Returns:
+            tuple: The (x, y) coordinates of the sprite as a tuple.
         """
         return self._position.as_tuple()
 
     @property
     def width(self):
         """
-        int: The width of the sprite.
+        Returns:
+            int: The width of the sprite.
         """
         return self._size.width
 
     @property
     def height(self):
         """
-        int: The height of the sprite.
+        Returns:
+            int: The height of the sprite.
         """
         return self._size.height
 
     @property
     def speed(self):
         """
-        int: The current movement speed of the sprite.
+        Returns:
+            int: The current movement speed of the sprite.
         """
         return self._speed
 
     @speed.setter
     def speed(self, value):
         """
-        Set a new speed value for the sprite.
+        Sets a new speed value for the sprite.
+
+        Args:
+            value (int): The new speed.
         """
         self._speed = value
 
     @property
     def hit(self):
+        """
+        Returns:
+            Hit: The hit/health information of the sprite.
+        """
         return self._hit
 
     def add_hit(self):
         """
         Modifies internal health state by one.
+
+        Returns:
+            int: The updated hit count after adding one hit.
         """
         current_hits = self._hit.hitcount
         if current_hits < self._hit.max_hits:
@@ -121,5 +144,8 @@ class SpriteInfo:
         """
         Queries internal health state. 
         If all health is depleted the player is dead.
+
+        Returns:
+            bool: True if dead, False otherwise.
         """
         return self._hit.hitcount == self._hit.max_hits

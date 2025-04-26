@@ -4,13 +4,21 @@ class Point:
     """
 
     def __init__(self, x, y):
+        """
+        Initializes a Point object.
+
+        Args:
+            x: The x-coordinate.
+            y: The y-coordinate.
+        """
         self._x = x
         self._y = y
 
     @property
     def x(self):
         """
-        int or float: The x-coordinate of the point.
+        Returns:
+            int or float: The current x-coordinate of the point.
         """
         return self._x
 
@@ -27,7 +35,8 @@ class Point:
     @property
     def y(self):
         """
-        int or float: The y-coordinate of the point.
+        Returns:
+            int or float: The current y-coordinate of the point.
         """
         return self._y
 
@@ -43,6 +52,7 @@ class Point:
 
     def as_tuple(self):
         """
-        Return the point as a tuple (x, y).
+        Returns:
+            tuple: A tuple (x, y) representing the point's coordinates.
         """
         return (self._x, self._y)

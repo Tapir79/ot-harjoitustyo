@@ -17,14 +17,16 @@ class Size:
     @property
     def width(self):
         """
-        int: The width of the object.
+        Returns:
+            int: The width of the object.
         """
         return self._width
 
     @property
     def height(self):
         """
-        int: The height of the object.
+        Returns:
+            int: The height of the object.
         """
         return self._height
 
