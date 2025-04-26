@@ -10,7 +10,7 @@ graph TD
     UI[UI - Pygame] --> Utils
     Services[Services - Logiikka] --> Models
     Services --> Repositories[Repositories]
-    Repositories --> Entities[Entities - Tulossa]
+    Repositories --> Entities[Entities]
 
 ```
 
@@ -19,7 +19,7 @@ graph TD
 - models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
 - utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata (tämä rakenne saattaa vielä muuttua ja olisi ehkä hyvä refaktoroida esim. game_serviceksi)
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
-- TODO vaiheessa on entities, jonne tulee myöhemmin tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
+- entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
 
 ## Käyttöliittymä 
 
@@ -79,7 +79,7 @@ classDiagram
 
 ## Sovelluslogiikka 
 
-playerservice, bulletservice ja enemyservice, jakavat base-luokan base_sprite_service. Lisäksi player- ja enemyservice perivät shootingSpriteService:n. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. 
+Playerservice, bulletservice ja enemyservice, jakavat base-luokan base_sprite_service. Lisäksi player- ja enemyservice perivät shootingSpriteService:n. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. 
 
 Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavio:
 
