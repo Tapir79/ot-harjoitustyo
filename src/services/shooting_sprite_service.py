@@ -7,7 +7,10 @@ from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import (
     LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT,
-    PLAYER_BULLET_SPEED, ENEMY_BULLET_SPEED, PLAYER_COOLDOWN
+    PLAYER_BULLET_SPEED, PLAYER_COOLDOWN
+)
+from level_config import (
+    ENEMY_BULLET_SPEED
 )
 
 

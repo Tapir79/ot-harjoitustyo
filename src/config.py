@@ -1,3 +1,10 @@
+"""
+General game constants. 
+
+Defines general game constants like src-folder path, project path,
+colours used in the game, boundaries, player attributes and other
+sprite dimensions. 
+"""
 import os
 
 SRC_ROOT = os.path.dirname(__file__)
@@ -8,31 +15,24 @@ ASSETS_DIR = os.path.join(SRC_ROOT, "assets")
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-PLAYER_WIDTH = 40
-PLAYER_HEIGHT = 40
-BULLET_WIDTH = 10
-BULLET_HEIGHT = 20
-ENEMY_WIDTH = 40
-ENEMY_HEIGHT = 40
-
 # global boundaries
 UPPER_BOUNDARY = 0
 LOWER_BOUNDARY = 600
 LEFT_BOUNDARY = 0
 RIGHT_BOUNDARY = 800
 
-# make these enumerations (levels)
+# Player starting attributes
+PLAYER_WIDTH = 40
+PLAYER_HEIGHT = 40
 PLAYER_SPEED = 5
-ENEMY_SPEED = 1
 PLAYER_BULLET_SPEED = 5
-ENEMY_BULLET_SPEED = 3
-
 PLAYER_MAX_HITS = 3
-ENEMY_MAX_HITS = 1
-
 PLAYER_COOLDOWN = 0.3
-ENEMY_COOLDOWN = 30
-ENEMY_SHOOTING_PROBABILITY = 0.0008
 
-ENEMY_COUNT_COLS = 4
-ENEMY_ROWS = 2
+# Bullet starting attributes
+BULLET_WIDTH = 10
+BULLET_HEIGHT = 20
+
+# Enemy starting attributes
+ENEMY_WIDTH = 40
+ENEMY_HEIGHT = 40

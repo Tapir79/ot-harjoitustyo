@@ -5,7 +5,7 @@ Defines shooting cooldowns, enemy movement speeds, bullet speeds, enemy images,
 and level difficulty scaling.
 """
 
-# Common starting attributes
+# Common level starting attributes
 ENEMY_COOLDOWN = 30
 ENEMY_SHOOTING_PROBABILITY = 0.0006
 ENEMY_COLS = 4

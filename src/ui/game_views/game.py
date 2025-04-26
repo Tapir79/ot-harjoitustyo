@@ -107,6 +107,7 @@ class Game:
         cols = self.enemy_count_cols
         speed = self.enemy_speed
         enemy_max_hits = self.enemy_max_hits
+        enemy_shooting_probability = self.enemy_shooting_probability
         enemy_image = self.enemy_image
         margin_x = 50
         margin_y = 50
@@ -121,7 +122,7 @@ class Game:
                 enemy_service = EnemyService(
                     enemy_info)
                 enemy_sprite = EnemySprite(
-                    enemy_service, self.enemy_bullet_group, enemy_image)
+                    enemy_service, self.enemy_bullet_group, enemy_shooting_probability, enemy_image)
                 self.enemy_group.add(enemy_sprite)
 
     def set_new_level_attributes(self):
@@ -305,6 +306,9 @@ class Game:
         self.draw_text(text, position, center=True)
 
     def draw_game_over_text(self):
+        """
+        Draw text: GAME OVER.
+        """
         text = self.gameover_text
         position = (self.display_width // 2, self.display_height // 2)
         self.draw_text(text, position, center=True)
