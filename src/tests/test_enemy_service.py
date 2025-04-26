@@ -5,7 +5,8 @@ from models.point import Point
 from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
-from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY, ENEMY_BULLET_SPEED
+from config import LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY
+from level_config import ENEMY_BULLET_SPEED
 
 
 class TestEnemy(unittest.TestCase):
