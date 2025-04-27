@@ -23,25 +23,33 @@ Ensimmäisenä asenna poetryn riippuvuudet:
 poetry install
 ```
 
-Sen jälkeen :
+Sen jälkeen lisätään projektiin tietokanta ja taulut komennolla:
 
 ```bash
 poetry run invoke build
 ```
 
-Ohjelman pitäisi käynnistyä komennolla:
+Ohjelma käynnistyy komennolla:
 
 ```
 poetry run invoke start
 ```
 
-## Uuden käyttäjän luominen
+## Aloitusvalikko
 
 Peli käynnistyy aloitusvalikkoon:
 
 ![](./kuvat/alien_attack_start_screen.png)
 
-Voit painaa joko numeroa 3 tai klikata hiirellä __Create Account__, jolloin peli ohjaa tähän näkymään:
+Voit navigoida joko nuolinäppäimillä tai __TAB__-näppäimellä.
+
+## Uuden käyttäjän luominen
+
+Valitse __Create a New User__, 
+
+![](./kuvat/alien_attack_start_screen_register.png)
+
+jolloin peli ohjaa tähän näkymään:
 
 ![](./kuvat/alien_attack_register_screen.png)
 
@@ -52,7 +60,10 @@ Luotuasi uuden tunnuksen saat siitä ilmoituksen ja peli ohjautuu takaisin aloit
 ## Kirjautuminen
 
 Luotuasi käyttäjän voit kirjautua sisään. 
-Voit painaa joko numeroa 2 tai klikata hiirellä __Login__, 
+Valitse __Login__, 
+
+![](./kuvat/alien_attack_start_screen_login.png)
+
 jolloin peli ohjaa näkymään:
 
 ![](./kuvat/alien_attack_login_screen.png)
@@ -62,11 +73,15 @@ Syötä kenttiin tunnus ja salasana ja paina Enter, jolloin peli ohjautuu kirjau
 
 ## Pelin aloittaminen
 
-Voit aloittaa pelin painamalla numeroa 1 tai klikkaamalla hiirellä __Start Game__. Jos olet kirjautunut sisään, peli tallentaa henkilökohtaisen piste-ennätyksen ja korkeimman saavutetun tason. 
+Voit aloittaa pelin painamalla __Enter__, kun __Start Game__ on valittuna. Jos olet kirjautunut sisään, peli tallentaa henkilökohtaisen piste-ennätyksen ja korkeimman saavutetun tason. 
 
 ## Pelaaminen
 
 Pelaaja on punainen alus ruudun alalaidassa.
+
+Yritä väistellä sinisten vihollisten luoteja ja ampua vihollisia ennen kuin ne saavuttavat sinut. Saat jokaisesta ammutusta vihollisesta pisteitä. Tasot vaikeutuvat koko ajan. Viimeinen taso on 15. 
+
+Jos vihollinen osuu pelaajaan 3 kertaa peli on ohi. 
 
 Liikkuminen:     
 - oikealle: paina __d__
@@ -77,4 +92,24 @@ Ampuminen:
 
 ![](./kuvat/alien_attack_game_screen.png)
 
-Yritä väistellä sinisten vihollisten luoteja ja ampua vihollisia ennen kuin ne saavuttavat sinut niin pitkään kuin pystyt. 
+ 
+
+### Vihollinen 1 
+
+![](./kuvat/enemy1.png)  
+- Elämät: 1 
+- Pisteet: 1
+
+### Vihollinen 2
+
+![](./kuvat/enemy2.png)  
+- Elämät: 2 
+- Pisteet: 2
+
+### Vihollinen 3
+
+![](./kuvat/enemy3.png)  
+- Elämät: 3 
+- Pisteet: 3
+
+
