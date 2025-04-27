@@ -31,15 +31,6 @@ class StartScreenView(BaseView):
         if self.user:
             self.user_statistics, _ = self.user_statistics_service.get_user_statistics(
                 self.user.user_id)
-        self.init_mouse_click_areas()
-
-    def init_mouse_click_areas(self):
-        """
-        Define clickable areas (start, login, create account) on the start screen.
-        """
-        self.start_rect = pygame.Rect(250, 200, 350, 36)
-        self.login_rect = pygame.Rect(250, 250, 350, 36)
-        self.create_account_rect = pygame.Rect(250, 300, 350, 36)
 
     def render(self):
         """
@@ -84,7 +75,7 @@ class StartScreenView(BaseView):
 
         # Top High Scores
         top_scores = ["1. NN placeholder",
-                      "2. JJ placeholder", 
+                      "2. JJ placeholder",
                       "3. KK placeholder"]
         top_colors = [GOLD, SILVER, BRONZE]
 
@@ -98,21 +89,48 @@ class StartScreenView(BaseView):
 
         y += 40
         # Menu Options
-        self.draw_text(f"Press 1 to Start Game",
-                       (center_x, y), self.font, center=True)
-        if not self.user:
-            y += 50
-            self.draw_text(f"Press 2 to Login", (center_x, y),
-                           self.small_font, center=True)
-            y += 30
-            self.draw_text(f"Press 3 to Create a New User",
-                           (center_x, y), self.small_font, center=True)
-
+        self.start_rect = self.draw_text_return_rect(
+            f"Press 1 to Start Game", (center_x, y), self.font, center=True)
         y += 30
-        # Bottom Quit
+        if not self.user:
+            self.login_rect = self.draw_text_return_rect(
+                f"Press 2 to Login", (center_x, y), self.small_font, center=True)
+            y += 30
+            self.create_account_rect = self.draw_text_return_rect(
+                f"Press 3 to Create a New User", (center_x, y), self.small_font, center=True)
+            y += 30
+        else:
+            # If user is logged in, these don't exist
+            self.login_rect = None
+            self.create_account_rect = None
+
         y += 30
         self.draw_text("Press ESC to Quit", (center_x, y),
                        self.font, center=True)
+
+    def draw_text_return_rect(self, text, pos, font, center=False):
+        """
+        Draws text and returns its Rect for future use (e.g., for mouse clicks).
+
+        Args:
+            text (str): The text to draw.
+            pos (tuple): (x, y) position.
+            font (pygame.font.Font): Font to use.
+            center (bool): Whether to center the text.
+
+        Returns:
+            pygame.Rect: The rectangle area of the drawn text.
+        """
+        text_surface = font.render(text, True, WHITE)
+        text_rect = text_surface.get_rect()
+
+        if center:
+            text_rect.center = pos
+        else:
+            text_rect.topleft = pos
+
+        self.screen.blit(text_surface, text_rect)
+        return text_rect
 
     def draw_centered_title_and_left_align_rest(self,
                                                 title_text,
@@ -216,9 +234,9 @@ class StartScreenView(BaseView):
         Returns:
             AppState: The next application state based on which area was clicked.
         """
-        if self.start_rect.collidepoint(event.pos):
+        if self.start_rect and self.start_rect.collidepoint(event.pos):
             return AppState.RUN_GAME
-        elif self.login_rect.collidepoint(event.pos):
+        if self.login_rect and self.login_rect.collidepoint(event.pos):
             return AppState.LOGIN_VIEW
-        elif self.create_account_rect.collidepoint(event.pos):
+        if self.create_account_rect and self.create_account_rect.collidepoint(event.pos):
             return AppState.CREATE_USER_VIEW
