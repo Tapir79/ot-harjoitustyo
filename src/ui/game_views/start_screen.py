@@ -1,7 +1,7 @@
+import os
 import pygame
-from config import BLACK
+from config import BLACK, BRONZE, GOLD, SILVER, WHITE, ASSETS_DIR
 from app_enums import AppState, CurrentField
-from entities.user_statistics import UserStatistics
 from ui.game_views.base_view import BaseView
 
 
@@ -49,35 +49,145 @@ class StartScreenView(BaseView):
         self.draw_labels()
         pygame.display.flip()
 
+    def draw_title(self):
+        self.image = pygame.image.load(
+            os.path.join(ASSETS_DIR, "game_title.png")
+        ).convert_alpha()
+
+        self.image = pygame.transform.scale(
+            self.image, (self.screen.get_width(), self.image.get_height()))
+
+        self.rect = self.image.get_rect()
+        self.screen.blit(self.image, (self.rect.x, self.rect.y))
+
     def draw_labels(self):
         """
-        Draw the main title and menu options based on whether a user is logged in.
+        Draw the main title, high scores, and menu options
+        with retro arcade-style layout.
         """
-        self.draw_text("Alien Attack", (250, 100), self.font)
+        screen_width = self.screen.get_width()
+        center_x = screen_width // 2
+        y = 60  # Start near top
+
+        # Main Title
+        self.draw_title()
+        y += 100  # Big spacing after title
 
         if self.user:
-            self.draw_text(f"Playing as: {self.user.username}",
-                           (250, 150), self.small_font)
-            self.draw_text(
-                f"{self.user.username} high score: {self.user_statistics.high_score}", (250, 200), self.small_font)
-            self.top_high_scores()
-            self.draw_text("1. Start Game", (250, 450), self.small_font)
-            self.draw_text("ESC: Quit", (250, 500), self.small_font)
-        else:
-            self.top_high_scores()
-            self.draw_text("1. Start Game", (250, 450), self.small_font)
-            self.draw_text("2. Login", (250, 500), self.small_font)
-            self.draw_text("3. Create Account", (250, 550), self.small_font)
-            self.draw_text("ESC: Quit", (250, 600), self.small_font)
+            # Player Info
+            self.draw_text(f"Player: {self.user.username}",
+                           (center_x, y), self.small_font, center=True)
+            y += 30
+            self.draw_text(f"Your High Score: {self.user_statistics.high_score}", (
+                center_x, y), self.small_font, center=True)
+            y += 40
 
-    def top_high_scores(self):
+        # Top High Scores
+        top_scores = ["1. NN placeholder",
+                      "2. JJ placeholder", 
+                      "3. KK placeholder"]
+        top_colors = [GOLD, SILVER, BRONZE]
+
+        y = self.draw_centered_title_and_left_align_rest(
+            "--- Top High Scores ---",
+            top_scores,
+            center_x,
+            y,
+            line_colors=top_colors
+        )
+
+        y += 40
+        # Menu Options
+        self.draw_text(f"Press 1 to Start Game",
+                       (center_x, y), self.font, center=True)
+        if not self.user:
+            y += 50
+            self.draw_text(f"Press 2 to Login", (center_x, y),
+                           self.small_font, center=True)
+            y += 30
+            self.draw_text(f"Press 3 to Create a New User",
+                           (center_x, y), self.small_font, center=True)
+
+        y += 30
+        # Bottom Quit
+        y += 30
+        self.draw_text("Press ESC to Quit", (center_x, y),
+                       self.font, center=True)
+
+    def draw_centered_title_and_left_align_rest(self,
+                                                title_text,
+                                                lines,
+                                                center_x,
+                                                y_start,
+                                                line_colors=None,
+                                                line_fonts=None):
         """
-        TODO get top 3 all time high scores
+        Draws a centered title, then draws each line left-aligned under it.
+
+        Args:
+            title_text (str): Title to center.
+            lines (list[str]): Lines of text to draw.
+            center_x (int): Center x-coordinate of screen.
+            y_start (int): Start y position.
+            line_colors (list[tuple[int,int,int]], optional): Colors for each line.
         """
-        self.draw_text("High scores", (250, 250), self.small_font)
-        self.draw_text("1. NN placeholder", (250, 300), self.small_font)
-        self.draw_text("2. JJ placeholder", (250, 350), self.small_font)
-        self.draw_text("3. KK placeholder", (250, 400), self.small_font)
+        # Title
+        title_surface = self.small_font.render(title_text, True, WHITE)
+        title_rect = title_surface.get_rect(center=(center_x, y_start))
+        self.screen.blit(title_surface, title_rect)
+
+        y = y_start + 40
+        left_x = title_rect.left
+
+        # Lines
+        for idx, line in enumerate(lines):
+            color = WHITE  # Default white
+
+            if line_colors and idx < len(line_colors):
+                color = line_colors[idx]
+
+            if line_fonts and idx < len(line_fonts):
+                font = line_fonts[idx]
+            else:
+                font = self.small_font
+
+            text_surface = font.render(line, True, color)
+            text_rect = text_surface.get_rect()
+            text_rect.topleft = (left_x, y)
+            self.screen.blit(text_surface, text_rect)
+
+            y += 40  # Move down after each line
+
+        return y
+
+    def draw_top_high_scores(self, center_x, y):
+        """
+        Draw the Top High Scores section.
+        The title is centered; the scores are left-aligned starting from the same x position as the title's left side.
+        """
+
+        # First draw and measure the centered title
+        title_surface = self.small_font.render(
+            "--- Top High Scores ---", True, WHITE)
+        title_rect = title_surface.get_rect(center=(center_x, y))
+        self.screen.blit(title_surface, title_rect)
+
+        y += 40  # Move down
+
+        # Now align all the following texts based on the title_rect.left
+        left_x = title_rect.left
+
+        self.draw_text("1. NN placeholder", (left_x, y),
+                       self.small_font, center=False)
+        y += 30
+        self.draw_text("2. JJ placeholder", (left_x, y),
+                       self.small_font, center=False)
+        y += 30
+        self.draw_text("3. KK placeholder", (left_x, y),
+                       self.small_font, center=False)
+        y += 50
+
+        return y
 
     def handle_keydown(self, event):
         """
