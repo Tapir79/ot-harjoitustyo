@@ -8,6 +8,8 @@ import sys
 import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 from app_enums import AppState
+from entities.user import User
+from services import user_service, user_statistics_service
 from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
@@ -17,7 +19,6 @@ from ui.game_views.game import Game
 def main():
     """
     Main starting point for the game.
-
     Initializes the Game object, runs the game loop,
     and performs cleanup operations after the game ends.
     """
@@ -25,28 +26,32 @@ def main():
     screen = init_main()
 
     state = AppState.START_SCREEN
-    game = Game(screen)
-
+    game = Game(screen, user_service, user_statistics_service)
     user = None
 
     while state != AppState.QUIT:
-        if state == AppState.START_SCREEN:
-            state = StartScreenView(screen, user).run()
-        elif state == AppState.LOGIN_VIEW:
-            login_view = LoginView(screen)
-            state = login_view.run()
-            if login_view.user:
-                user = login_view.user
-        elif state == AppState.CREATE_USER_VIEW:
-            state = CreateUserView(screen).run()
-        elif state == AppState.RUN_GAME:
-            game.set_user(user)
-            game.reset_game(screen)
-            game.run()
-            state = AppState.START_SCREEN
+        state, user = handle_states(state, screen, game, user)
 
     pygame.quit()
     sys.exit()
+
+
+def handle_states(state: AppState, screen, game: Game, user: User):
+    if state == AppState.START_SCREEN:
+        state = StartScreenView(screen, user).run()
+    elif state == AppState.LOGIN_VIEW:
+        login_view = LoginView(screen)
+        state = login_view.run()
+        if login_view.user:
+            user = login_view.user
+    elif state == AppState.CREATE_USER_VIEW:
+        state = CreateUserView(screen).run()
+    elif state == AppState.RUN_GAME:
+        game.set_user(user)
+        game.reset_game(screen)
+        game.run()
+        state = AppState.START_SCREEN
+    return state, user
 
 
 def init_main():

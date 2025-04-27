@@ -42,8 +42,9 @@ Peli koostuu seuraavista osista:
 [X]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.    
 [X]   - Pelin voi käynnistää anonyymina pelaajana.       
 [X]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
-[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.           
+[X]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.           
 [X]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
+[X]   - Tulostaa 3 kaikkien aikojen parasta pelitulosta eli high scorea     
 
 2. **Rekisteröitymisnäkymä**
 
@@ -68,7 +69,7 @@ Peli koostuu seuraavista osista:
 [X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.        
 [X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään.           
 [ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan tulos ja pelin high score eli kaikkien aikojen paras tulos.              
-[ ]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy myös pelaajan oma high score eli paras henkilökohtainen tulos.             
+[X]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy myös pelaajan oma high score eli paras henkilökohtainen tulos.             
 
 
 ## Perusversion tarjoama toiminnallisuus
@@ -104,8 +105,8 @@ Peli koostuu seuraavista osista:
 - Pelissä on SQLite-tietokanta, johon tallennetaan:   
         
 [X] - Pelaajan nimi (tai nimimerkki) ja salasana.        
-[ ] - Pelaajan paras pistemäärä.     
-[ ] - Pelin aikaleima.      
+[X] - Pelaajan paras pistemäärä.     
+[X] - Pelin aikaleima.         
 
 ### Pelin testaus
 
@@ -121,7 +122,7 @@ Peli koostuu seuraavista osista:
 [X]  - Pelaajan ampuminen          
 [X]  - Vihollisten liikkuminen           
 [X]  - Vihollisten ampuminen            
-[ ]  - Tulosten tallentaminen tietokantaan         
+[X]  - Tulosten tallentaminen tietokantaan         
 
 ## Jatkokehitysideoita (tai jos aikaa jää)
 

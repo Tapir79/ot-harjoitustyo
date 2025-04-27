@@ -3,7 +3,9 @@ from app_enums import AppState, CurrentField
 from config import WHITE
 from db import Database
 from repositories.user_repository import UserRepository
+from repositories.user_statistics_repository import UserStatisticsRepository
 from services.user_service import UserService
+from services.user_statistics_service import UserStatisticsService
 
 
 class BaseView:
@@ -28,6 +30,8 @@ class BaseView:
         self.message = ""
         self.borders = {"thick": 3, "thin": 1}
         self.user_service = UserService(UserRepository(Database()))
+        self.user_statistics_service = UserStatisticsService(
+            UserStatisticsRepository(Database()))
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
         self.esc_state = esc_state

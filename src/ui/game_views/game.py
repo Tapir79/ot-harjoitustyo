@@ -3,7 +3,14 @@ import os
 from config import ASSETS_DIR
 from pygame.sprite import Group
 from app_enums import AppState, LevelAttributes
-from utils.game_helpers import get_player_lives, get_random_positions_around_center_point
+from db import Database
+from entities.user import User
+from entities.user_statistics import UserStatistics
+from repositories.user_repository import UserRepository
+from repositories.user_statistics_repository import UserStatisticsRepository
+from services.user_service import UserService
+from services.user_statistics_service import UserStatisticsService
+from utils.game_helpers import get_ending_points, get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
@@ -31,17 +38,34 @@ class Game:
     and rendering the screen including the player and on-screen instructions.
     """
 
-    def __init__(self, screen, user=None):
+    def __init__(self, screen, user=None, user_service=None, user_statistics_service=None):
         """
         Initializes the game, including the display, player, clock, and font.
         Sets up the game window and player object.
         """
 
+        self.user_service = user_service if user_service else UserService(
+            UserRepository(Database()))
+        self.user_statistics_service = user_statistics_service if user_statistics_service else UserStatisticsService(
+            UserStatisticsRepository(Database()))
         self.reset_game(screen)
         self.user = self.set_user(user)
 
+    def save_user_statistics(self):
+        """
+        Saves the player's score and level to the database if they are better than previous.
+        """
+        if not self.user or not self.user_statistics_service:
+            return
+
+        points = self.player.player_service.points
+        level = self.level
+
+        self.user_statistics_service.upsert_user_statistics(
+            self.user.user_id, points, level)
+
     def set_user(self, user):
-        self.user = user if user else ""
+        self.user = user if user else User(0, "")
 
     def reset_game(self, screen):
         self.screen = screen
@@ -275,16 +299,16 @@ class Game:
         self.hit_group.draw(self.screen)
         pygame.display.update()
 
-    def draw_text(self, text, position, center=False):
+    def draw_text(self, text, position: Point, center=False):
         """
         General method for drawing text on the screen.
         """
         text_surface = self.font.render(text, True, WHITE)
         rect = text_surface.get_rect()
         if center:
-            rect.center = position
+            rect.center = position.x, position.y
         else:
-            rect.topleft = position
+            rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
 
     def draw_level_title(self):
@@ -292,7 +316,7 @@ class Game:
         Draw current level on screen
         """
         text = f"Level {self.level}"
-        position = ((self.display_width // 2 - len(text) // 2), 20)
+        position = Point((self.display_width // 2 - len(text) // 2), 20)
         self.draw_text(text, position)
 
     def draw_instructions_text(self):
@@ -301,8 +325,8 @@ class Game:
         """
         text = "Move the player with 'a' and 'd', Shoot with SPACE"
         y_offset = 40
-        position = (self.display_width // 2,
-                    self.display_height // 2 + y_offset)
+        position = Point(self.display_width // 2,
+                         self.display_height // 2 + y_offset)
         self.draw_text(text, position, center=True)
 
     def draw_game_over_text(self):
@@ -310,17 +334,26 @@ class Game:
         Draw text: GAME OVER.
         """
         text = self.gameover_text
-        position = (self.display_width // 2, self.display_height // 2)
+        position = Point(self.display_width // 2, self.display_height // 2)
         self.draw_text(text, position, center=True)
 
-    def draw_player_points(self, position=(20, 20), center=False):
+    def draw_player_points(self, position=Point(20, 20), center=False):
         """
         Draw current player points on screen.
+        Draw player high score on screen.
         """
-        points = self.player.player_service.points
-        text = f"{self.user} points: {points}"
-        position = position
-        self.draw_text(text, position, center)
+        player_current_points = self.player.player_service.points
+        user_statistics = None
+        if self.user:
+            user_statistics, _ = self.user_statistics_service.get_user_statistics(
+                self.user.user_id)
+
+        ending_points_data = get_ending_points(player_current_points,
+                                               user_statistics,
+                                               position)
+
+        for data in ending_points_data:
+            self.draw_text(data["text"], data["position"], center)
 
     def draw_player_hearts(self):
         """
@@ -357,6 +390,7 @@ class Game:
             if self.is_game_over() and not self.gameover:
                 self.end_game()
             elif self.gameover:
+                self.save_user_statistics()
                 self.game_over()
                 self.reset_game(self.screen)
                 pygame.time.wait(2000)
@@ -482,8 +516,8 @@ class Game:
     def game_over(self):
         self.screen.fill(BLACK)
         self.draw_game_over_text()
-
-        points_position = self.display_width//2, self.display_height//2 + 40
+        points_position = Point(self.display_width//2,
+                                self.display_height//2 + 40)
         self.draw_player_points(position=points_position, center=True)
         pygame.display.update()
 

@@ -91,10 +91,13 @@ class LevelService():
             level: The current level number.
         """
         prev = level - 1
-        self.levels[level][LevelAttributes.ENEMY_SHOOT_PROB] = self.levels[prev][LevelAttributes.ENEMY_SHOOT_PROB] + 0.0001
-        self.levels[level][LevelAttributes.ENEMY_COLS] = self.levels[prev][LevelAttributes.ENEMY_COLS] + 1
-        self.levels[level][LevelAttributes.ENEMY_ROWS] = min(
-            4, self.levels[prev][LevelAttributes.ENEMY_ROWS] + 1)
+        shoot_prob = LevelAttributes.ENEMY_SHOOT_PROB
+        enemy_cols = LevelAttributes.ENEMY_COLS
+        enemy_rows = LevelAttributes.ENEMY_ROWS
+        self.levels[level][shoot_prob] = self.levels[prev][shoot_prob] + 0.0001
+        self.levels[level][enemy_cols] = self.levels[prev][enemy_cols] + 1
+        self.levels[level][enemy_rows] = min(
+            4, self.levels[prev][enemy_rows] + 1)
 
     def get_level_specific_attributes(self, level):
         """

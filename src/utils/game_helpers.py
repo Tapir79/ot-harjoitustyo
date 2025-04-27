@@ -1,8 +1,59 @@
 import random
 
+from entities.user_statistics import UserStatistics
 from models.point import Point
 from models.size import Size
 from services.player_service import PlayerService
+
+
+def get_ending_points(current_points: int,
+                      user_statistics: UserStatistics,
+                      position: Point,
+                      all_time_high_score: int = 0):
+    """
+    Collects the ending points information including:
+    - Player's current session points
+    - Player's personal high score (if logged in)
+    - All-time high score (global)
+
+    Args:
+        user (User): The logged-in user (or None).
+        player_service (PlayerService): The player's service instance.
+        user_service (UserService): The service to fetch user info.
+        user_statistics_service (UserStatisticsService): The service to fetch user statistics.
+        position (Point): Starting screen position to display the scores.
+
+    Returns:
+        List of dicts, each dict containing:
+            - 'text': Text to display
+            - 'position': Point object where text should be displayed
+    """
+
+    ending_points_data = []
+    y_spacing = 25  # Space between lines
+
+    current_points_text = f"Points: {current_points}"
+    ending_points_data.append({
+        "text": current_points_text,
+        "position": Point(position.x, position.y)
+    })
+
+    if user_statistics:
+        high_score = user_statistics.high_score if user_statistics else 0
+
+        if current_points > high_score and current_points > all_time_high_score:
+            high_score_text = f"NEW All-Time HIGH SCORE: {current_points}"
+        elif high_score < current_points <= all_time_high_score:
+            high_score_text = f"NEW HIGH SCORE: {current_points}"
+        else:
+            high_score_text = f"Your High Score: {high_score}"
+
+        ending_points_data.append({
+            "text": high_score_text,
+            "position": Point(position.x, position.y + y_spacing)
+        })
+
+    return ending_points_data
 
 
 def get_player_lives(player: PlayerService):

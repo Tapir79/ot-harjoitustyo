@@ -1,10 +1,11 @@
 import unittest
 from unittest.mock import patch
 
+from entities.user_statistics import UserStatistics
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from services.player_service import PlayerService
-from utils.game_helpers import (get_random_positions_around_center_point,
+from utils.game_helpers import (get_ending_points, get_random_positions_around_center_point,
                                 get_random_x,
                                 get_random_y,
                                 get_player_lives)
@@ -78,3 +79,62 @@ class TestPositionsHelpers(unittest.TestCase):
         hearts, broken_hearts = get_player_lives(player_service)
         self.assertEqual(hearts, 2)
         self.assertEqual(broken_hearts, 1)
+
+    def test_ending_points_data_returns_2_results_if_user_has_statistics(self):
+        current_points = 10
+        user_statistics = UserStatistics(1, 8, 2, "", "")
+        position = Point(20, 20)
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position)
+        self.assertEqual(len(ending_points), 2)
+
+    def test_ending_points_data_returns_2_results_if_user_has_no_statistics(self):
+        current_points = 10
+        user_statistics = None
+        position = Point(20, 20)
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position)
+        self.assertEqual(len(ending_points), 1)
+
+    def test_ending_points_with_new_high_score_returns_correct_text(self):
+        current_points = 10
+        user_current_high_score = 8
+        user_statistics = UserStatistics(1, user_current_high_score, 2, "", "")
+        position = Point(20, 20)
+        all_time_high_score = 20
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position,
+                                          all_time_high_score)
+        high_score_text = ending_points[1]["text"]
+        self.assertEqual(high_score_text,  f"NEW HIGH SCORE: {current_points}")
+
+    def test_ending_points_with_lower_score_returns_correct_text(self):
+        current_points = 8
+        user_current_high_score = 10
+        user_statistics = UserStatistics(1, user_current_high_score, 2, "", "")
+        position = Point(20, 20)
+        all_time_high_score = 20
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position,
+                                          all_time_high_score)
+        high_score_text = ending_points[1]["text"]
+        self.assertEqual(high_score_text,
+                         f"Your High Score: {user_current_high_score}")
+
+    def test_ending_points_with_new_all_time_high_score_returns_correct_text(self):
+        current_points = 21
+        user_current_high_score = 8
+        user_statistics = UserStatistics(1, user_current_high_score, 2, "", "")
+        position = Point(20, 20)
+        all_time_high_score = 20
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position,
+                                          all_time_high_score)
+        high_score_text = ending_points[1]["text"]
+        self.assertEqual(high_score_text,
+                         f"NEW All-Time HIGH SCORE: {current_points}")

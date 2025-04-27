@@ -1,6 +1,7 @@
 import pygame
 from app_enums import AppState, CurrentField
 from config import BLACK
+from entities.user import User
 from ui.game_views.base_view import BaseView
 
 
@@ -61,7 +62,7 @@ class LoginView(BaseView):
         user_id, msg = self.user_service.login(username, password)
         if user_id:
             self.message = f"Welcome, {username}!"
-            self.user = username
+            self.user = User(user_id, username)
             self.render()
             pygame.time.wait(1500)
             return AppState.START_SCREEN

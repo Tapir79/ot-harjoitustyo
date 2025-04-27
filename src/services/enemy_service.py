@@ -1,5 +1,4 @@
 from services.shooting_sprite_service import ShootingSpriteService
-from models.sprite_info import SpriteInfo
 from config import (
     LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY,
     BULLET_WIDTH, BULLET_HEIGHT

@@ -27,6 +27,7 @@ näppäimistöllä
 - Lisätty yksikkötestejä pelaajalle ja apumetodeille 
 - Korjattu koodista kaikki löydetyt laatuvirheet
 - Päivitetty arkkitehtuuridokumentaatio muutosten osalta ja lisätty uusia sekvenssikaavioita kuvaamaan yhteentörmäyksiä
+- Pelaajan tulosten tallentaminen ja päivittäminen tietokantaan.
 
 ## Viikko 6 
 
