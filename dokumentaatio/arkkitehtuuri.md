@@ -47,7 +47,6 @@ classDiagram
         +render()
         +handle_event()
         +handle_keydown()
-        +handle_mouse_click()
         +on_submit()
     }
 
@@ -67,7 +66,6 @@ classDiagram
         +user
         +render()
         +handle_keydown()
-        +handle_mouse_click()
     }
 
     %% Inheritance

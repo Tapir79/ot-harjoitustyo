@@ -31,6 +31,8 @@ class StartScreenView(BaseView):
         if self.user:
             self.user_statistics, _ = self.user_statistics_service.get_user_statistics(
                 self.user.user_id)
+        self.menu_items = []
+        self.selected_index = 0
 
     def render(self):
         """
@@ -56,6 +58,8 @@ class StartScreenView(BaseView):
         Draw the main title, high scores, and menu options
         with retro arcade-style layout.
         """
+        self.menu_items.clear()
+
         screen_width = self.screen.get_width()
         center_x = screen_width // 2
         y = 60  # Start near top
@@ -89,39 +93,45 @@ class StartScreenView(BaseView):
 
         y += 40
         # Menu Options
-        self.start_rect = self.draw_text_return_rect(
-            f"Press 1 to Start Game", (center_x, y), self.font, center=True)
-        y += 30
+        menu_items = [(f"Press 1 to Start Game", AppState.RUN_GAME)]
         if not self.user:
-            self.login_rect = self.draw_text_return_rect(
-                f"Press 2 to Login", (center_x, y), self.small_font, center=True)
-            y += 30
-            self.create_account_rect = self.draw_text_return_rect(
-                f"Press 3 to Create a New User", (center_x, y), self.small_font, center=True)
-            y += 30
-        else:
-            # If user is logged in, these don't exist
-            self.login_rect = None
-            self.create_account_rect = None
+            menu_items += [
+                (f"Press 2 to Login", AppState.LOGIN_VIEW),
+                (f"Press 3 to Create a New User", AppState.CREATE_USER_VIEW)
+            ]
+
+        for index, (text, app_state) in enumerate(menu_items):
+            selected = (index == self.selected_index)
+            rect = self.draw_text_return_rect(
+                text,
+                (center_x, y),
+                self.font if index == 0 else self.small_font,
+                center=True,
+                highlight=selected
+            )
+            self.menu_items.append((rect, app_state))
+            y += 50
 
         y += 30
         self.draw_text("Press ESC to Quit", (center_x, y),
                        self.font, center=True)
 
-    def draw_text_return_rect(self, text, pos, font, center=False):
+    def draw_text_return_rect(self, text, pos, font, center=False, highlight=False):
         """
-        Draws text and returns its Rect for future use (e.g., for mouse clicks).
+        Draws text and returns its Rect for future use.
 
         Args:
             text (str): The text to draw.
             pos (tuple): (x, y) position.
             font (pygame.font.Font): Font to use.
             center (bool): Whether to center the text.
+            highlight (bool): Whether to highlight the text (yellow color).
 
         Returns:
             pygame.Rect: The rectangle area of the drawn text.
         """
-        text_surface = font.render(text, True, WHITE)
+        color = (255, 255, 0) if highlight else WHITE
+        text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
 
         if center:
@@ -130,6 +140,13 @@ class StartScreenView(BaseView):
             text_rect.topleft = pos
 
         self.screen.blit(text_surface, text_rect)
+
+        if highlight:
+            underline_start = (text_rect.left, text_rect.bottom + 2)
+            underline_end = (text_rect.right, text_rect.bottom + 2)
+            pygame.draw.line(self.screen, color,
+                             underline_start, underline_end, 2)
+
         return text_rect
 
     def draw_centered_title_and_left_align_rest(self,
@@ -159,7 +176,7 @@ class StartScreenView(BaseView):
 
         # Lines
         for idx, line in enumerate(lines):
-            color = WHITE  # Default white
+            color = WHITE
 
             if line_colors and idx < len(line_colors):
                 color = line_colors[idx]
@@ -217,6 +234,25 @@ class StartScreenView(BaseView):
         Returns:
             AppState: The next application state based on user choice.
         """
+        if event.key == pygame.K_UP:
+            if self.menu_items:
+                self.selected_index = (
+                    self.selected_index - 1) % len(self.menu_items)
+        elif event.key == pygame.K_DOWN:
+            if self.menu_items:
+                self.selected_index = (
+                    self.selected_index + 1) % len(self.menu_items)
+        elif event.key == pygame.K_RETURN:
+            if self.menu_items:
+                rect, app_state = self.menu_items[self.selected_index]
+                return app_state
+        if event.key == pygame.K_TAB:
+            if self.menu_items:
+                self.selected_index = (
+                    self.selected_index + 1) % len(self.menu_items)
+                if self.selected_index > len(self.menu_items)-1:
+                    self.selected_index = 0
+
         if event.key == pygame.K_1:
             return AppState.RUN_GAME
         elif event.key == pygame.K_2:
@@ -224,19 +260,4 @@ class StartScreenView(BaseView):
         elif event.key == pygame.K_3:
             return AppState.CREATE_USER_VIEW
 
-    def handle_mouse_click(self, event):
-        """
-        Handle mouse clicks on the start screen menu options.
-
-        Args:
-            event: The pygame MOUSEBUTTONDOWN event.
-
-        Returns:
-            AppState: The next application state based on which area was clicked.
-        """
-        if self.start_rect and self.start_rect.collidepoint(event.pos):
-            return AppState.RUN_GAME
-        if self.login_rect and self.login_rect.collidepoint(event.pos):
-            return AppState.LOGIN_VIEW
-        if self.create_account_rect and self.create_account_rect.collidepoint(event.pos):
-            return AppState.CREATE_USER_VIEW
+        return None

@@ -9,7 +9,6 @@ import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 from app_enums import AppState
 from entities.user import User
-from services import user_service, user_statistics_service
 from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
@@ -26,11 +25,12 @@ def main():
     screen = init_main()
 
     state = AppState.START_SCREEN
-    game = Game(screen, user_service, user_statistics_service)
+    game = Game(screen)
     user = None
 
     while state != AppState.QUIT:
         state, user = handle_states(state, screen, game, user)
+        print(f"state/user: {state} {user}")
 
     pygame.quit()
     sys.exit()

@@ -43,7 +43,10 @@ class LoginView(BaseView):
         """
         Draw static text labels (Login, Username, Password prompts) on the screen.
         """
-        lines = ["Login", "Username:", "Password:",
+        lines = ["Login",
+                 "Username:",
+                 "Password:",
+                 "Press Tab to change field",
                  "Press ENTER to submit",
                  "Press ESC to return"]
         y = self.draw_labels(lines)

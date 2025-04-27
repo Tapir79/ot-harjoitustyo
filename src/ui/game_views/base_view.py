@@ -62,7 +62,7 @@ class BaseView:
 
     def handle_event(self, event):
         """
-        Handle a pygame event (key press, mouse click, quit event).
+        Handle a pygame event (key press, quit event).
 
         Args:
             event: The pygame event to handle.
@@ -76,8 +76,6 @@ class BaseView:
             if event.key == pygame.K_ESCAPE and self.esc_state is not None:
                 return self.esc_state
             return self.handle_keydown(event)
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            return self.handle_mouse_click(event)
 
     def handle_keydown(self, event):
         """
@@ -124,21 +122,6 @@ class BaseView:
                     self.username += char
                 else:
                     self.password += char
-
-    def handle_mouse_click(self, event):
-        """
-        Handle a mouse click event to select input fields.
-
-        Args:
-            event: The pygame MOUSEBUTTONDOWN event.
-
-        Returns:
-            None
-        """
-        if self.username_rect.collidepoint(event.pos):
-            self.current_field = CurrentField.USERNAME
-        elif self.password_rect.collidepoint(event.pos):
-            self.current_field = CurrentField.PASSWORD
 
     def draw_input_field(self, rect, text, is_active, is_password=False):
         """
