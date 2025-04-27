@@ -14,6 +14,9 @@ ASSETS_DIR = os.path.join(SRC_ROOT, "assets")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GOLD = (255, 215, 0)
+SILVER = (192, 192, 192)
+BRONZE = (205, 127, 50)
 
 # global boundaries
 UPPER_BOUNDARY = 0
