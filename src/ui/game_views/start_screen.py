@@ -93,11 +93,11 @@ class StartScreenView(BaseView):
 
         y += 40
         # Menu Options
-        menu_items = [(f"Press 1 to Start Game", AppState.RUN_GAME)]
+        menu_items = [(f"Start Game", AppState.RUN_GAME)]
         if not self.user:
             menu_items += [
-                (f"Press 2 to Login", AppState.LOGIN_VIEW),
-                (f"Press 3 to Create a New User", AppState.CREATE_USER_VIEW)
+                (f"Login", AppState.LOGIN_VIEW),
+                (f"Create a New User", AppState.CREATE_USER_VIEW)
             ]
 
         for index, (text, app_state) in enumerate(menu_items):
@@ -105,7 +105,7 @@ class StartScreenView(BaseView):
             rect = self.draw_text_return_rect(
                 text,
                 (center_x, y),
-                self.font if index == 0 else self.small_font,
+                self.font, #if index == 0 else self.small_font,
                 center=True,
                 highlight=selected
             )
