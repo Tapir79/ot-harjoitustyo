@@ -34,5 +34,7 @@ näppäimistöllä
 - Refaktoroitu kaikki models-luokat ja service-luokat siten, että muuttujista on pythonin suositusten mukaisesti tehty yksityisiä ja kaikille yksityisille muuttujille property/setter-metodit. 
 - Kaikki muu tähän asti tehty koodi dokumentoitu docstringeillä paitsi game.py-luokka
 - Luotu aloitusvalikko, rekisteröityminen ja sisäänkirjautuminen ja niille yhteinen base-näkymä.  
-- Lisätty sqlite-tietokanta. Tietokantaan tallennetaan pelaajan käyttäjätunnus ja salasana. 
-- Lisätty tietokantaa kutsuville funktioille testejä
+- Lisätty sqlite-tietokanta. Tietokantaan tallennetaan pelaajan käyttäjätunnus ja salasana.
+- Tietokantaan tallennetaan pelaajan paras tulos ja korkein saavutettu taso. 
+- Lisätty tietokantaa kutsuville funktioille testejä.
+- Tyylitelty ja refaktoroitu aloitusvalikko.  

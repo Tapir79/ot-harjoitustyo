@@ -29,10 +29,6 @@ Pelinäkymä voi olla joko pysty- tai sivuttaissuuntainen:
 
 ![](./kuvat/game_layout1.jpg)
 
-tai 
-
-![](./kuvat/game_layout2.jpg)
-
 Peli koostuu seuraavista osista:
 
 [X] = toteutettu
@@ -42,9 +38,10 @@ Peli koostuu seuraavista osista:
 [X]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.    
 [X]   - Pelin voi käynnistää anonyymina pelaajana.       
 [X]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
-[X]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.           
+[X]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.  
+[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee uloskirjautumisvaihtoehdon.          
 [X]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
-[X]   - Tulostaa 3 kaikkien aikojen parasta pelitulosta eli high scorea     
+[ ]   - Tulostaa 3 kaikkien aikojen parasta pelitulosta eli high scorea     
 
 2. **Rekisteröitymisnäkymä**
 
@@ -98,7 +95,7 @@ Peli koostuu seuraavista osista:
 [X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu tai pelaaja menettää kaikki elämänsä, peli loppuu.          
 [X] - Kun kaikki viholliset viimeisestä pelitasosta on tuhottu, pelaaja voittaa.           
 [X] - Kun pelaaja menettää kaikki elämänsä pelaaja häviää.         
-[ ] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.         
+[X] - Pelaajan tulos tallennetaan SQLite-tietokantaan, jos se on parempi kuin edellinen paras tulos.         
 
 ### Pelin tallennus ja tietokanta
 
