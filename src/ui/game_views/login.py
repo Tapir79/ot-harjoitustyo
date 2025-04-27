@@ -30,23 +30,24 @@ class LoginView(BaseView):
         Draw the login view elements to the screen.
         """
         self.screen.fill(BLACK)
-        self.draw_labels()
+        y = self.draw_login_labels()
         self.draw_input_field(self.username_rect, self.username,
                               self.current_field == CurrentField.USERNAME)
         self.draw_input_field(self.password_rect, self.password,
                               self.current_field == CurrentField.PASSWORD, is_password=True)
         if self.message:
-            self.draw_text(self.message, (100, 300))
+            self.draw_text(self.message, (100, y))
         pygame.display.flip()
 
-    def draw_labels(self):
+    def draw_login_labels(self):
         """
         Draw static text labels (Login, Username, Password prompts) on the screen.
         """
-        self.draw_text("Login", (100, 100))
-        self.draw_text("Username:", (100, 150))
-        self.draw_text("Password:", (100, 200))
-        self.draw_text("Press ENTER to submit", (100, 250))
+        lines = ["Login", "Username:", "Password:",
+                 "Press ENTER to submit",
+                 "Press ESC to return"]
+        y = self.draw_labels(lines)
+        return y
 
     def on_submit(self):
         """

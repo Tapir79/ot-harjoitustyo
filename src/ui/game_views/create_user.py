@@ -33,7 +33,7 @@ class CreateUserView(BaseView):
         and displays any messages.
         """
         self.screen.fill(BLACK)
-        self.draw_labels()
+        y = self.draw_create_user_labels()
         self.draw_input_field(
             self.username_rect,
             self.input_boxes[CurrentField.USERNAME],
@@ -46,17 +46,18 @@ class CreateUserView(BaseView):
             is_password=True
         )
         if self.message:
-            self.draw_text(self.message, (100, 300))
+            self.draw_text(self.message, (100, y))
         pygame.display.flip()
 
-    def draw_labels(self):
+    def draw_create_user_labels(self):
         """
-        Draw static labels (headings and field labels) for the view.
+        Draw static text labels (Login, Username, Password prompts) on the screen.
         """
-        self.draw_text("Create a new user", (100, 100))
-        self.draw_text("Username:", (100, 150))
-        self.draw_text("Password:", (100, 200))
-        self.draw_text("Press ENTER to submit", (100, 250))
+        lines = ["Create a new user", "Username:", "Password:",
+                 "Press ENTER to submit",
+                 "Press ESC to return"]
+        y = self.draw_labels(lines)
+        return y
 
     def on_submit(self):
         """
@@ -67,8 +68,11 @@ class CreateUserView(BaseView):
         """
         username = self.input_boxes[CurrentField.USERNAME].strip()
         password = self.input_boxes[CurrentField.PASSWORD].strip()
-        success, message, _ = self.user_service.register_user(
+        success, message, user = self.user_service.register_user(
             username, password)
+        if success:
+            self.user_statistics_service.create_user_statistics(
+                user.user_id, 0, 0)
         self.message = message
         if success:
             self.render()

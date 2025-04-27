@@ -156,7 +156,7 @@ class BaseView:
         surface = self.font.render(display_text, True, WHITE)
         self.screen.blit(surface, (rect.x + 5, rect.y + 5))
 
-    def draw_text(self, text, pos, font=None):
+    def draw_text(self, text, position, font=None, center=False):
         """
         Draw text on the screen.
 
@@ -165,9 +165,28 @@ class BaseView:
             pos: A tuple (x, y) for the text position.
             font: A pygame.Font object to use (optional).
         """
-        f = font or self.font
-        surface = f.render(text, True, WHITE)
-        self.screen.blit(surface, pos)
+        if font is None:
+            font = self.small_font
+        text_surface = font.render(text, True, WHITE)
+        rect = text_surface.get_rect()
+        if center:
+            rect.center = position
+        else:
+            rect.topleft = position
+        self.screen.blit(text_surface, rect)
+
+    def draw_labels(self, lines):
+        """
+        Draw static text labels (Login, Username, Password prompts) on the screen.
+        """
+        x = 100
+        y = 100
+
+        for line in lines:
+            self.draw_text(line, (x, y), self.font)
+            y += 50
+
+        return y
 
     def on_submit(self):
         """
