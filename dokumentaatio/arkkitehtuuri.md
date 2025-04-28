@@ -17,7 +17,7 @@ graph TD
 - ui-pakkaus sisältää käyttöliittymän eli pygame-osuuden 
 - services-pakkaus sisältää pelilogiikan
 - models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
-- utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata (tämä rakenne saattaa vielä muuttua ja olisi ehkä hyvä refaktoroida esim. game_serviceksi)
+- utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
 - entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
 

@@ -35,6 +35,9 @@ Peli koostuu seuraavista osista:
 
 1. **Aloitusnäkymä**
      
+Toteutunut aloitusnäkymä:
+![](./kuvat/alien_attack_start_screen.png)
+
 [X]   - Näyttää pelin nimen ja "Aloita peli" -painikkeen.    
 [X]   - Pelin voi käynnistää anonyymina pelaajana.       
 [X]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
@@ -49,6 +52,9 @@ Peli koostuu seuraavista osista:
 [X]   - Ohjaa takaisin kirjautumisnäkymään 
 
 3. **Pelinäkymä**
+
+Toteutunut pelinäkymä:
+![](./kuvat/alien_attack_game_screen.png)
 
 [X]   - Pelaaja ohjaa alusta näppäimistöllä.         
 [X]   - Pelissä on vihollisia, jotka liikkuvat kohti pelaajaa           

@@ -45,4 +45,5 @@
 | 25.4 | 2 | Pelivalikon ja näkymien arkkitehtuurikaavio.  | 
 | 26.4 | 5 | Pysyväistallennuksen docstringit. Pelinäkymien docstringit. Aiempien docstrigien päivitys ja korjailu. Bugikorjailut ja koodin refaktorointi. Käyttöohje. |
 | 27.4 | 6 | Pelivalikon refaktorointi. Pelivalikon tyylittely. Käyttöohjeen päivitys.|
+| 28.4 | 3 | Koodin refaktorointia ja docstringien kirjoittamista. |
 | yht | | |
