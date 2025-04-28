@@ -1,3 +1,13 @@
+"""
+This module defines application-wide enumerations (enums) used throughout the game.
+
+Enums:
+    - AppState: Represents different states of the application (start screen, login, game, quit).
+    - CurrentField: Represents the current selected input field in forms.
+    - ErrorMessages: Predefined error messages used for validation and login/registration feedback.
+    - LevelAttributes: Keys for enemy attributes tied to different game levels.
+"""
+
 from enum import Enum
 
 

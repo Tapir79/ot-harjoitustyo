@@ -3,6 +3,20 @@ from pathlib import Path
 
 
 def build_database(database_name="database"):
+    """
+    This script creates a new SQLite database from a schema.sql file if the database does not already exist.
+
+    Functions:
+        - build_database(database_name="database"):
+            Creates a SQLite database under the 'data/' folder using a predefined schema.
+            If the database already exists, the creation is skipped. This prevents accidental db deletion. 
+            Executes the SQL schema file via subprocess.
+
+    Usage:
+        Run the script directly to create the database:
+            python build_database.py
+    """
+
     db_path = Path(f"data/{database_name}.db")
     schema_path = Path("data/schema.sql")
 

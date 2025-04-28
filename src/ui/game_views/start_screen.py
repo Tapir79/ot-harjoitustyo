@@ -43,6 +43,12 @@ class StartScreenView(BaseView):
         pygame.display.flip()
 
     def draw_title(self):
+        """
+        Loads and draws the main title image at the top of the screen.
+
+        The image is loaded from the assets directory, scaled to match the screen width 
+        while preserving its height, and then blitted onto the screen at the top-left corner.
+        """
         self.image = pygame.image.load(
             os.path.join(ASSETS_DIR, "game_title.png")
         ).convert_alpha()
@@ -53,20 +59,19 @@ class StartScreenView(BaseView):
         self.rect = self.image.get_rect()
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
-    def draw_labels(self):
+    def draw_main_title(self, center_x, y):
         """
-        Draw the main title, high scores, and menu options
-        with retro arcade-style layout.
+        Draw the main title image. 
+
+        Args:
+            center_x: center x-coordinate
+            y: The y-coordinate to start drawing the first option
+
+        Returns:
+            y = The next y coordinate
         """
-        self.menu_items.clear()
-
-        screen_width = self.screen.get_width()
-        center_x = screen_width // 2
-        y = 60  # Start near top
-
-        # Main Title
         self.draw_title()
-        y += 100  # Big spacing after title
+        y += 100
 
         if self.user:
             # Player Info
@@ -77,7 +82,19 @@ class StartScreenView(BaseView):
                 center_x, y), self.small_font, center=True)
             y += 40
 
-        # Top High Scores
+        return y
+
+    def draw_top_high_scores(self, center_x, y):
+        """
+        Draw top high scores.
+
+        Args:
+            center_x: center x-coordinate
+            y: The y-coordinate to start drawing the first option
+
+        Returns:
+            y = The next y coordinate
+        """
         top_scores = ["1. NN placeholder",
                       "2. JJ placeholder",
                       "3. KK placeholder"]
@@ -90,9 +107,21 @@ class StartScreenView(BaseView):
             y,
             line_colors=top_colors
         )
-
         y += 40
-        # Menu Options
+
+        return y
+
+    def draw_menu_options(self, center_x, y):
+        """
+        Draw menu options.
+
+        Args:
+            center_x: center x-coordinate
+            y: The y-coordinate to start drawing the first option
+
+        Returns:
+            y = The next y coordinate
+        """
         menu_items = [(f"Start Game", AppState.RUN_GAME)]
         if not self.user:
             menu_items += [
@@ -105,12 +134,31 @@ class StartScreenView(BaseView):
             rect = self.draw_text_return_rect(
                 text,
                 (center_x, y),
-                self.font, #if index == 0 else self.small_font,
+                self.font,
                 center=True,
                 highlight=selected
             )
             self.menu_items.append((rect, app_state))
             y += 50
+
+        return y
+
+    def draw_labels(self):
+        """
+        Draw the main title, high scores, and menu options
+        with retro arcade-style layout.
+        """
+        self.menu_items.clear()
+
+        screen_width = self.screen.get_width()
+        center_x = screen_width // 2
+        y = 60
+
+        y = self.draw_main_title(center_x, y)
+
+        y = self.draw_top_high_scores(center_x, y)
+
+        y = self.draw_menu_options(center_x, y)
 
         y += 30
         self.draw_text("Press ESC to Quit", (center_x, y),
@@ -121,11 +169,11 @@ class StartScreenView(BaseView):
         Draws text and returns its Rect for future use.
 
         Args:
-            text (str): The text to draw.
-            pos (tuple): (x, y) position.
-            font (pygame.font.Font): Font to use.
-            center (bool): Whether to center the text.
-            highlight (bool): Whether to highlight the text (yellow color).
+            text: The text to draw.
+            pos: (x, y) position.
+            font: Font to use.
+            center: Whether to center the text.
+            highlight: Whether to highlight the text (yellow color).
 
         Returns:
             pygame.Rect: The rectangle area of the drawn text.
@@ -160,13 +208,33 @@ class StartScreenView(BaseView):
         Draws a centered title, then draws each line left-aligned under it.
 
         Args:
-            title_text (str): Title to center.
-            lines (list[str]): Lines of text to draw.
-            center_x (int): Center x-coordinate of screen.
-            y_start (int): Start y position.
-            line_colors (list[tuple[int,int,int]], optional): Colors for each line.
+            title_text: Title to center.
+            lines: Lines of text to draw.
+            center_x: Center x-coordinate of screen.
+            y_start: Start y position.
+            line_colors: Colors for each line.
+            line_fonts: Fonts for each line.
         """
-        # Title
+
+        y, left_x = self.draw_centered_title(title_text, center_x, y_start)
+        y = self.draw_lines_aligned_with_title(
+            lines, line_colors, line_fonts, left_x, y)
+
+        return y
+
+    def draw_centered_title(self, title_text, center_x, y_start):
+        """
+        Draws a centered title. 
+
+        Args:
+            title_text: The text of the title.
+            center_x: Center x-coordinate of screen.
+            y_start: Start y position.
+
+        Returns: 
+            y = next y coordinate
+            left_x = title text left x coordinate
+        """
         title_surface = self.small_font.render(title_text, True, WHITE)
         title_rect = title_surface.get_rect(center=(center_x, y_start))
         self.screen.blit(title_surface, title_rect)
@@ -174,13 +242,28 @@ class StartScreenView(BaseView):
         y = y_start + 40
         left_x = title_rect.left
 
-        # Lines
+        return y, left_x
+
+    def draw_lines_aligned_with_title(self, lines, line_colors, line_fonts, x, y):
+        """
+        Draws a list of text lines.
+        Lines can have different colors and fonts. 
+
+        Args:
+            title_text: Title to center.
+            lines: Lines of text to draw.
+            line_colors: Colors for each line.
+            line_fonts: Fonts for each line.
+            x: x-coordinate position for each line
+            y: y-coordinate position for the first line
+
+        Returns:
+        y = next y coordinate 
+        """
         for idx, line in enumerate(lines):
             color = WHITE
-
             if line_colors and idx < len(line_colors):
                 color = line_colors[idx]
-
             if line_fonts and idx < len(line_fonts):
                 font = line_fonts[idx]
             else:
@@ -188,39 +271,10 @@ class StartScreenView(BaseView):
 
             text_surface = font.render(line, True, color)
             text_rect = text_surface.get_rect()
-            text_rect.topleft = (left_x, y)
+            text_rect.topleft = (x, y)
             self.screen.blit(text_surface, text_rect)
 
-            y += 40  # Move down after each line
-
-        return y
-
-    def draw_top_high_scores(self, center_x, y):
-        """
-        Draw the Top High Scores section.
-        The title is centered; the scores are left-aligned starting from the same x position as the title's left side.
-        """
-
-        # First draw and measure the centered title
-        title_surface = self.small_font.render(
-            "--- Top High Scores ---", True, WHITE)
-        title_rect = title_surface.get_rect(center=(center_x, y))
-        self.screen.blit(title_surface, title_rect)
-
-        y += 40  # Move down
-
-        # Now align all the following texts based on the title_rect.left
-        left_x = title_rect.left
-
-        self.draw_text("1. NN placeholder", (left_x, y),
-                       self.small_font, center=False)
-        y += 30
-        self.draw_text("2. JJ placeholder", (left_x, y),
-                       self.small_font, center=False)
-        y += 30
-        self.draw_text("3. KK placeholder", (left_x, y),
-                       self.small_font, center=False)
-        y += 50
+            y += 40
 
         return y
 
@@ -235,23 +289,13 @@ class StartScreenView(BaseView):
             AppState: The next application state based on user choice.
         """
         if event.key == pygame.K_UP:
-            if self.menu_items:
-                self.selected_index = (
-                    self.selected_index - 1) % len(self.menu_items)
+            self.move_up()
         elif event.key == pygame.K_DOWN:
-            if self.menu_items:
-                self.selected_index = (
-                    self.selected_index + 1) % len(self.menu_items)
+            self.move_down()
         elif event.key == pygame.K_RETURN:
-            if self.menu_items:
-                rect, app_state = self.menu_items[self.selected_index]
-                return app_state
+            return self.choose_option()
         if event.key == pygame.K_TAB:
-            if self.menu_items:
-                self.selected_index = (
-                    self.selected_index + 1) % len(self.menu_items)
-                if self.selected_index > len(self.menu_items)-1:
-                    self.selected_index = 0
+            self.handle_key_tab()
 
         if event.key == pygame.K_1:
             return AppState.RUN_GAME
@@ -261,3 +305,41 @@ class StartScreenView(BaseView):
             return AppState.CREATE_USER_VIEW
 
         return None
+
+    def move_up(self):
+        """
+        Selected index moves backwards in the menu_items.
+        Visually this means moving up in the menu.
+        If in the beginning of the list the index is set to last index. 
+        """
+        if self.menu_items:
+            self.selected_index = (
+                self.selected_index - 1) % len(self.menu_items)
+
+    def move_down(self):
+        """
+        Selected index moves forwards in the menu_items.
+        Visually this means moving down in the menu.
+        If at the end of the list the index is set to 0. 
+        """
+        if self.menu_items:
+            self.selected_index = (
+                self.selected_index + 1) % len(self.menu_items)
+
+    def choose_option(self):
+        """
+        Fetch menu_item application state from menu items by selected index
+        """
+        if self.menu_items:
+            rect, app_state = self.menu_items[self.selected_index]
+            return app_state
+
+    def handle_key_tab(self):
+        """
+        Selected index moves forwards in the menu_items.
+        Visually this means moving down in the menu.
+        If at the end of the list the index is set to 0. 
+        """
+        if self.menu_items:
+            self.selected_index = (
+                self.selected_index + 1) % len(self.menu_items)

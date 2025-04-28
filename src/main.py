@@ -37,6 +37,27 @@ def main():
 
 
 def handle_states(state: AppState, screen, game: Game, user: User):
+    """
+    Handles transitions between application states.
+
+    Depending on the current AppState, this function:
+    - Shows the start screen
+    - Forwards to login view
+    - Forwards to create user view
+    - Starts or resets the game
+    - Updates the logged-in user
+
+    Args:
+        state (AppState): The current application state.
+        screen: The Pygame screen surface.
+        game (Game): The main game instance.
+        user (User): The logged-in user (or None).
+
+    Returns:
+        tuple: (AppState, User)
+            - AppState: The next state after handling the current view.
+            - User: Updated user if login was successful, otherwise the original user.
+    """
     if state == AppState.START_SCREEN:
         state = StartScreenView(screen, user).run()
     elif state == AppState.LOGIN_VIEW:
