@@ -144,4 +144,4 @@ class TestPositionsHelpers(unittest.TestCase):
         general_stats = GeneralStatistics("elaine", "20", 2)
         rank, high_score, username = format_high_scores(0, general_stats)
         self.assertEqual(rank, "1" + " " * 7)
-        self.assertEqual(high_score, "20".zfill(8) + " " * 3)
+        self.assertEqual(high_score, "20".zfill(8) + " ")

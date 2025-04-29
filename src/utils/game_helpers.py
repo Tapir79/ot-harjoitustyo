@@ -11,7 +11,7 @@ def format_high_scores(rank_index, statistics: GeneralStatistics):
     username = statistics.username if statistics else "---"
     high_score = statistics.high_score if statistics else 0
     rank = str(rank_index + 1) + " " * 7
-    high_score = str(high_score).zfill(8) + " " * 3
+    high_score = str(high_score).zfill(8) + " "
 
     return rank, high_score, username
 
