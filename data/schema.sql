@@ -19,4 +19,4 @@ CREATE VIEW general_statistics AS
     FROM users u
     JOIN user_statistics us ON u.id = us.user_id
     ORDER BY us.high_score DESC
-    LIMIT 5;
+    LIMIT 3;
