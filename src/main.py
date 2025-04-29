@@ -62,11 +62,9 @@ def handle_states(state: AppState, screen, game: Game, user: User):
         state = StartScreenView(screen, user).run()
     elif state == AppState.LOGIN_VIEW:
         login_view = LoginView(screen)
-        state = login_view.run()
-        if login_view.user:
-            user = login_view.user
+        state, user = login_view.run()
     elif state == AppState.CREATE_USER_VIEW:
-        state = CreateUserView(screen).run()
+        state, user = CreateUserView(screen).run()
     elif state == AppState.RUN_GAME:
         game.set_user(user)
         game.reset_game(screen)

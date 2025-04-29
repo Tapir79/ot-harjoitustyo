@@ -1,6 +1,7 @@
 import pygame
 from app_enums import AppState, CurrentField
 from config import BLACK
+from entities.user import User
 from ui.game_views.base_view import BaseView
 
 
@@ -74,10 +75,12 @@ class CreateUserView(BaseView):
         if success:
             self.user_statistics_service.create_user_statistics(
                 user.user_id, 0, 0)
+            user_id, msg = self.user_service.login(username, password)
+            
         self.message = message
         if success:
             self.render()
             pygame.display.flip()
             pygame.time.wait(1500)
-            return AppState.START_SCREEN
+            return AppState.START_SCREEN, User(user_id, username)
         return None
