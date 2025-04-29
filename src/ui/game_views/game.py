@@ -79,7 +79,8 @@ class Game:
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
         self.gameover_text = ""
-        self.all_time_high_score = self.general_statistics_service.get_top_scores()[0].high_score
+        self.all_time_high_score = self.general_statistics_service.get_top_scores()[
+            0].high_score
 
         self.init_ui_images()
         self.init_levels()
@@ -315,12 +316,11 @@ class Game:
             rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
 
-
     def draw_level_title(self):
         """
         Draw current level on screen
         """
-        player_name = self.user.username if self.user else "Guest" 
+        player_name = self.user.username if self.user else "Guest"
         self.all_time_high_score
         text = f"Player {player_name} | Level {self.level} | High score {self.all_time_high_score}"
         position = Point((self.display_width // 2 - (len(text) // 2)), 20)
@@ -354,14 +354,14 @@ class Game:
         if self.user:
             user_statistics, _ = self.user_statistics_service.get_user_statistics(
                 self.user.user_id)
-        
-        ending_points_data = get_ending_points(player_current_points,
-                                               user_statistics,
-                                               position,
-                                               all_time_high_score=self.all_time_high_score)
 
-        for data in ending_points_data:
-            self.draw_text(data["text"], data["position"], center, color=data["color"])
+        data = get_ending_points(player_current_points,
+                                 user_statistics,
+                                 position,
+                                 all_time_high_score=self.all_time_high_score)
+
+        self.draw_text(data["text"], data["position"],
+                       center, color=data["color"])
 
     def draw_player_hearts(self):
         """

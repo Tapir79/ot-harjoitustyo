@@ -1,6 +1,6 @@
 import random
 
-from config import BRONZE, GOLD, SILVER
+from config import BRONZE, GOLD, SILVER, WHITE
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
@@ -28,48 +28,78 @@ def get_ending_points(current_points: int,
     - All-time high score (global)
 
     Args:
-        user (User): The logged-in user (or None).
-        player_service (PlayerService): The player's service instance.
-        user_service (UserService): The service to fetch user info.
-        user_statistics_service (UserStatisticsService): The service to fetch user statistics.
+        current_points: User's current score
+        user_statistics (UserStatistics): user statistics object.
         position (Point): Starting screen position to display the scores.
+        all_time_high_score: The highest score ever reached in the game (all users).
 
     Returns:
         List of dicts, each dict containing:
             - 'text': Text to display
+            - 'color': Text color
             - 'position': Point object where text should be displayed
     """
 
-    ending_points_data = []
-    y_spacing = 25  # Space between lines
-
-    current_points_text = f"Points: {current_points}"
-    ending_points_data.append({
-        "text": current_points_text,
-        "color": BRONZE,
-        "position": Point(position.x, position.y)
-    })
-
+    ending_points_data = None
+    
     if user_statistics:
-        high_score = user_statistics.high_score if user_statistics else 0
+        ending_points_data = get_logged_in_high_score_data(current_points, user_statistics, position, all_time_high_score)
+    else:
+        current_points_text = f"Points: {current_points}"
 
-        if current_points > high_score and current_points > all_time_high_score:
-            high_score_text = f"NEW HIGH SCORE: {current_points}"
-            color = GOLD
-        elif high_score < current_points <= all_time_high_score:
-            high_score_text = f"NEW RECORD: {current_points}"
-            color = SILVER
-        else:
-            high_score_text = f"Your record: {high_score}"
-            color = BRONZE
-
-        ending_points_data.append({
-            "text": high_score_text,
-            "color": color,
-            "position": Point(position.x, position.y + y_spacing)
-        })
+        ending_points_data = {
+            "text": current_points_text,
+            "color": WHITE,
+            "position": Point(position.x, position.y)
+        }
 
     return ending_points_data
+
+def get_logged_in_high_score_data(current_points, user_statistics, position, all_time_high_score):
+    """
+    Collects the ending points information for logged in user
+
+    Args:
+        current_points: User's current score
+        user_statistics (UserStatistics): user statistics object.
+        position (Point): Starting screen position to display the scores.
+        all_time_high_score: The highest score ever reached in the game (all users).
+
+    Returns:
+        List of dicts, each dict containing:
+            - 'text': Text to display
+            - 'color': Text color
+            - 'position': Point object where text should be displayed
+    """
+    high_score = user_statistics.high_score
+    y_spacing = 25
+
+    if current_points > high_score and current_points > all_time_high_score:
+        return {
+            "text": f"NEW HIGH SCORE: {current_points}",
+            "color": GOLD,
+            "position": Point(position.x, position.y + y_spacing)
+        }
+    elif high_score < current_points <= all_time_high_score:
+        return {
+            "text": f"NEW RECORD: {current_points}",
+            "color": SILVER,
+            "position": Point(position.x, position.y + y_spacing)
+        }
+    else:
+        if current_points >= all_time_high_score:
+            text = f"NEW HIGH SCORE: {current_points}"
+        elif current_points == high_score:
+            text = f"NEW RECORD: {current_points}"
+        else:
+            text = f"Points / Record: {current_points}  /  {high_score}"
+
+        return {
+            "text": text,
+            "color": BRONZE,
+            "position": Point(position.x, position.y + y_spacing)
+        }
+
 
 
 def get_player_lives(player: PlayerService):

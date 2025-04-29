@@ -81,23 +81,23 @@ class TestPositionsHelpers(unittest.TestCase):
         self.assertEqual(hearts, 2)
         self.assertEqual(broken_hearts, 1)
 
-    def test_ending_points_data_returns_2_results_if_user_has_statistics(self):
+    def test_ending_points_data_returns_3_attributes_if_user_has_statistics(self):
         current_points = 10
         user_statistics = UserStatistics(1, 8, 2, "", "")
         position = Point(20, 20)
         ending_points = get_ending_points(current_points,
                                           user_statistics,
                                           position)
-        self.assertEqual(len(ending_points), 2)
+        self.assertEqual(len(ending_points), 3)
 
-    def test_ending_points_data_returns_2_results_if_user_has_no_statistics(self):
+    def test_ending_points_data_returns_3_attributes_if_user_has_no_statistics(self):
         current_points = 10
         user_statistics = None
         position = Point(20, 20)
         ending_points = get_ending_points(current_points,
                                           user_statistics,
                                           position)
-        self.assertEqual(len(ending_points), 1)
+        self.assertEqual(len(ending_points), 3)
 
     def test_ending_points_with_new_high_score_returns_correct_text(self):
         current_points = 10
@@ -109,7 +109,7 @@ class TestPositionsHelpers(unittest.TestCase):
                                           user_statistics,
                                           position,
                                           all_time_high_score)
-        high_score_text = ending_points[1]["text"]
+        high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,  f"NEW RECORD: {current_points}")
 
     def test_ending_points_with_lower_score_returns_correct_text(self):
@@ -122,9 +122,9 @@ class TestPositionsHelpers(unittest.TestCase):
                                           user_statistics,
                                           position,
                                           all_time_high_score)
-        high_score_text = ending_points[1]["text"]
+        high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
-                         f"Your record: {user_current_high_score}")
+                         f"Points / Record: {current_points}  /  {user_current_high_score}")
 
     def test_ending_points_with_new_all_time_high_score_returns_correct_text(self):
         current_points = 21
@@ -136,7 +136,35 @@ class TestPositionsHelpers(unittest.TestCase):
                                           user_statistics,
                                           position,
                                           all_time_high_score)
-        high_score_text = ending_points[1]["text"]
+        high_score_text = ending_points["text"]
+        self.assertEqual(high_score_text,
+                         f"NEW HIGH SCORE: {current_points}")
+
+    def test_ending_points_current_points_is_high_score_returns_correct_text(self):
+        current_points = 8
+        user_current_high_score = 8
+        user_statistics = UserStatistics(1, user_current_high_score, 2, "", "")
+        position = Point(20, 20)
+        all_time_high_score = 20
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position,
+                                          all_time_high_score)
+        high_score_text = ending_points["text"]
+        self.assertEqual(high_score_text,
+                         f"NEW RECORD: {current_points}")
+
+    def test_ending_points_current_points_is_all_time_high_score_returns_correct_text(self):
+        current_points = 20
+        user_current_high_score = 20
+        user_statistics = UserStatistics(1, user_current_high_score, 2, "", "")
+        position = Point(20, 20)
+        all_time_high_score = 19
+        ending_points = get_ending_points(current_points,
+                                          user_statistics,
+                                          position,
+                                          all_time_high_score)
+        high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
                          f"NEW HIGH SCORE: {current_points}")
 
