@@ -1,6 +1,6 @@
 import pygame
 import os
-from config import ASSETS_DIR
+from config import ASSETS_DIR, SILVER
 from pygame.sprite import Group
 from app_enums import AppState, LevelAttributes
 from db import Database
@@ -23,10 +23,10 @@ from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import (UPPER_BOUNDARY, LEFT_BOUNDARY,
-                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_START_Y_OFFSET,
-                    ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_START_Y_OFFSET,
-                    PLAYER_MAX_HITS, BLACK, WHITE)
+from config import (UPPER_BOUNDARY,
+                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
+                    PLAYER_START_Y_OFFSET, ENEMY_WIDTH, ENEMY_HEIGHT,
+                    ENEMY_START_Y_OFFSET, PLAYER_MAX_HITS, BLACK, WHITE)
 
 
 class Game:
@@ -67,7 +67,7 @@ class Game:
             user_id, points, level)
 
     def set_user(self, user):
-        self.user = user if user else User(0, "")
+        self.user = user if user else User(0, "Guest")
 
     def reset_game(self, screen):
         self.screen = screen
@@ -297,6 +297,7 @@ class Game:
         self.player_bullet_group.draw(self.screen)
         self.enemy_bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
+        self.draw_player_name()
         self.draw_player_points()
         self.draw_level_title()
         self.draw_player_hearts()
@@ -316,15 +317,24 @@ class Game:
             rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
 
+    def draw_player_name(self):
+        """
+        Draw current player name on screen
+        """
+
+        text = f"Player: {self.user.username}"
+        position = Point(20, 20)
+        self.draw_text(text, position, center=False)
+
     def draw_level_title(self):
         """
         Draw current level on screen
         """
-        player_name = self.user.username if self.user else "Guest"
+
         self.all_time_high_score
-        text = f"Player {player_name} | Level {self.level} | High score {self.all_time_high_score}"
+        text = f"Level {self.level} | High score {self.all_time_high_score}"
         position = Point((self.display_width // 2 - (len(text) // 2)), 20)
-        self.draw_text(text, position, center=True)
+        self.draw_text(text, position, center=True, color=SILVER)
 
     def draw_instructions_text(self):
         """

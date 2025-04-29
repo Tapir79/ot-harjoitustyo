@@ -1,6 +1,6 @@
 import random
 
-from config import BRONZE, GOLD, SILVER, WHITE
+from config import BRONZE, GOLD, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
@@ -41,21 +41,29 @@ def get_ending_points(current_points: int,
     """
 
     ending_points_data = None
-    
+    y_spacing = 25
+
     if user_statistics:
-        ending_points_data = get_logged_in_high_score_data(current_points, user_statistics, position, all_time_high_score)
+        ending_points_data = get_logged_in_high_score_data(
+            current_points, user_statistics, position, all_time_high_score, y_spacing)
     else:
         current_points_text = f"Points: {current_points}"
 
         ending_points_data = {
             "text": current_points_text,
-            "color": WHITE,
-            "position": Point(position.x, position.y)
+            "color": BRONZE,
+            "position": Point(position.x, position.y + y_spacing)
         }
 
     return ending_points_data
 
-def get_logged_in_high_score_data(current_points, user_statistics, position, all_time_high_score):
+
+def get_logged_in_high_score_data(
+        current_points,
+        user_statistics,
+        position,
+        all_time_high_score,
+        y_spacing):
     """
     Collects the ending points information for logged in user
 
@@ -64,6 +72,7 @@ def get_logged_in_high_score_data(current_points, user_statistics, position, all
         user_statistics (UserStatistics): user statistics object.
         position (Point): Starting screen position to display the scores.
         all_time_high_score: The highest score ever reached in the game (all users).
+        y_spacing: gap to previous text
 
     Returns:
         List of dicts, each dict containing:
@@ -72,7 +81,6 @@ def get_logged_in_high_score_data(current_points, user_statistics, position, all
             - 'position': Point object where text should be displayed
     """
     high_score = user_statistics.high_score
-    y_spacing = 25
 
     if current_points > high_score and current_points > all_time_high_score:
         return {
@@ -80,26 +88,25 @@ def get_logged_in_high_score_data(current_points, user_statistics, position, all
             "color": GOLD,
             "position": Point(position.x, position.y + y_spacing)
         }
-    elif high_score < current_points <= all_time_high_score:
+    if high_score < current_points <= all_time_high_score:
         return {
             "text": f"NEW RECORD: {current_points}",
             "color": SILVER,
             "position": Point(position.x, position.y + y_spacing)
         }
+
+    if current_points >= all_time_high_score:
+        text = f"NEW HIGH SCORE: {current_points}"
+    elif current_points == high_score:
+        text = f"NEW RECORD: {current_points}"
     else:
-        if current_points >= all_time_high_score:
-            text = f"NEW HIGH SCORE: {current_points}"
-        elif current_points == high_score:
-            text = f"NEW RECORD: {current_points}"
-        else:
-            text = f"Points / Record: {current_points}  /  {high_score}"
+        text = f"Points / Record: {current_points}  /  {high_score}"
 
-        return {
-            "text": text,
-            "color": BRONZE,
-            "position": Point(position.x, position.y + y_spacing)
-        }
-
+    return {
+        "text": text,
+        "color": BRONZE,
+        "position": Point(position.x, position.y + y_spacing)
+    }
 
 
 def get_player_lives(player: PlayerService):
