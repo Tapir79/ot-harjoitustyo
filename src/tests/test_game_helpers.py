@@ -1,11 +1,12 @@
 import unittest
 from unittest.mock import patch
 
+from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from services.player_service import PlayerService
-from utils.game_helpers import (get_ending_points, get_random_positions_around_center_point,
+from utils.game_helpers import (format_high_scores, get_ending_points, get_random_positions_around_center_point,
                                 get_random_x,
                                 get_random_y,
                                 get_player_lives)
@@ -138,3 +139,9 @@ class TestPositionsHelpers(unittest.TestCase):
         high_score_text = ending_points[1]["text"]
         self.assertEqual(high_score_text,
                          f"NEW All-Time HIGH SCORE: {current_points}")
+
+    def test_formatting(self):
+        general_stats = GeneralStatistics("elaine", "20", 2)
+        rank, high_score, username = format_high_scores(0, general_stats)
+        self.assertEqual(rank, "1" + " " * 7)
+        self.assertEqual(high_score, "20".zfill(8) + " " * 3)

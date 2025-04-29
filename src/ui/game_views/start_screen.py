@@ -3,6 +3,8 @@ import pygame
 from config import BLACK, BRONZE, GOLD, SILVER, WHITE, ASSETS_DIR
 from app_enums import AppState, CurrentField
 from ui.game_views.base_view import BaseView
+from services.general_statistics_service import GeneralStatisticsService
+from utils.game_helpers import format_high_scores
 
 
 class StartScreenView(BaseView):
@@ -33,6 +35,8 @@ class StartScreenView(BaseView):
                 self.user.user_id)
         self.menu_items = []
         self.selected_index = 0
+        self.general_statistics_service = GeneralStatisticsService()
+        self.top_scores = self.general_statistics_service.get_top_scores()
 
     def render(self):
         """
@@ -74,7 +78,6 @@ class StartScreenView(BaseView):
         y += 100
 
         if self.user:
-            # Player Info
             self.draw_text(f"Player: {self.user.username}",
                            (center_x, y), self.small_font, center=True)
             y += 30
@@ -95,20 +98,28 @@ class StartScreenView(BaseView):
         Returns:
             y = The next y coordinate
         """
-        top_scores = ["1. NN placeholder",
-                      "2. JJ placeholder",
-                      "3. KK placeholder"]
-        top_colors = [GOLD, SILVER, BRONZE]
 
-        y = self.draw_centered_title_and_left_align_rest(
-            "--- Top High Scores ---",
-            top_scores,
-            center_x,
-            y,
-            line_colors=top_colors
-        )
+        if not self.top_scores:
+            self.top_scores = [None, None, None]
+
+        rows = []
+
+        y += 20
+        title = "Rank  High Score  Username"
+        title_rect = self.draw_text(str(title), (center_x, y), center=True)
         y += 40
 
+        for i, score in enumerate(self.top_scores):
+            rank, high_score, username = format_high_scores(i, score)
+            rows.append(f"{rank}  {high_score}   {username}")
+
+        player_colors = [GOLD, SILVER, BRONZE]
+        for i, row in enumerate(rows):
+            self.draw_text(str(row), (title_rect.left, y),  center=False,
+                           color=player_colors[i])
+            y += 40
+
+        y += 40
         return y
 
     def draw_menu_options(self, center_x, y):

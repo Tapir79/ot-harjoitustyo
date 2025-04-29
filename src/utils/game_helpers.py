@@ -1,9 +1,19 @@
 import random
 
+from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
 from models.size import Size
 from services.player_service import PlayerService
+
+
+def format_high_scores(rank_index, statistics: GeneralStatistics):
+    username = statistics.username if statistics else "---"
+    high_score = statistics.high_score if statistics else 0
+    rank = str(rank_index + 1) + " " * 7
+    high_score = str(high_score).zfill(8) + " " * 3
+
+    return rank, high_score, username
 
 
 def get_ending_points(current_points: int,

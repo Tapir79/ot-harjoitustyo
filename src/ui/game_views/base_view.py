@@ -139,7 +139,7 @@ class BaseView:
         surface = self.font.render(display_text, True, WHITE)
         self.screen.blit(surface, (rect.x + 5, rect.y + 5))
 
-    def draw_text(self, text, position, font=None, center=False):
+    def draw_text(self, text, position, font=None, center=False, color=WHITE):
         """
         Draw text on the screen.
 
@@ -147,16 +147,21 @@ class BaseView:
             text: The string to render.
             pos: A tuple (x, y) for the text position.
             font: A pygame.Font object to use (optional).
+
+        Returns:
+            pygame.Rect: The rectangle of the drawn text.
         """
         if font is None:
             font = self.small_font
-        text_surface = font.render(text, True, WHITE)
+        text_surface = font.render(text, True, color)
         rect = text_surface.get_rect()
         if center:
             rect.center = position
         else:
             rect.topleft = position
         self.screen.blit(text_surface, rect)
+
+        return rect
 
     def draw_labels(self, lines):
         """
