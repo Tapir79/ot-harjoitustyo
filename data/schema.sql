@@ -13,7 +13,7 @@ CREATE TABLE user_statistics(
     user_id INTEGER REFERENCES users ON DELETE CASCADE
 );
 
--- 5 top high scores
+-- 3 top high scores
 CREATE VIEW general_statistics AS
     SELECT u.username, us.high_score, us.level
     FROM users u

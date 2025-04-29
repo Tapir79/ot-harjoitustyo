@@ -36,14 +36,14 @@ class UserStatisticsService:
             return None, ErrorMessages.USER_NOT_FOUND
         return user_statistics, None
 
-    def create_user_statistics(self, user_id, high_score, stage):
+    def create_user_statistics(self, user_id, high_score, level):
         """
         Creates new user statistics if no existing statistics are found for the user.
 
         Args:
             user_id: The ID of the user.
             high_score: The high score to initialize.
-            stage: The current level or stage to initialize.
+            level: The current level or stage to initialize.
 
         Returns:
             tuple: (UserStatistics or None, str or None)
@@ -57,7 +57,7 @@ class UserStatisticsService:
 
         try:
             new_user_statistics = self.user_statistics_repository.create_user_statistics(
-                high_score, stage, user_id)
+                high_score, level, user_id)
             return new_user_statistics, None
         except sqlite3.IntegrityError:
             return None, ErrorMessages.USER_NOT_FOUND
