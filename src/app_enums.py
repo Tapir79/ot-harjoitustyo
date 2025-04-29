@@ -31,7 +31,7 @@ class CurrentField(str, Enum):
 class ErrorMessages(str, Enum):
     FIELDS_REQUIRED = "Both fields are required."
     USERNAME_TOO_SHORT = "Username must be at least 3 characters."
-    USERNAME_TOO_LONG = "Username can be at most 10 characters."
+    USERNAME_TOO_LONG = "Username can be at most 8 characters."
     PASSWORD_TOO_SHORT = "Password must be at least 3 characters."
     USERNAME_OR_PASSWORD_FAILED = "Username and/or password failed."
     USERNAME_EXISTS = "Username already exists."

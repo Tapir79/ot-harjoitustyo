@@ -52,6 +52,7 @@ classDiagram
 
     class CreateUserView {
         +input_boxes
+        +render()
         +on_submit()
     }
 
@@ -59,6 +60,7 @@ classDiagram
         +username
         +password
         +user
+        +render()
         +on_submit()
     }
 
@@ -66,6 +68,7 @@ classDiagram
         +user
         +render()
         +handle_keydown()
+        +on_submit()
     }
 
     %% Inheritance
@@ -179,10 +182,10 @@ flowchart TD
 
 ## Ohjaustiedostot 
 
-Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. Lisäksi tasojen vakiottiedot on tallennettu level config-tiedostoon. Tasovakioilla ohjataan pelille oikea arvo, esim. vihollisen kestävyys, pelin edetessä. 
+Sovelluksen globaalit vakiot on tallennettu config.py-tiedostoon. Lisäksi tasojen vakiotiedot on tallennettu level config-tiedostoon. Tasovakioilla ohjataan pelille oikea arvo, esim. vihollisen kestävyys, pelin edetessä. 
 
-Sovellukselle on myös tulossa SQLite-tietokannan alustustiedosto. 
-
+SQLite-tietokanta alustetaan sql-tiedostoilla. `schema.sql` luo taulut ja näkymän.  
+`seed_data.sql` luo kantaan __guest__-käyttäjän pelaajalle, joka ei halua luoda itselleen tunnusta.
 
 ## Päätoiminnallisuudet
 

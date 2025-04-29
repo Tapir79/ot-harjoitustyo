@@ -37,7 +37,7 @@ class UserService:
             return False, ErrorMessages.FIELDS_REQUIRED
         if len(username) < 3:
             return False, ErrorMessages.USERNAME_TOO_SHORT
-        if len(username) > 10:
+        if len(username) > 8:
             return False, ErrorMessages.USERNAME_TOO_LONG
         if len(password) < 3:
             return False, ErrorMessages.PASSWORD_TOO_SHORT
