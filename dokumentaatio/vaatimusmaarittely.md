@@ -42,9 +42,9 @@ Toteutunut aloitusnäkymä:
 [X]   - Pelin voi käynnistää anonyymina pelaajana.       
 [X]   - Peli pyytää kirjautumaan sisään tai rekisteröimään käyttäjätunnuksen.         
 [X]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee oman parhaan tuloksensa ja Aloita peli-vaihtoehdon.  
-[ ]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee uloskirjautumisvaihtoehdon.          
+[X]   - Kun käyttäjä on kirjautunut tunnuksellaan sisään, käyttäjä näkee uloskirjautumisvaihtoehdon.          
 [X]   - Pelissä ei ole monimutkaisempaa käyttöliittymää, vaan kaikki tapahtuu peliruudulla.
-[ ]   - Tulostaa 3 kaikkien aikojen parasta pelitulosta eli high scorea     
+[X]   - Tulostaa 3 kaikkien aikojen parasta pelitulosta eli high scorea     
 
 2. **Rekisteröitymisnäkymä**
 
