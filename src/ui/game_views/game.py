@@ -27,7 +27,6 @@ from config import (UPPER_BOUNDARY, LEFT_BOUNDARY,
                     PLAYER_MAX_HITS, BLACK, WHITE)
 
 
-
 class Game:
     """
     The Game class represents the main game logic for a simple Space Invaders-style game.
@@ -55,7 +54,7 @@ class Game:
         """
         if not self.user_statistics_service:
             return
-        
+
         user_id = self.user.user_id if self.user and self.user.user_id != 0 else 1
         points = self.player.player_service.points
         level = self.level
@@ -325,7 +324,7 @@ class Game:
         """
         text = "Move the player with 'a' and 'd', Shoot with SPACE"
         y_offset = 40
-        position = Point(self.display_width // 2 ,
+        position = Point(self.display_width // 2,
                          self.display_height - y_offset)
         self.draw_text(text, position, center=True)
 

@@ -14,6 +14,7 @@ from enum import Enum
 class AppState(str, Enum):
     START_SCREEN = "start"
     LOGIN_VIEW = "login"
+    LOGOUT = "logout"
     CREATE_USER_VIEW = "create_user"
     RUN_GAME = "game"
     QUIT = "quit"

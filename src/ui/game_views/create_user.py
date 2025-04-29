@@ -76,7 +76,7 @@ class CreateUserView(BaseView):
             self.user_statistics_service.create_user_statistics(
                 user.user_id, 0, 0)
             user_id, msg = self.user_service.login(username, password)
-            
+
         self.message = message
         if success:
             self.render()

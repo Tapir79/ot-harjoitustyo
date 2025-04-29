@@ -139,6 +139,8 @@ class StartScreenView(BaseView):
                 (f"Login", AppState.LOGIN_VIEW),
                 (f"Create a New User", AppState.CREATE_USER_VIEW)
             ]
+        if self.user:
+            menu_items += [(f"Logout", AppState.LOGOUT)]
 
         for index, (text, app_state) in enumerate(menu_items):
             selected = (index == self.selected_index)
