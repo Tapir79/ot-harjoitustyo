@@ -42,5 +42,29 @@ def build_database(database_name="database"):
         return False
 
 
+def add_test_data(database_name="database"):
+    """
+    This script executes to the created database seed_data.sql file if the database exists.
+    """
+
+    db_path = Path(f"data/{database_name}.db")
+    schema_path = Path("data/seed_data.sql")
+    # equivalent of: sqlite3 database.db < data/test_data.sql
+    try:
+        subprocess.run(
+            ["sqlite3", str(db_path)],
+            input=schema_path.read_text(encoding="utf-8"),
+            text=True,
+            check=True
+        )
+        print("Data inserted successfully.")
+        return True
+    except subprocess.CalledProcessError as e:
+        print("Failed to insert data.")
+        print(e)
+        return False
+
+
 if __name__ == "__main__":
     build_database()
+    add_test_data()
