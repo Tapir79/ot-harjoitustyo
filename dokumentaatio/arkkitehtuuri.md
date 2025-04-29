@@ -163,12 +163,17 @@ flowchart TD
 
     UI <--> US[UserService]
     UI <--> USS[UserStatisticsService]
+    UI <--> GSS[GeneralStatisticsService]
 
     US <--> UR[UserRepository]
     USS <--> USR[UserStatisticsRepository]
+    GSS <--> GSR[GeneralStatisticsRepository: SQLite Näkymä: GeneralStatistics] 
 
+    GSR <--> DB_USERS[SQLite Taulu: users]
+    
     UR <--> DB_USERS[SQLite Taulu: users]
     USR <--> DB_STATS[SQLite Taulu: user_statistics]
+    GSR <--> DB_STATS[SQLite Taulu: user_statistics]
 ```
 
 
