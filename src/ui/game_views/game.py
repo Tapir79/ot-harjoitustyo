@@ -53,14 +53,15 @@ class Game:
         """
         Saves the player's score and level to the database if they are better than previous.
         """
-        if not self.user or not self.user_statistics_service:
+        if not self.user_statistics_service:
             return
-
+        
+        user_id = self.user.user_id if self.user and self.user.user_id != 0 else 1
         points = self.player.player_service.points
         level = self.level
 
         self.user_statistics_service.upsert_user_statistics(
-            self.user.user_id, points, level)
+            user_id, points, level)
 
     def set_user(self, user):
         self.user = user if user else User(0, "")
@@ -413,7 +414,7 @@ class Game:
         """
         if not self.enemy_group:
             self.level += 1
-            # passed final level
+            # passed final levelga
             if self.level > self.levels.get_final_level():
                 self.win_game()
             # load next level
