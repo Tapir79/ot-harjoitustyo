@@ -5,6 +5,7 @@ from pygame.sprite import Group
 from app_enums import AppState, LevelAttributes
 from db import Database
 from entities.user import User
+from repositories.general_statistics_repository import GeneralStatisticsRepository
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
 from services.general_statistics_service import GeneralStatisticsService
