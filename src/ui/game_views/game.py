@@ -7,6 +7,7 @@ from db import Database
 from entities.user import User
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
+from services.general_statistics_service import GeneralStatisticsService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
 from services.player_service import PlayerService
@@ -45,6 +46,8 @@ class Game:
             UserRepository(Database()))
         self.user_statistics_service = user_statistics_service if user_statistics_service else UserStatisticsService(
             UserStatisticsRepository(Database()))
+        self.general_statistics_service = GeneralStatisticsService(
+            GeneralStatisticsRepository(Database()))
         self.reset_game(screen)
         self.user = self.set_user(user)
 
@@ -75,6 +78,7 @@ class Game:
         self.font = pygame.font.Font(None, 30)
         self.gameover = False
         self.gameover_text = ""
+        self.all_time_high_score = self.general_statistics_service.get_top_scores()[0].high_score
 
         self.init_ui_images()
         self.init_levels()
@@ -298,11 +302,11 @@ class Game:
         self.draw_instructions_text()
         pygame.display.update()
 
-    def draw_text(self, text, position: Point, center=False):
+    def draw_text(self, text, position: Point, center=False, color=WHITE):
         """
         General method for drawing text on the screen.
         """
-        text_surface = self.font.render(text, True, WHITE)
+        text_surface = self.font.render(text, True, color)
         rect = text_surface.get_rect()
         if center:
             rect.center = position.x, position.y
@@ -310,13 +314,16 @@ class Game:
             rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
 
+
     def draw_level_title(self):
         """
         Draw current level on screen
         """
-        text = f"Level {self.level}"
-        position = Point((self.display_width // 2 - len(text) // 2), 20)
-        self.draw_text(text, position)
+        player_name = self.user.username if self.user else "Guest" 
+        self.all_time_high_score
+        text = f"Player {player_name} | Level {self.level} | High score {self.all_time_high_score}"
+        position = Point((self.display_width // 2 - (len(text) // 2)), 20)
+        self.draw_text(text, position, center=True)
 
     def draw_instructions_text(self):
         """
@@ -346,13 +353,14 @@ class Game:
         if self.user:
             user_statistics, _ = self.user_statistics_service.get_user_statistics(
                 self.user.user_id)
-
+        
         ending_points_data = get_ending_points(player_current_points,
                                                user_statistics,
-                                               position)
+                                               position,
+                                               all_time_high_score=self.all_time_high_score)
 
         for data in ending_points_data:
-            self.draw_text(data["text"], data["position"], center)
+            self.draw_text(data["text"], data["position"], center, color=data["color"])
 
     def draw_player_hearts(self):
         """

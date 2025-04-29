@@ -1,5 +1,6 @@
 import random
 
+from config import BRONZE, GOLD, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
@@ -45,6 +46,7 @@ def get_ending_points(current_points: int,
     current_points_text = f"Points: {current_points}"
     ending_points_data.append({
         "text": current_points_text,
+        "color": BRONZE,
         "position": Point(position.x, position.y)
     })
 
@@ -52,14 +54,18 @@ def get_ending_points(current_points: int,
         high_score = user_statistics.high_score if user_statistics else 0
 
         if current_points > high_score and current_points > all_time_high_score:
-            high_score_text = f"NEW All-Time HIGH SCORE: {current_points}"
-        elif high_score < current_points <= all_time_high_score:
             high_score_text = f"NEW HIGH SCORE: {current_points}"
+            color = GOLD
+        elif high_score < current_points <= all_time_high_score:
+            high_score_text = f"NEW RECORD: {current_points}"
+            color = SILVER
         else:
-            high_score_text = f"Your High Score: {high_score}"
+            high_score_text = f"Your record: {high_score}"
+            color = BRONZE
 
         ending_points_data.append({
             "text": high_score_text,
+            "color": color,
             "position": Point(position.x, position.y + y_spacing)
         })
 
