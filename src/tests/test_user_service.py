@@ -48,6 +48,12 @@ class TestUserService(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(msg, ErrorMessages.USERNAME_TOO_SHORT)
 
+    def test_register_invalid_user(self):
+        success, msg, _ = self.service.register_user(
+            "guybrushthreepwood", "le")
+        self.assertFalse(success)
+        self.assertEqual(msg, ErrorMessages.USERNAME_TOO_LONG)
+
     def test_register_valid_user(self):
         success, msg, _ = self.service.register_user("g.p.", "lechuck")
         self.assertTrue(success)
