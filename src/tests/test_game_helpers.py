@@ -110,7 +110,7 @@ class TestPositionsHelpers(unittest.TestCase):
                                           position,
                                           all_time_high_score)
         high_score_text = ending_points[1]["text"]
-        self.assertEqual(high_score_text,  f"NEW HIGH SCORE: {current_points}")
+        self.assertEqual(high_score_text,  f"NEW RECORD: {current_points}")
 
     def test_ending_points_with_lower_score_returns_correct_text(self):
         current_points = 8
@@ -124,7 +124,7 @@ class TestPositionsHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points[1]["text"]
         self.assertEqual(high_score_text,
-                         f"Your High Score: {user_current_high_score}")
+                         f"Your record: {user_current_high_score}")
 
     def test_ending_points_with_new_all_time_high_score_returns_correct_text(self):
         current_points = 21
@@ -138,7 +138,7 @@ class TestPositionsHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points[1]["text"]
         self.assertEqual(high_score_text,
-                         f"NEW All-Time HIGH SCORE: {current_points}")
+                         f"NEW HIGH SCORE: {current_points}")
 
     def test_formatting(self):
         general_stats = GeneralStatistics("elaine", "20", 2)
