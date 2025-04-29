@@ -5,29 +5,27 @@ from pygame.sprite import Group
 from app_enums import AppState, LevelAttributes
 from db import Database
 from entities.user import User
-from entities.user_statistics import UserStatistics
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
+from services.player_service import PlayerService
+from services.enemy_service import EnemyService
+from services.level_service import LevelService
 from utils.game_helpers import get_ending_points, get_player_lives, get_random_positions_around_center_point
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
 from ui.sprites.player import PlayerSprite
-from services.player_service import PlayerService
-from services.enemy_service import EnemyService
-from services.level_service import LevelService
 from models.hit import Hit
 from models.point import Point
 from models.size import Size
 from models.sprite_info import SpriteInfo
-from config import (UPPER_BOUNDARY,
-                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
-                    ENEMY_WIDTH, ENEMY_HEIGHT, PLAYER_MAX_HITS, BLACK, WHITE)
+from config import (UPPER_BOUNDARY, LEFT_BOUNDARY,
+                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_START_Y_OFFSET,
+                    ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_START_Y_OFFSET,
+                    PLAYER_MAX_HITS, BLACK, WHITE)
 
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
 
 
 class Game:
@@ -109,7 +107,7 @@ class Game:
 
     def create_player(self):
         player_position = Point(self.display_width // 2,
-                                self.display_height - 50)
+                                self.display_height - PLAYER_START_Y_OFFSET)
         player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
         hit = Hit(0, PLAYER_MAX_HITS)
         player_info = SpriteInfo(
@@ -134,7 +132,7 @@ class Game:
         enemy_shooting_probability = self.enemy_shooting_probability
         enemy_image = self.enemy_image
         margin_x = 50
-        margin_y = 50
+        margin_y = ENEMY_START_Y_OFFSET
 
         for row in range(rows):
             for col in range(cols):
@@ -297,6 +295,7 @@ class Game:
         self.draw_level_title()
         self.draw_player_hearts()
         self.hit_group.draw(self.screen)
+        self.draw_instructions_text()
         pygame.display.update()
 
     def draw_text(self, text, position: Point, center=False):
@@ -325,8 +324,8 @@ class Game:
         """
         text = "Move the player with 'a' and 'd', Shoot with SPACE"
         y_offset = 40
-        position = Point(self.display_width // 2,
-                         self.display_height // 2 + y_offset)
+        position = Point(self.display_width // 2 ,
+                         self.display_height - y_offset)
         self.draw_text(text, position, center=True)
 
     def draw_game_over_text(self):
@@ -436,7 +435,6 @@ class Game:
 
         if self.level_ticks_remaining > 0:
             self.draw_next_level_title()
-            self.draw_instructions_text()
             pygame.display.update()
 
             self.level_ticks_remaining -= 1
