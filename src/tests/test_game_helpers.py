@@ -69,7 +69,7 @@ class TestPositionsHelpers(unittest.TestCase):
         self.assertEqual(hearts, 3)
         self.assertEqual(broken_hearts, 0)
 
-    def test_player_hearts_without_any_hits(self):
+    def test_player_hearts_with_hits(self):
         position = Point(5, 5)
         size = Size(10, 10)
         hit = Hit(0, 3)
