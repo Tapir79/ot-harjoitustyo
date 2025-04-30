@@ -9,8 +9,6 @@ import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 from app_enums import AppState
 from entities.user import User
-from repositories.user_repository import UserRepository
-from services.user_service import UserService
 from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
