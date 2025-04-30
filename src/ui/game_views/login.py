@@ -69,7 +69,7 @@ class LoginView(BaseView):
             self.user = User(user_id, username)
             self.render()
             pygame.time.wait(1500)
-            return AppState.START_SCREEN, self.user
+            return AppState.START_SCREEN
         else:
             self.message = msg
         return None

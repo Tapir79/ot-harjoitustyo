@@ -15,7 +15,7 @@ class BaseView:
     Handles basic rendering, event handling, and input field logic.
     """
 
-    def __init__(self, screen, esc_state=None):
+    def __init__(self, screen, esc_state=None, user=None):
         """
         Initialize the view.
 
@@ -35,6 +35,18 @@ class BaseView:
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
         self.esc_state = esc_state
+        self.user = user
+        self.init_user()
+
+    def init_user(self):
+        """
+        Fetch default user if user is None
+        Fetch user statistics
+        """
+        if self.user is None:
+            self.user, _ = self.user_service.get_user(1)
+        self.user_statistics, _ = self.user_statistics_service.get_user_statistics(
+            self.user.user_id)
 
     def run(self):
         """
@@ -49,7 +61,7 @@ class BaseView:
             for event in pygame.event.get():
                 result = self.handle_event(event)
                 if result is not None:
-                    return result
+                    return result, self.user
 
     def render(self):
         """

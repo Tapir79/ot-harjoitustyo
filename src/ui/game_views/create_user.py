@@ -80,7 +80,8 @@ class CreateUserView(BaseView):
         self.message = message
         if success:
             self.render()
+            self.user = User(user_id, username)
             pygame.display.flip()
             pygame.time.wait(1500)
-            return AppState.START_SCREEN, User(user_id, username)
+            return AppState.START_SCREEN
         return None

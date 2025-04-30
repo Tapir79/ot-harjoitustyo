@@ -25,14 +25,10 @@ class StartScreenView(BaseView):
             screen: The pygame screen surface to draw on.
             user: The currently logged-in user (optional).
         """
-        super().__init__(screen, esc_state=AppState.QUIT)
+        super().__init__(screen, esc_state=AppState.QUIT, user=user)
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
         self.current_field = CurrentField.START
-        self.user = user
-        if self.user:
-            self.user_statistics, _ = self.user_statistics_service.get_user_statistics(
-                self.user.user_id)
         self.menu_items = []
         self.selected_index = 0
         self.general_statistics_service = GeneralStatisticsService()
@@ -83,7 +79,7 @@ class StartScreenView(BaseView):
             y += 30
             self.draw_text(f"Your High Score: {self.user_statistics.high_score}", (
                 center_x, y), self.small_font, center=True)
-            y += 40
+            y += 30
 
         return y
 
@@ -107,7 +103,7 @@ class StartScreenView(BaseView):
         y += 20
         title = "Rank  High Score  Username"
         title_rect = self.draw_text(str(title), (center_x, y), center=True)
-        y += 40
+        y += 30
 
         for i, score in enumerate(self.top_scores):
             rank, high_score, username = format_high_scores(i, score)
@@ -117,9 +113,9 @@ class StartScreenView(BaseView):
         for i, row in enumerate(rows):
             self.draw_text(str(row), (title_rect.left, y),  center=False,
                            color=player_colors[i])
-            y += 40
+            y += 30
 
-        y += 40
+        y += 30
         return y
 
     def draw_menu_options(self, center_x, y):
@@ -134,12 +130,12 @@ class StartScreenView(BaseView):
             y = The next y coordinate
         """
         menu_items = [(f"Start Game", AppState.RUN_GAME)]
-        if not self.user:
+        if self.user.user_id == 1:
             menu_items += [
                 (f"Login", AppState.LOGIN_VIEW),
                 (f"Create a New User", AppState.CREATE_USER_VIEW)
             ]
-        if self.user:
+        if self.user.user_id != 1:
             menu_items += [(f"Logout", AppState.LOGOUT)]
 
         for index, (text, app_state) in enumerate(menu_items):
@@ -173,7 +169,7 @@ class StartScreenView(BaseView):
 
         y = self.draw_menu_options(center_x, y)
 
-        y += 30
+        y += 20
         self.draw_text("Press ESC to Quit", (center_x, y),
                        self.font, center=True)
 

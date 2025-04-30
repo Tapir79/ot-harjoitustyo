@@ -9,6 +9,8 @@ import pygame
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
 from app_enums import AppState
 from entities.user import User
+from repositories.user_repository import UserRepository
+from services.user_service import UserService
 from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
@@ -30,7 +32,6 @@ def main():
 
     while state != AppState.QUIT:
         state, user = handle_states(state, screen, game, user)
-        print(f"state/user: {state} {user}")
 
     pygame.quit()
     sys.exit()
@@ -59,15 +60,14 @@ def handle_states(state: AppState, screen, game: Game, user: User):
             - User: Updated user if login was successful, otherwise the original user.
     """
     if state == AppState.START_SCREEN:
-        state = StartScreenView(screen, user).run()
+        state, user = StartScreenView(screen, user).run()
     elif state == AppState.LOGIN_VIEW:
         login_view = LoginView(screen)
         state, user = login_view.run()
     elif state == AppState.CREATE_USER_VIEW:
         state, user = CreateUserView(screen).run()
     elif state == AppState.LOGOUT:
-        state = StartScreenView(screen, None).run()
-        user = None
+        state, user = StartScreenView(screen, None).run()
     elif state == AppState.RUN_GAME:
         game.set_user(user)
         game.reset_game(screen)
