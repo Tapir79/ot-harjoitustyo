@@ -1,32 +1,16 @@
-import os
 import unittest
-import sqlite3
-from pathlib import Path
 from app_enums import ErrorMessages
-from repositories.user_statistics_repository import UserStatisticsRepository
-from services.user_service import UserService
-from services.user_statistics_service import UserStatisticsService
-from repositories.user_repository import UserRepository
-import db
-from config import PROJECT_ROOT
+from tests.test_helpers import (create_test_database_connection,
+                                get_database, get_user_service,
+                                get_user_statistics_service)
 
 
 class TestUserStatisticsService(unittest.TestCase):
     def setUp(self):
-        self.connection = sqlite3.connect(":memory:")
-        self.connection.execute("PRAGMA foreign_keys = ON")
-        self.connection.row_factory = sqlite3.Row
-
-        schema_path = Path(PROJECT_ROOT) / "data" / "schema.sql"
-        with schema_path.open() as f:
-            self.connection.executescript(f.read())
-
-        self.db = db.Database(connection=self.connection)
-        self.user_statistics_repository = UserStatisticsRepository(self.db)
-        self.user_statistics_service = UserStatisticsService(
-            self.user_statistics_repository)
-        self.user_repository = UserRepository(self.db)
-        self.user_service = UserService(self.user_repository)
+        self.connection = create_test_database_connection()
+        self.db = get_database(self.connection)
+        self.user_service = get_user_service(self.db)
+        self.user_statistics_service = get_user_statistics_service(self.db)
 
     def tearDown(self):
         self.connection.close()
