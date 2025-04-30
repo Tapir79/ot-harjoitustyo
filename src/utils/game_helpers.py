@@ -8,7 +8,38 @@ from models.size import Size
 from services.player_service import PlayerService
 
 
+def update_single_field(text: str, backspace: bool = False, char: str = None) -> str:
+    """
+    Purely compute the next value of a single text field.
+
+    Args:
+      text: current contents of the field
+      backspace: whether to delete the last character
+      char: a new character to append
+
+    Returns:
+      new text
+    """
+    if backspace:
+        return text[:-1]
+    if char:
+        return text + char
+    return text
+
+
 def format_high_scores(rank_index, statistics: GeneralStatistics):
+    """
+    Format high score rows that they are aligned. 
+
+    Args:
+      rank_index: the rank is 1st, 2nd, 3rd. Index is 0,1,2.
+      statistics: General game statistics. 
+
+    Returns:
+      rank: 1., 2. or 3.
+      high_score: High score filled with zeros. 8 -> 00000008 
+      username: Username or -- 
+    """
     username = statistics.username if statistics else "---"
     high_score = statistics.high_score if statistics else 0
     rank = str(rank_index + 1) + " " * 7

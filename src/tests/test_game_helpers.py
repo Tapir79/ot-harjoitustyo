@@ -9,7 +9,7 @@ from services.player_service import PlayerService
 from utils.game_helpers import (format_high_scores, get_ending_points, get_random_positions_around_center_point,
                                 get_random_x,
                                 get_random_y,
-                                get_player_lives)
+                                get_player_lives, update_single_field)
 from models.point import Point
 from models.size import Size
 
@@ -173,3 +173,15 @@ class TestPositionsHelpers(unittest.TestCase):
         rank, high_score, username = format_high_scores(0, general_stats)
         self.assertEqual(rank, "1" + " " * 7)
         self.assertEqual(high_score, "20".zfill(8) + " ")
+
+    def test_update_single_field_with_backspace(self):
+        text = update_single_field("brush", True)
+        self.assertEqual(text, "brus")
+
+    def test_update_single_field_with_new_char(self):
+        text = update_single_field("brus", False, "h")
+        self.assertEqual(text, "brush")
+
+    def test_update_single_field_no_change(self):
+        text = update_single_field("brush", False)
+        self.assertEqual(text, "brush")

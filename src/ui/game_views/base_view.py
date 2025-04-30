@@ -4,8 +4,10 @@ from config import WHITE
 from db import Database
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
+from services.session_service import SessionService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
+from utils.game_helpers import update_single_field
 
 
 class BaseView:
@@ -36,17 +38,8 @@ class BaseView:
         self.password_rect = pygame.Rect(250, 200, 300, 36)
         self.esc_state = esc_state
         self.user = user
-        self.init_user()
-
-    def init_user(self):
-        """
-        Fetch default user if user is None
-        Fetch user statistics
-        """
-        if self.user is None:
-            self.user, _ = self.user_service.get_user(1)
-        self.user_statistics, _ = self.user_statistics_service.get_user_statistics(
-            self.user.user_id)
+        self.session_service = SessionService()
+        self.user, self.user_statistics = self.session_service.init_user(user)
 
     def run(self):
         """
@@ -124,16 +117,14 @@ class BaseView:
             elif char:
                 self.input_boxes[self.current_field] += char
         else:
-            if backspace:
-                if self.current_field == CurrentField.USERNAME:
-                    self.username = self.username[:-1]
-                else:
-                    self.password = self.password[:-1]
-            elif char:
-                if self.current_field == CurrentField.USERNAME:
-                    self.username += char
-                else:
-                    self.password += char
+            if self.current_field == CurrentField.USERNAME:
+                self.username = update_single_field(self.username,
+                                                    backspace=backspace,
+                                                    char=char)
+            else:
+                self.password = update_single_field(self.password,
+                                                    backspace=backspace,
+                                                    char=char)
 
     def draw_input_field(self, rect, text, is_active, is_password=False):
         """
