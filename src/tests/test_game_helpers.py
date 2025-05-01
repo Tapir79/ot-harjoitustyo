@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+import subprocess
 import unittest
 from unittest.mock import patch
 
@@ -6,7 +9,7 @@ from entities.user_statistics import UserStatistics
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from services.player_service import PlayerService
-from utils.game_helpers import (format_high_scores, get_ending_points, get_random_positions_around_center_point,
+from utils.game_helpers import (check_database_exists, format_high_scores, get_ending_points, get_random_positions_around_center_point,
                                 get_random_x,
                                 get_random_y,
                                 get_player_lives, update_single_field)
@@ -14,7 +17,21 @@ from models.point import Point
 from models.size import Size
 
 
-class TestPositionsHelpers(unittest.TestCase):
+def create_db_file(database_name):
+    os.makedirs("data", exist_ok=True)
+    with open(f"data/{database_name}", "a"):
+        pass
+
+
+def delete_db_file(database_name):
+    db_path = Path("data") / database_name
+    try:
+        db_path.unlink()
+    except FileNotFoundError:
+        print(f"File does not exist.")
+
+
+class TestGameHelpers(unittest.TestCase):
 
     def test_get_random_x_does_not_go_over_bounds(self):
         center_x = 4
@@ -185,3 +202,16 @@ class TestPositionsHelpers(unittest.TestCase):
     def test_update_single_field_no_change(self):
         text = update_single_field("brush", False)
         self.assertEqual(text, "brush")
+
+    def test_db_health_check_with_db(self):
+        database_name = "test_database.db"
+        create_db_file(database_name)
+        exists = check_database_exists(database_name)
+        print("DB exists:", exists)
+        self.assertEqual(exists, True)
+        delete_db_file(database_name)
+
+    def test_db_health_check_without_db(self):
+        database_name = "test_database.db"
+        exists = check_database_exists(database_name)
+        self.assertEqual(exists, False)

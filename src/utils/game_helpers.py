@@ -1,11 +1,27 @@
+import os
+from pathlib import Path
 import random
 
-from config import BRONZE, GOLD, SILVER
+from config import BRONZE, GOLD, PROJECT_ROOT, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
 from models.size import Size
 from services.player_service import PlayerService
+
+
+def check_database_exists(database):
+    """
+    Health check before starting the game. If the database does not exist 
+    print instructions for the user and exit gracefully.
+    """
+    schema_path = Path(PROJECT_ROOT) / "data" / database
+    if not os.path.isfile(schema_path):
+        print(f"Database file “{schema_path}” not found.")
+        print("Please initialize your database first:")
+        print(f"    poetry run invoke build")
+        return False
+    return True
 
 
 def update_single_field(text: str, backspace: bool = False, char: str = None) -> str:

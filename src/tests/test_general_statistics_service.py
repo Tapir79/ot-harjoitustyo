@@ -1,21 +1,10 @@
 import unittest
-import sqlite3
-from pathlib import Path
 from entities.general_statistics import GeneralStatistics
-from entities.user_statistics import UserStatistics
-from repositories.general_statistics_repository import GeneralStatisticsRepository
-from repositories.user_statistics_repository import UserStatisticsRepository
-from services.general_statistics_service import GeneralStatisticsService
-from services.user_service import UserService
-from repositories.user_repository import UserRepository
-import db
-from config import PROJECT_ROOT
-from services.user_statistics_service import UserStatisticsService
-from tests.test_helpers import (create_test_database_connection,
-                                get_database,
-                                get_general_statistics_service,
-                                get_user_service,
-                                get_user_statistics_service)
+from tests.db_setup_helpers import (create_test_database_connection,
+                                    get_database,
+                                    get_general_statistics_service,
+                                    get_user_service,
+                                    get_user_statistics_service)
 
 
 class TestGeneralStatisticsService(unittest.TestCase):

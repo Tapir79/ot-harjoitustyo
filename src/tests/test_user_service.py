@@ -1,12 +1,10 @@
 import unittest
 
 from app_enums import ErrorMessages
-from services.user_service import UserService
-from repositories.user_repository import UserRepository
 
-from tests.test_helpers import (create_test_database_connection,
-                                get_database,
-                                get_user_service)
+from tests.db_setup_helpers import (create_test_database_connection,
+                                    get_database,
+                                    get_user_service)
 
 
 class TestUserService(unittest.TestCase):
