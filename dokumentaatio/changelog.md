@@ -38,3 +38,13 @@ näppäimistöllä
 - Tietokantaan tallennetaan pelaajan paras tulos ja korkein saavutettu taso. 
 - Lisätty tietokantaa kutsuville funktioille testejä.
 - Tyylitelty ja refaktoroitu aloitusvalikko.  
+- Lisätty aloitusvalikkoon pelaajan uloskirjautuminen. 
+- Lisätty peliin pelaajan oman parhaan tuloksen näyttäminen ja uusi high score. 
+
+## Viikko 7 
+
+- Lisätty peliin Guest-tunnus, jolla pelataan, jos ei rekisteröitynyttä käyttäjää.
+- Toisteisen koodin refaktorointi testeistä. 
+- Funktioiden ja metodien pilkkomista pienempiin osiin.
+- Docstringien kirjoittaminen.
+- Testausdokumentin lisääminen projektiin. 
