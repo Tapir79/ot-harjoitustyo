@@ -1,33 +1,36 @@
 import pygame
-import os
-from config import ASSETS_DIR, ENEMY_START_X_OFFSET, SILVER
-from pygame.sprite import Group
-from app_enums import AppState, GameAttributes, LevelAttributes
+from app_enums import AppState, GameAttributes
+from config import (UPPER_BOUNDARY, PLAYER_SPEED,
+                    ENEMY_WIDTH, ENEMY_HEIGHT,
+                    ENEMY_START_Y_OFFSET, BLACK, WHITE,
+                    ENEMY_START_X_OFFSET, SILVER)
 from db import Database
 from entities.user import User
+from models.point import Point
+from models.size import Size
 from repositories.general_statistics_repository import GeneralStatisticsRepository
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
 from services.general_statistics_service import GeneralStatisticsService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
-from services.player_service import PlayerService
-from services.enemy_service import EnemyService
 from services.level_service import LevelService
-from ui.game_views.game.init import init_display, init_game_info, init_ui_images
-from utils.game_helpers import get_ending_points, get_game_over_initialization_data, get_player_lives, get_random_positions_around_center_point, init_high_score, init_start_level_attributes, init_start_level_time, set_new_level_attributes
+from ui.game_views.game.init import (create_player,
+                                     init_display,
+                                     init_game_groups,
+                                     init_game_info,
+                                     init_ui_images)
+from utils.game_helpers import (create_enemy_service,
+                                get_ending_points,
+                                get_game_over_initialization_data,
+                                get_player_lives,
+                                get_random_positions_around_center_point,
+                                init_high_score,
+                                init_start_level_attributes, init_start_level_time,
+                                set_new_level_attributes)
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
-from ui.sprites.player import PlayerSprite
-from models.hit import Hit
-from models.point import Point
-from models.size import Size
-from models.sprite_info import SpriteInfo
-from config import (UPPER_BOUNDARY,
-                    PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED,
-                    PLAYER_START_Y_OFFSET, ENEMY_WIDTH, ENEMY_HEIGHT,
-                    ENEMY_START_Y_OFFSET, PLAYER_MAX_HITS, BLACK, WHITE)
 
 
 class Game:
@@ -68,12 +71,17 @@ class Game:
             user_id, points, level)
 
     def set_user(self, user):
+        """
+        Set game user to be logged in user or guest.
+        """
         self.user = user if user else User(1, "guest")
 
     def reset_game(self, screen):
+        """
+        Reset game attributes when it starts over.
+        """
         self.screen = screen
         self.display_height, self.display_width = init_display(screen)
-        # game info
         self.clock, self.font = init_game_info()
         self.gameover_data = get_game_over_initialization_data()
         self.all_time_high_score = init_high_score(
@@ -81,8 +89,10 @@ class Game:
 
         self.heart_data = init_ui_images()
         self.init_levels()
-        self.init_bullets()
-        self.player = self.create_player()
+        self.game_groups = init_game_groups()
+        self.player = create_player(self.display_width,
+                                    self.display_height,
+                                    self.game_groups)
 
     def init_levels(self):
         self.level, self.level_started = init_start_level_attributes()
@@ -90,21 +100,25 @@ class Game:
         self.levels = LevelService()
         self.set_new_level_attributes()
 
+        # self.start_level_data[GameAttributes.LEVEL]
+
     def set_new_level_attributes(self):
+        """
+        Set attributes for current level. Gets level information from
+        level service.
+        """
         current_level = self.levels.get_level(self.level)
         self.enemy_attributes = set_new_level_attributes(current_level)
 
     def create_enemies(self, spacing=60):
         """
         Create enemies on screen. 
+
+        Args: 
+            spacing: spacing between each enemy
         """
-        enemy_width = ENEMY_WIDTH
-        enemy_height = ENEMY_HEIGHT
-        enemy_cooldown = self.enemy_attributes[GameAttributes.COOLDOWN]
         rows = self.enemy_attributes[GameAttributes.ROWS]
         cols = self.enemy_attributes[GameAttributes.COLS]
-        speed = self.enemy_attributes[GameAttributes.SPEED]
-        enemy_max_hits = self.enemy_attributes[GameAttributes.MAX_HITS]
         enemy_shooting_probability = self.enemy_attributes[GameAttributes.SHOOT_PROB]
         enemy_image = self.enemy_attributes[GameAttributes.IMAGE]
         margin_x = ENEMY_START_X_OFFSET
@@ -115,39 +129,44 @@ class Game:
                 x = margin_x + col * spacing
                 y = margin_y + row * spacing
 
-                enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
-                enemy_service = EnemyService(
-                    enemy_info, cooldown=enemy_cooldown)
                 enemy_sprite = EnemySprite(
-                    enemy_service, self.enemy_bullet_group, enemy_shooting_probability, enemy_image)
-                self.enemy_group.add(enemy_sprite)
+                    self.get_enemy_service(x, y),
+                    self.game_groups[GameAttributes.ENEMY_BULLETS],
+                    enemy_shooting_probability, enemy_image)
+                self.game_groups[GameAttributes.ENEMIES].add(enemy_sprite)
 
-    def init_bullets(self):
-        self.player_bullet_group = Group()
-        self.enemy_bullet_group = Group()
-        self.enemy_group = Group()
-        self.hit_group = pygame.sprite.Group()
+    def get_enemy_service(self, x, y):
+        """
+        Create a new enemy service for each enemy.
 
-    def create_player(self):
-        player_position = Point(self.display_width // 2,
-                                self.display_height - PLAYER_START_Y_OFFSET)
-        player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
-        hit = Hit(0, PLAYER_MAX_HITS)
-        player_info = SpriteInfo(
-            player_position, player_size, PLAYER_SPEED, hit)
+        Args: 
+            x: enemy x coordinate
+            y: enemy y coordinate
 
-        player_service = PlayerService(
-            sprite_info=player_info
-        )
+        Returns:
+            enemy_service
+        """
+        enemy_width = ENEMY_WIDTH
+        enemy_height = ENEMY_HEIGHT
+        speed = self.enemy_attributes[GameAttributes.SPEED]
+        enemy_max_hits = self.enemy_attributes[GameAttributes.MAX_HITS]
+        enemy_cooldown = self.enemy_attributes[GameAttributes.COOLDOWN]
 
-        return PlayerSprite(player_service, self.player_bullet_group)
+        return create_enemy_service(Point(x, y),
+                                    Size(enemy_width,
+                                    enemy_height),
+                                    speed,
+                                    enemy_max_hits,
+                                    enemy_cooldown)
 
     def new_level_reset(self):
-        self.player_bullet_group.empty()
-        self.enemy_bullet_group.empty()
-        self.enemy_group.empty()
-        self.hit_group.empty()
+        """
+        Reset level attributes before it begins.
+        """
+        self.game_groups[GameAttributes.PLAYER_BULLETS].empty()
+        self.game_groups[GameAttributes.ENEMY_BULLETS].empty()
+        self.game_groups[GameAttributes.ENEMIES].empty()
+        self.game_groups[GameAttributes.HITS].empty()
         self.level_transition_timer = 0
         self.level_countdown = 3
         self.level_ticks_remaining = 180
@@ -163,6 +182,9 @@ class Game:
                 self.gameover_data[GameAttributes.RUNNING] = False
 
     def check_sprite_collisions(self):
+        """
+        Check all collisions per game loop.
+        """
         self.check_enemy_and_player_bullet_collisions()
         self.check_enemy_bullet_and_player_bullet_collisions()
         self.check_player_and_enemy_bullet_collisions()
@@ -170,7 +192,7 @@ class Game:
 
     def check_player_and_enemies_collisions(self):
         hits = pygame.sprite.spritecollide(
-            self.player, self.enemy_group, dokill=True)
+            self.player, self.game_groups[GameAttributes.ENEMIES], dokill=True)
 
         if hits:
             self.player.player_service.add_hit()
@@ -178,7 +200,7 @@ class Game:
             position = self.player.rect.center
             size = self.player.player_service.size
             explosion = HitAnimation(position, size)
-            self.hit_group.add(explosion)
+            self.game_groups[GameAttributes.HITS].add(explosion)
 
             if self.player.player_service.is_dead:
                 self.player.kill()
@@ -188,7 +210,7 @@ class Game:
         Handle player collisions with enemy bullets.
         """
         collisions = pygame.sprite.spritecollide(
-            self.player, self.enemy_bullet_group, dokill=True)
+            self.player, self.game_groups[GameAttributes.ENEMY_BULLETS], dokill=True)
 
         if collisions:
             self.player.player_service.add_hit()
@@ -196,7 +218,7 @@ class Game:
             position = self.player.rect.center
             size = self.player.player_service.size
             explosion = HitAnimation(position, size)
-            self.hit_group.add(explosion)
+            self.game_groups[GameAttributes.HITS].add(explosion)
 
             if self.player.player_service.is_dead:
                 self.player.kill()
@@ -209,8 +231,8 @@ class Game:
         Using pygame group collisions. 
         """
         collisions = pygame.sprite.groupcollide(
-            self.enemy_group,
-            self.player_bullet_group,
+            self.game_groups[GameAttributes.ENEMIES],
+            self.game_groups[GameAttributes.PLAYER_BULLETS],
             False,  # remove enemy
             True   # remove bullet
         )
@@ -223,7 +245,7 @@ class Game:
                 position = enemy.rect.center
                 size = enemy.enemy_service.size
                 explosion = HitAnimation(position, size)
-                self.hit_group.add(explosion)
+                self.game_groups[GameAttributes.HITS].add(explosion)
 
     def try_kill_enemy(self, enemy):
         """
@@ -234,7 +256,7 @@ class Game:
         enemy.enemy_service.add_hit()
         if enemy.enemy_service.is_dead:
             self.increase_player_points_enemy()
-            enemy.remove(self.enemy_group)
+            enemy.remove(self.game_groups[GameAttributes.ENEMIES])
 
     def increase_player_points_enemy(self):
         """
@@ -255,8 +277,8 @@ class Game:
         Handle enemy bullet collisions with player bullets.
         """
         collisions = pygame.sprite.groupcollide(
-            self.enemy_bullet_group,
-            self.player_bullet_group,
+            self.game_groups[GameAttributes.ENEMY_BULLETS],
+            self.game_groups[GameAttributes.PLAYER_BULLETS],
             True,  # remove enemy bullet
             True   # remove player bullet
         )
@@ -268,17 +290,17 @@ class Game:
                     10)
                 explosion = HitAnimation(position, buffered_size)
                 self.increase_player_points_bullet()
-                self.hit_group.add(explosion)
+                self.game_groups[GameAttributes.HITS].add(explosion)
 
     def update(self):
         """
         Updates the game state. 
         """
         self.player.handle_input()
-        self.player_bullet_group.update()
-        self.enemy_bullet_group.update()
-        self.enemy_group.update()
-        self.hit_group.update()
+        self.game_groups[GameAttributes.PLAYER_BULLETS].update()
+        self.game_groups[GameAttributes.ENEMY_BULLETS].update()
+        self.game_groups[GameAttributes.ENEMIES].update()
+        self.game_groups[GameAttributes.HITS].update()
 
     def draw(self):
         """
@@ -289,14 +311,14 @@ class Game:
         """
         self.screen.fill(BLACK)
         self.player.draw(self.screen)
-        self.player_bullet_group.draw(self.screen)
-        self.enemy_bullet_group.draw(self.screen)
-        self.enemy_group.draw(self.screen)
+        self.game_groups[GameAttributes.PLAYER_BULLETS].draw(self.screen)
+        self.game_groups[GameAttributes.ENEMY_BULLETS].draw(self.screen)
+        self.game_groups[GameAttributes.ENEMIES].draw(self.screen)
         self.draw_player_name()
         self.draw_player_points()
         self.draw_level_title()
         self.draw_player_hearts()
-        self.hit_group.draw(self.screen)
+        self.game_groups[GameAttributes.HITS].draw(self.screen)
         self.draw_instructions_text()
         pygame.display.update()
 
@@ -345,7 +367,7 @@ class Game:
         """
         Draw text: GAME OVER.
         """
-        text = self.gameover_text
+        text = self.gameover_data[GameAttributes.GAMEOVER_TEXT]
         position = Point(self.display_width // 2, self.display_height // 2)
         self.draw_text(text, position, center=True)
 
@@ -400,9 +422,9 @@ class Game:
         while self.gameover_data[GameAttributes.RUNNING]:
             self.handle_events()
 
-            if self.is_game_over() and not self.gameover:
+            if self.is_game_over() and not self.gameover_data[GameAttributes.GAMEOVER]:
                 self.end_game()
-            elif self.gameover:
+            elif self.gameover_data[GameAttributes.GAMEOVER]:
                 self.save_user_statistics()
                 self.game_over()
                 self.reset_game(self.screen)
@@ -425,7 +447,7 @@ class Game:
         If the level was the last, player won the game.
         Else move to the next level.
         """
-        if not self.enemy_group:
+        if not self.game_groups[GameAttributes.ENEMIES]:
             self.level += 1
             # passed final levelga
             if self.level > self.levels.get_final_level():

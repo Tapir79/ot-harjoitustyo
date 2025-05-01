@@ -51,6 +51,11 @@ class LevelAttributes(str, Enum):
 
 
 class GameAttributes(str, Enum):
+    LEVEL = "level"
+    LEVEL_STARTED = "level_started"
+    TRANSITION_TIMER = "level transition timer"
+    TICKS_REMAINING = "level ticks remaining"
+    LEVEL_COUNTDOWN = "level_countdown"
     HEARTS = "hearts"
     BROKEN = "broken_hearts"
     RUNNING = "running"
@@ -64,3 +69,7 @@ class GameAttributes(str, Enum):
     BULLET_SPEED = LevelAttributes.ENEMY_BULLET_SPEED
     MAX_HITS = LevelAttributes.ENEMY_MAX_HITS
     IMAGE = LevelAttributes.ENEMY_IMAGE
+    PLAYER_BULLETS = "player_bullets"
+    ENEMY_BULLETS = "enemy_bullets"
+    ENEMIES = "enemies"
+    HITS = "hits"

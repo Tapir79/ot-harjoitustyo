@@ -6,25 +6,57 @@ from app_enums import GameAttributes, LevelAttributes
 from config import BRONZE, GOLD, PROJECT_ROOT, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
+from models.hit import Hit
 from models.point import Point
 from models.size import Size
+from models.sprite_info import SpriteInfo
+from services.enemy_service import EnemyService
 from services.player_service import PlayerService
 
 
-def init_start_level_attributes():
-    level = 1
-    level_started = False
-    return level, level_started
+def create_enemy_service(point: Point,
+                         size: Size,
+                         speed,
+                         enemy_max_hits,
+                         enemy_cooldown):
+    enemy_info = SpriteInfo(
+        point,
+        size,
+        speed,
+        Hit(0, enemy_max_hits))
+    return EnemyService(
+        enemy_info,
+        cooldown=enemy_cooldown)
 
 
 def init_start_level_time():
     level_transition_timer = 0
     level_ticks_remaining = 180
     level_countdown = 3
+
     return level_transition_timer, level_ticks_remaining, level_countdown
 
 
+def init_start_level_attributes():
+    level = 1
+    level_started = False
+
+    start_level_attributes = {
+        GameAttributes.LEVEL: 1,
+        GameAttributes.LEVEL_STARTED: False,
+        GameAttributes.TRANSITION_TIMER: 0,
+        GameAttributes.TICKS_REMAINING: 180,
+        GameAttributes.LEVEL_COUNTDOWN: 3
+    }
+
+    return level, level_started
+
+
 def set_new_level_attributes(current_level):
+    """
+    Returns:
+        level attributes: enemy attributes of the current level
+    """
     cooldown = current_level[LevelAttributes.ENEMY_COOLDOWN]
     enemy_shooting_probability = current_level[LevelAttributes.ENEMY_SHOOT_PROB]
     enemy_count_cols = current_level[LevelAttributes.ENEMY_COLS]
@@ -45,11 +77,18 @@ def set_new_level_attributes(current_level):
 
 
 def init_high_score(general_statistics_service):
+    """
+    Returns:
+        high_score: game all time high score
+    """
     return general_statistics_service.get_top_scores()[
         0].high_score
 
 
 def get_game_over_initialization_data():
+    """
+    Return a dictionary of the game's gameover constants.
+    """
     running = True
     gameover = False
     gameover_text = ""
