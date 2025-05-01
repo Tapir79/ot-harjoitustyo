@@ -19,22 +19,13 @@ def create_enemy_service(point: Point,
                          speed,
                          enemy_max_hits,
                          enemy_cooldown):
-    enemy_info = SpriteInfo(
-        point,
-        size,
-        speed,
-        Hit(0, enemy_max_hits))
     return EnemyService(
-        enemy_info,
+        SpriteInfo(
+            point,
+            size,
+            speed,
+            Hit(0, enemy_max_hits)),
         cooldown=enemy_cooldown)
-
-
-def init_start_level_time():
-    level_transition_timer = 0
-    level_ticks_remaining = 180
-    level_countdown = 3
-
-    return level_transition_timer, level_ticks_remaining, level_countdown
 
 
 def init_start_level_attributes():

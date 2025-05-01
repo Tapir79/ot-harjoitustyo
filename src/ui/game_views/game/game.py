@@ -15,18 +15,17 @@ from services.general_statistics_service import GeneralStatisticsService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
 from services.level_service import LevelService
+from ui.game_views.draw import GameDrawer
 from ui.game_views.game.init import (create_player,
                                      init_display,
                                      init_game_groups,
                                      init_game_info,
                                      init_ui_images)
 from utils.game_helpers import (create_enemy_service,
-                                get_ending_points,
                                 get_game_over_initialization_data,
-                                get_player_lives,
                                 get_random_positions_around_center_point,
                                 init_high_score,
-                                init_start_level_attributes, init_start_level_time,
+                                init_start_level_attributes,
                                 set_new_level_attributes)
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
@@ -53,22 +52,9 @@ class Game:
             UserStatisticsRepository(Database()))
         self.general_statistics_service = GeneralStatisticsService(
             GeneralStatisticsRepository(Database()))
-        self.reset_game(screen)
         self.user = self.set_user(user)
-
-    def save_user_statistics(self):
-        """
-        Saves the player's score and level to the database if they are better than previous.
-        """
-        if not self.user_statistics_service:
-            return
-
-        user_id = self.user.user_id if self.user and self.user.user_id != 0 else 1
-        points = self.player.player_service.points
-        level = self.start_level_data[GameAttributes.LEVEL]
-
-        self.user_statistics_service.upsert_user_statistics(
-            user_id, points, level)
+        self.reset_game(screen)
+        self.drawer = GameDrawer(self)
 
     def set_user(self, user):
         """
@@ -100,9 +86,9 @@ class Game:
         """
         self.start_level_data = init_start_level_attributes()
         self.levels = LevelService()
-        self.set_new_level_attributes()
+        self.set_level_attributes()
 
-    def set_new_level_attributes(self):
+    def set_level_attributes(self):
         """
         Set attributes for current level. Gets level information from
         level service.
@@ -273,7 +259,7 @@ class Game:
         The player gets more points per bullet from higher levels.
         """
         self.player.player_service.add_points(
-            self.start_level_data[GameAttributes.LEVEL] * 1.5)
+            self.start_level_data[GameAttributes.LEVEL] * 2)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
@@ -306,115 +292,7 @@ class Game:
         self.game_groups[GameAttributes.HITS].update()
 
     def draw(self):
-        """
-        Renders the game screen.
-        Clears the screen.
-        Draws the player, enemies, bullets, hit animations and instruction text
-        Updates the display.
-        """
-        self.screen.fill(BLACK)
-        self.player.draw(self.screen)
-        self.game_groups[GameAttributes.PLAYER_BULLETS].draw(self.screen)
-        self.game_groups[GameAttributes.ENEMY_BULLETS].draw(self.screen)
-        self.game_groups[GameAttributes.ENEMIES].draw(self.screen)
-        self.draw_player_name()
-        self.draw_player_points()
-        self.draw_level_title()
-        self.draw_player_hearts()
-        self.game_groups[GameAttributes.HITS].draw(self.screen)
-        self.draw_instructions_text()
-        pygame.display.update()
-
-    def draw_text(self, text, position: Point, center=False, color=WHITE):
-        """
-        General method for drawing text on the screen.
-        """
-        text_surface = self.font.render(text, True, color)
-        rect = text_surface.get_rect()
-        if center:
-            rect.center = position.x, position.y
-        else:
-            rect.topleft = position.x, position.y
-        self.screen.blit(text_surface, rect)
-
-    def draw_player_name(self):
-        """
-        Draw current player name on screen
-        """
-
-        text = f"Player: {self.user.username}"
-        position = Point(20, 20)
-        self.draw_text(text, position, center=False)
-
-    def draw_level_title(self):
-        """
-        Draw current level on screen
-        """
-
-        self.all_time_high_score
-        text = f"Level {self.start_level_data[GameAttributes.LEVEL]} | High score {self.all_time_high_score}"
-        position = Point((self.display_width // 2 - (len(text) // 2)), 20)
-        self.draw_text(text, position, center=True, color=SILVER)
-
-    def draw_instructions_text(self):
-        """
-        Instructions for the player.
-        """
-        text = "Move the player with 'a' and 'd', Shoot with SPACE"
-        y_offset = 40
-        position = Point(self.display_width // 2,
-                         self.display_height - y_offset)
-        self.draw_text(text, position, center=True)
-
-    def draw_game_over_text(self):
-        """
-        Draw text: GAME OVER.
-        """
-        text = self.gameover_data[GameAttributes.GAMEOVER_TEXT]
-        position = Point(self.display_width // 2, self.display_height // 2)
-        self.draw_text(text, position, center=True)
-
-    def draw_player_points(self, position=Point(20, 20), center=False):
-        """
-        Draw current player points on screen.
-        Draw player high score on screen.
-        """
-        player_current_points = self.player.player_service.points
-        user_statistics = None
-        if self.user:
-            user_statistics, _ = self.user_statistics_service.get_user_statistics(
-                self.user.user_id)
-
-        data = get_ending_points(player_current_points,
-                                 user_statistics,
-                                 position,
-                                 all_time_high_score=self.all_time_high_score)
-
-        self.draw_text(data["text"], data["position"],
-                       center, color=data["color"])
-
-    def draw_player_hearts(self):
-        """
-        Draw current player hearts and broken hearts on screen.
-        """
-        hearts, broken_hearts = get_player_lives(self.player.player_service)
-        x_offset = self.display_width - 30
-        y_position = 20
-
-        total_hearts = []
-        for h in range(0, hearts):
-            total_hearts.append(1)
-
-        for h in range(0, broken_hearts):
-            total_hearts.append(0)
-
-        for i, h in enumerate(total_hearts):
-            if h == 1:
-                self.screen.blit(self.heart_data[GameAttributes.HEARTS],
-                                 (x_offset - i * 30, y_position))
-            else:
-                self.screen.blit(self.heart_data[GameAttributes.BROKEN],
-                                 (x_offset - i * 30, y_position))
+        self.drawer.draw()
 
     def run(self):
         """
@@ -443,6 +321,20 @@ class Game:
                 self.clock.tick(60)
 
         return AppState.QUIT
+
+    def save_user_statistics(self):
+        """
+        Saves the player's score and level to the database if they are better than previous.
+        """
+        if not self.user_statistics_service:
+            return
+
+        user_id = self.user.user_id if self.user and self.user.user_id != 0 else 1
+        points = self.player.player_service.points
+        level = self.start_level_data[GameAttributes.LEVEL]
+
+        self.user_statistics_service.upsert_user_statistics(
+            user_id, points, level)
 
     def move_to_next_level(self):
         """
@@ -474,7 +366,7 @@ class Game:
         self.screen.fill(BLACK)
 
         if self.start_level_data[GameAttributes.TICKS_REMAINING] > 0:
-            self.draw_next_level_title()
+            self.drawer.draw_next_level_title()
             pygame.display.update()
 
             self.start_level_data[GameAttributes.TICKS_REMAINING] -= 1
@@ -483,12 +375,6 @@ class Game:
             self.start_level_data[GameAttributes.LEVEL_STARTED] = True
             self.start_level_data[GameAttributes.TRANSITION_TIMER] = 0
             self.create_enemies()
-
-    def draw_next_level_title(self):
-        text = self.font.render(
-            f"Level {self.start_level_data[GameAttributes.LEVEL]}", True, WHITE)
-        self.screen.blit(
-            text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
 
     def win_game(self):
         self.fly_player_over_bounds_animation()
@@ -553,10 +439,10 @@ class Game:
 
     def game_over(self):
         self.screen.fill(BLACK)
-        self.draw_game_over_text()
+        self.drawer.draw_game_over_text()
         points_position = Point(self.display_width//2,
                                 self.display_height//2 + 40)
-        self.draw_player_points(position=points_position, center=True)
+        self.drawer.draw_player_points(position=points_position, center=True)
         pygame.display.update()
 
     def is_game_over(self):
