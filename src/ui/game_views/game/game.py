@@ -1,6 +1,6 @@
 import pygame
 from app_enums import AppState, GameAttributes
-from config import (BULLET_POINTS_COEFFICIENT, UPPER_BOUNDARY, PLAYER_SPEED,
+from config import (BULLET_POINTS_COEFFICIENT,
                     ENEMY_WIDTH, ENEMY_HEIGHT,
                     ENEMY_START_Y_OFFSET, BLACK,
                     ENEMY_START_X_OFFSET)
@@ -15,7 +15,7 @@ from services.general_statistics_service import GeneralStatisticsService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
 from services.level_service import LevelService
-from ui.game_views.draw import GameDrawer
+from ui.game_views.game.draw import GameDrawer
 from ui.game_views.game.init import (create_player,
                                      init_display,
                                      init_game_groups,
@@ -27,7 +27,6 @@ from utils.game_helpers import (create_enemy_service,
                                 init_high_score,
                                 init_start_level_attributes,
                                 set_new_level_attributes)
-from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
 

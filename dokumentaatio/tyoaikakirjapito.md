@@ -49,4 +49,4 @@
 | 29.4 | 5 | 3 parasta tulosta tilastot, repositorio ja palvelu ja testi. Uloskirjautuminen ja pelin ulkoasun pienten yksityiskohtien viimeistelyä. Dokumentaation päivittäminen.|
 | yht | 140 | |
 | 30.4 | 4 | Logiikan irrottamista UI:sta puhtaiksi funktioiksi. Toisteisen koodin refaktointi testeissä. Logoutin aihettaman bugin korjaaminen. |
-| 1.5 | | Testausdokumentti. |
+| 1.5 | 6 | Testausdokumentti. Game-luokan metodien refaktorointi ja uudelleenorganisointi game-, init- ja draw-luokkiin. Pelaaja kerää pisteitä myös ammusten tuhoamisesta. |
