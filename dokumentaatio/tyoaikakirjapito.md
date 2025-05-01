@@ -48,3 +48,5 @@
 | 28.4 | 3 | Koodin refaktorointia ja docstringien kirjoittamista. |
 | 29.4 | 5 | 3 parasta tulosta tilastot, repositorio ja palvelu ja testi. Uloskirjautuminen ja pelin ulkoasun pienten yksityiskohtien viimeistelyä. Dokumentaation päivittäminen.|
 | yht | 140 | |
+| 30.4 | 4 | Logiikan irrottamista UI:sta puhtaiksi funktioiksi. Toisteisen koodin refaktointi testeissä. Logoutin aihettaman bugin korjaaminen. |
+| 1.5 | | Testausdokumentti. |
