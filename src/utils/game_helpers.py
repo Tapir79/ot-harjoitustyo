@@ -38,18 +38,13 @@ def init_start_level_time():
 
 
 def init_start_level_attributes():
-    level = 1
-    level_started = False
-
-    start_level_attributes = {
+    return {
         GameAttributes.LEVEL: 1,
         GameAttributes.LEVEL_STARTED: False,
         GameAttributes.TRANSITION_TIMER: 0,
         GameAttributes.TICKS_REMAINING: 180,
         GameAttributes.LEVEL_COUNTDOWN: 3
     }
-
-    return level, level_started
 
 
 def set_new_level_attributes(current_level):

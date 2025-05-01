@@ -65,7 +65,7 @@ class Game:
 
         user_id = self.user.user_id if self.user and self.user.user_id != 0 else 1
         points = self.player.player_service.points
-        level = self.level
+        level = self.start_level_data[GameAttributes.LEVEL]
 
         self.user_statistics_service.upsert_user_statistics(
             user_id, points, level)
@@ -95,19 +95,17 @@ class Game:
                                     self.game_groups)
 
     def init_levels(self):
-        self.level, self.level_started = init_start_level_attributes()
-        self.level_transition_timer, self.level_ticks_remaining, self.level_countdown = init_start_level_time()
+        self.start_level_data = init_start_level_attributes()
         self.levels = LevelService()
         self.set_new_level_attributes()
-
-        # self.start_level_data[GameAttributes.LEVEL]
 
     def set_new_level_attributes(self):
         """
         Set attributes for current level. Gets level information from
         level service.
         """
-        current_level = self.levels.get_level(self.level)
+        level = self.start_level_data[GameAttributes.LEVEL]
+        current_level = self.levels.get_level(level)
         self.enemy_attributes = set_new_level_attributes(current_level)
 
     def create_enemies(self, spacing=60):
@@ -167,9 +165,9 @@ class Game:
         self.game_groups[GameAttributes.ENEMY_BULLETS].empty()
         self.game_groups[GameAttributes.ENEMIES].empty()
         self.game_groups[GameAttributes.HITS].empty()
-        self.level_transition_timer = 0
-        self.level_countdown = 3
-        self.level_ticks_remaining = 180
+        self.start_level_data[GameAttributes.TRANSITION_TIMER] = 0
+        self.start_level_data[GameAttributes.LEVEL_COUNTDOWN] = 3
+        self.start_level_data[GameAttributes.TICKS_REMAINING] = 180
         self.set_new_level_attributes()
 
     def handle_events(self):
@@ -263,14 +261,16 @@ class Game:
         Add points to player per shot enemy.
         The player gets more points per enemy from higher levels. 
         """
-        self.player.player_service.add_points(self.level)
+        self.player.player_service.add_points(
+            self.start_level_data[GameAttributes.LEVEL])
 
     def increase_player_points_bullet(self):
         """
         Add points to player per shot bullet.
         The player gets more points per bullet from higher levels.
         """
-        self.player.player_service.add_points(self.level * 1.5)
+        self.player.player_service.add_points(
+            self.start_level_data[GameAttributes.LEVEL] * 1.5)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
@@ -349,7 +349,7 @@ class Game:
         """
 
         self.all_time_high_score
-        text = f"Level {self.level} | High score {self.all_time_high_score}"
+        text = f"Level {self.start_level_data[GameAttributes.LEVEL]} | High score {self.all_time_high_score}"
         position = Point((self.display_width // 2 - (len(text) // 2)), 20)
         self.draw_text(text, position, center=True, color=SILVER)
 
@@ -430,7 +430,7 @@ class Game:
                 self.reset_game(self.screen)
                 pygame.time.wait(2000)
                 return AppState.START_SCREEN
-            elif not self.level_started:
+            elif not self.start_level_data[GameAttributes.LEVEL_STARTED]:
                 self.start_new_level()
             else:
                 self.update()
@@ -448,14 +448,14 @@ class Game:
         Else move to the next level.
         """
         if not self.game_groups[GameAttributes.ENEMIES]:
-            self.level += 1
+            self.start_level_data[GameAttributes.LEVEL] += 1
             # passed final levelga
-            if self.level > self.levels.get_final_level():
+            if self.start_level_data[GameAttributes.LEVEL] > self.levels.get_final_level():
                 self.win_game()
             # load next level
             else:
                 self.new_level_reset()
-                self.level_started = False
+                self.start_level_data[GameAttributes.LEVEL_STARTED] = False
 
     def start_new_level(self):
         """
@@ -463,26 +463,27 @@ class Game:
         It resets level timer, clears the screen and shows the next level.
         """
 
-        if self.level_transition_timer == 0:
-            self.level_transition_timer = 1
-            self.level_ticks_remaining = 60  # show for 1 second at 60 FPS
+        if self.start_level_data[GameAttributes.TRANSITION_TIMER] == 0:
+            self.start_level_data[GameAttributes.TRANSITION_TIMER] = 1
+            # show for 1 second at 60 FPS
+            self.start_level_data[GameAttributes.TICKS_REMAINING] = 60
 
         self.screen.fill(BLACK)
 
-        if self.level_ticks_remaining > 0:
+        if self.start_level_data[GameAttributes.TICKS_REMAINING] > 0:
             self.draw_next_level_title()
             pygame.display.update()
 
-            self.level_ticks_remaining -= 1
+            self.start_level_data[GameAttributes.TICKS_REMAINING] -= 1
             self.clock.tick(60)
         else:
-            self.level_started = True
-            self.level_transition_timer = 0
+            self.start_level_data[GameAttributes.LEVEL_STARTED] = True
+            self.start_level_data[GameAttributes.TRANSITION_TIMER] = 0
             self.create_enemies()
 
     def draw_next_level_title(self):
         text = self.font.render(
-            f"Level {self.level}", True, WHITE)
+            f"Level {self.start_level_data[GameAttributes.LEVEL]}", True, WHITE)
         self.screen.blit(
             text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
 
