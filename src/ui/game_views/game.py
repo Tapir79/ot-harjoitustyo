@@ -222,6 +222,9 @@ class Game:
             if self.player.player_service.is_dead:
                 self.player.kill()
 
+    
+
+
     def check_enemy_and_player_bullet_collisions(self):
         """
         Handle enemy collisions with player bullets. 
@@ -239,22 +242,37 @@ class Game:
         if collisions:
             for enemy, bullets in collisions.items():
                 for _ in bullets:
-                    enemy.enemy_service.add_hit()
-                    if enemy.enemy_service.is_dead:
-                        self.increase_player_points()
-                        enemy.remove(self.enemy_group)
+                    self.try_kill_enemy(enemy)
 
                 position = enemy.rect.center
                 size = enemy.enemy_service.size
                 explosion = HitAnimation(position, size)
                 self.hit_group.add(explosion)
 
-    def increase_player_points(self):
+    def try_kill_enemy(self, enemy):
+        """
+        Add a hit to an enemy. 
+        Check if enemy is dead. If yes, remove enemy from
+        the class enemy group. Also, increase player points.
+        """
+        enemy.enemy_service.add_hit()
+        if enemy.enemy_service.is_dead:
+            self.increase_player_points_enemy()
+            enemy.remove(self.enemy_group)
+
+    def increase_player_points_enemy(self):
         """
         Add points to player per shot enemy.
         The player gets more points per enemy from higher levels. 
         """
         self.player.player_service.add_points(self.level)
+
+    def increase_player_points_bullet(self):
+        """
+        Add points to player per shot bullet.
+        The player gets more points per bullet from higher levels.
+        """
+        self.player.player_service.add_points(self.level * 1.5)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
@@ -273,6 +291,7 @@ class Game:
                 buffered_size = enemy_bullet.bullet.get_buffered_size(
                     10)
                 explosion = HitAnimation(position, buffered_size)
+                self.increase_player_points_bullet()
                 self.hit_group.add(explosion)
 
     def update(self):
