@@ -2,12 +2,60 @@ import os
 from pathlib import Path
 import random
 
+from app_enums import GameAttributes, LevelAttributes
 from config import BRONZE, GOLD, PROJECT_ROOT, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.point import Point
 from models.size import Size
 from services.player_service import PlayerService
+
+
+def init_start_level_attributes():
+    level = 1
+    level_started = False
+    return level, level_started
+
+
+def init_start_level_time():
+    level_transition_timer = 0
+    level_ticks_remaining = 180
+    level_countdown = 3
+    return level_transition_timer, level_ticks_remaining, level_countdown
+
+
+def set_new_level_attributes(current_level):
+    cooldown = current_level[LevelAttributes.ENEMY_COOLDOWN]
+    enemy_shooting_probability = current_level[LevelAttributes.ENEMY_SHOOT_PROB]
+    enemy_count_cols = current_level[LevelAttributes.ENEMY_COLS]
+    enemy_rows = current_level[LevelAttributes.ENEMY_ROWS]
+    enemy_speed = current_level[LevelAttributes.ENEMY_SPEED]
+    enemy_bullet_speed = current_level[LevelAttributes.ENEMY_BULLET_SPEED]
+    enemy_max_hits = current_level[LevelAttributes.ENEMY_MAX_HITS]
+    enemy_image = current_level[LevelAttributes.ENEMY_IMAGE]
+    return {GameAttributes.COOLDOWN: cooldown,
+            GameAttributes.SHOOT_PROB: enemy_shooting_probability,
+            GameAttributes.COLS: enemy_count_cols,
+            GameAttributes.ROWS: enemy_rows,
+            GameAttributes.SPEED: enemy_speed,
+            GameAttributes.BULLET_SPEED: enemy_bullet_speed,
+            GameAttributes.MAX_HITS: enemy_max_hits,
+            GameAttributes.IMAGE: enemy_image
+            }
+
+
+def init_high_score(general_statistics_service):
+    return general_statistics_service.get_top_scores()[
+        0].high_score
+
+
+def get_game_over_initialization_data():
+    running = True
+    gameover = False
+    gameover_text = ""
+    return {GameAttributes.RUNNING: running,
+            GameAttributes.GAMEOVER: gameover,
+            GameAttributes.GAMEOVER_TEXT: gameover_text}
 
 
 def check_database_exists(database):
@@ -19,7 +67,7 @@ def check_database_exists(database):
     if not os.path.isfile(schema_path):
         print(f"Database file “{schema_path}” not found.")
         print("Please initialize your database first:")
-        print(f"    poetry run invoke build")
+        print("    poetry run invoke build")
         return False
     return True
 

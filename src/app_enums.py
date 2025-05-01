@@ -48,3 +48,19 @@ class LevelAttributes(str, Enum):
     ENEMY_BULLET_SPEED = "enemy_bullet_speed"
     ENEMY_MAX_HITS = "enemy_max_hits"
     ENEMY_IMAGE = "enemy_image"
+
+
+class GameAttributes(str, Enum):
+    HEARTS = "hearts"
+    BROKEN = "broken_hearts"
+    RUNNING = "running"
+    GAMEOVER = "gameover"
+    GAMEOVER_TEXT = "gameover_text"
+    COOLDOWN = "cooldown"
+    SHOOT_PROB = LevelAttributes.ENEMY_SHOOT_PROB
+    COLS = LevelAttributes.ENEMY_COLS
+    ROWS = LevelAttributes.ENEMY_ROWS
+    SPEED = LevelAttributes.ENEMY_SPEED
+    BULLET_SPEED = LevelAttributes.ENEMY_BULLET_SPEED
+    MAX_HITS = LevelAttributes.ENEMY_MAX_HITS
+    IMAGE = LevelAttributes.ENEMY_IMAGE

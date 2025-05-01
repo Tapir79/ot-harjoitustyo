@@ -1,7 +1,8 @@
 import unittest
 import pygame
+from app_enums import GameAttributes
 from config import LOWER_BOUNDARY, RIGHT_BOUNDARY
-from ui.game_views.game import Game
+from ui.game_views.game.game import Game
 
 
 class TestGame(unittest.TestCase):
@@ -11,4 +12,4 @@ class TestGame(unittest.TestCase):
         self.game = Game(self.screen)
 
     def test_game_is_initialized_correctly(self):
-        self.assertEqual(self.game.running, True)
+        self.assertEqual(self.game.gameover_data[GameAttributes.RUNNING], True)

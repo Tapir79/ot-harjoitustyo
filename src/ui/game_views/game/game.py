@@ -1,8 +1,8 @@
 import pygame
 import os
-from config import ASSETS_DIR, SILVER
+from config import ASSETS_DIR, ENEMY_START_X_OFFSET, SILVER
 from pygame.sprite import Group
-from app_enums import AppState, LevelAttributes
+from app_enums import AppState, GameAttributes, LevelAttributes
 from db import Database
 from entities.user import User
 from repositories.general_statistics_repository import GeneralStatisticsRepository
@@ -14,7 +14,8 @@ from services.user_statistics_service import UserStatisticsService
 from services.player_service import PlayerService
 from services.enemy_service import EnemyService
 from services.level_service import LevelService
-from utils.game_helpers import get_ending_points, get_player_lives, get_random_positions_around_center_point
+from ui.game_views.game.init import init_display, init_game_info, init_ui_images
+from utils.game_helpers import get_ending_points, get_game_over_initialization_data, get_player_lives, get_random_positions_around_center_point, init_high_score, init_start_level_attributes, init_start_level_time, set_new_level_attributes
 from ui.animations.player_hit_animation import PlayerHitAnimation
 from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
@@ -67,43 +68,60 @@ class Game:
             user_id, points, level)
 
     def set_user(self, user):
-        self.user = user if user else User(0, "Guest")
+        self.user = user if user else User(1, "guest")
 
     def reset_game(self, screen):
         self.screen = screen
-        self.display_height = screen.get_height()
-        self.display_width = screen.get_width()
+        self.display_height, self.display_width = init_display(screen)
         # game info
-        self.clock = pygame.time.Clock()
-        self.running = True
-        self.font = pygame.font.Font(None, 30)
-        self.gameover = False
-        self.gameover_text = ""
-        self.all_time_high_score = self.general_statistics_service.get_top_scores()[
-            0].high_score
+        self.clock, self.font = init_game_info()
+        self.gameover_data = get_game_over_initialization_data()
+        self.all_time_high_score = init_high_score(
+            self.general_statistics_service)
 
-        self.init_ui_images()
+        self.heart_data = init_ui_images()
         self.init_levels()
         self.init_bullets()
         self.player = self.create_player()
 
-    def init_ui_images(self):
-        self.heart_image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "heart.png")).convert_alpha()
-        self.broken_heart_image = pygame.image.load(
-            os.path.join(ASSETS_DIR, "broken_heart.png")).convert_alpha()
-        self.heart_image = pygame.transform.scale(self.heart_image, (25, 25))
-        self.broken_heart_image = pygame.transform.scale(
-            self.broken_heart_image, (25, 25))
-
     def init_levels(self):
-        self.level = 1
-        self.level_started = False
-        self.level_transition_timer = 0
-        self.level_ticks_remaining = 180
-        self.level_countdown = 3
+        self.level, self.level_started = init_start_level_attributes()
+        self.level_transition_timer, self.level_ticks_remaining, self.level_countdown = init_start_level_time()
         self.levels = LevelService()
         self.set_new_level_attributes()
+
+    def set_new_level_attributes(self):
+        current_level = self.levels.get_level(self.level)
+        self.enemy_attributes = set_new_level_attributes(current_level)
+
+    def create_enemies(self, spacing=60):
+        """
+        Create enemies on screen. 
+        """
+        enemy_width = ENEMY_WIDTH
+        enemy_height = ENEMY_HEIGHT
+        enemy_cooldown = self.enemy_attributes[GameAttributes.COOLDOWN]
+        rows = self.enemy_attributes[GameAttributes.ROWS]
+        cols = self.enemy_attributes[GameAttributes.COLS]
+        speed = self.enemy_attributes[GameAttributes.SPEED]
+        enemy_max_hits = self.enemy_attributes[GameAttributes.MAX_HITS]
+        enemy_shooting_probability = self.enemy_attributes[GameAttributes.SHOOT_PROB]
+        enemy_image = self.enemy_attributes[GameAttributes.IMAGE]
+        margin_x = ENEMY_START_X_OFFSET
+        margin_y = ENEMY_START_Y_OFFSET
+
+        for row in range(rows):
+            for col in range(cols):
+                x = margin_x + col * spacing
+                y = margin_y + row * spacing
+
+                enemy_info = SpriteInfo(
+                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
+                enemy_service = EnemyService(
+                    enemy_info, cooldown=enemy_cooldown)
+                enemy_sprite = EnemySprite(
+                    enemy_service, self.enemy_bullet_group, enemy_shooting_probability, enemy_image)
+                self.enemy_group.add(enemy_sprite)
 
     def init_bullets(self):
         self.player_bullet_group = Group()
@@ -125,45 +143,6 @@ class Game:
 
         return PlayerSprite(player_service, self.player_bullet_group)
 
-    def create_enemies(self, spacing=60):
-        """
-        Create enemies on screen. 
-        """
-        enemy_width = ENEMY_WIDTH
-        enemy_height = ENEMY_HEIGHT
-        rows = self.enemy_rows
-        cols = self.enemy_count_cols
-        speed = self.enemy_speed
-        enemy_max_hits = self.enemy_max_hits
-        enemy_shooting_probability = self.enemy_shooting_probability
-        enemy_image = self.enemy_image
-        margin_x = 50
-        margin_y = ENEMY_START_Y_OFFSET
-
-        for row in range(rows):
-            for col in range(cols):
-                x = margin_x + col * spacing
-                y = margin_y + row * spacing
-
-                enemy_info = SpriteInfo(
-                    Point(x, y), Size(enemy_width, enemy_height), speed, Hit(0, enemy_max_hits))
-                enemy_service = EnemyService(
-                    enemy_info)
-                enemy_sprite = EnemySprite(
-                    enemy_service, self.enemy_bullet_group, enemy_shooting_probability, enemy_image)
-                self.enemy_group.add(enemy_sprite)
-
-    def set_new_level_attributes(self):
-        current_level = self.levels.get_level(self.level)
-        self.cooldown = current_level[LevelAttributes.ENEMY_COOLDOWN]
-        self.enemy_shooting_probability = current_level[LevelAttributes.ENEMY_SHOOT_PROB]
-        self.enemy_count_cols = current_level[LevelAttributes.ENEMY_COLS]
-        self.enemy_rows = current_level[LevelAttributes.ENEMY_ROWS]
-        self.enemy_speed = current_level[LevelAttributes.ENEMY_SPEED]
-        self.enemy_bullet_speed = current_level[LevelAttributes.ENEMY_BULLET_SPEED]
-        self.enemy_max_hits = current_level[LevelAttributes.ENEMY_MAX_HITS]
-        self.enemy_image = current_level[LevelAttributes.ENEMY_IMAGE]
-
     def new_level_reset(self):
         self.player_bullet_group.empty()
         self.enemy_bullet_group.empty()
@@ -181,7 +160,7 @@ class Game:
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                self.gameover_data[GameAttributes.RUNNING] = False
 
     def check_sprite_collisions(self):
         self.check_enemy_and_player_bullet_collisions()
@@ -406,10 +385,10 @@ class Game:
 
         for i, h in enumerate(total_hearts):
             if h == 1:
-                self.screen.blit(self.heart_image,
+                self.screen.blit(self.heart_data[GameAttributes.HEARTS],
                                  (x_offset - i * 30, y_position))
             else:
-                self.screen.blit(self.broken_heart_image,
+                self.screen.blit(self.heart_data[GameAttributes.BROKEN],
                                  (x_offset - i * 30, y_position))
 
     def run(self):
@@ -418,7 +397,7 @@ class Game:
         Continuously handles events, updates the game state, 
         and renders the screen until the game is quit.
         """
-        while self.running:
+        while self.gameover_data[GameAttributes.RUNNING]:
             self.handle_events()
 
             if self.is_game_over() and not self.gameover:
@@ -487,13 +466,13 @@ class Game:
 
     def win_game(self):
         self.fly_player_over_bounds_animation()
-        self.gameover_text = "YOU WIN!"
-        self.gameover = True
+        self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "YOU WIN!"
+        self.gameover_data[GameAttributes.GAMEOVER] = True
 
     def end_game(self):
         self.destroy_player_animation()
-        self.gameover_text = "GAME OVER"
-        self.gameover = True
+        self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "GAME OVER"
+        self.gameover_data[GameAttributes.GAMEOVER] = True
 
     def wait(self, n):
         for i in range(0, n):

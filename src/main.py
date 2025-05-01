@@ -12,7 +12,7 @@ from entities.user import User
 from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
-from ui.game_views.game import Game
+from ui.game_views.game.game import Game
 from utils.game_helpers import check_database_exists
 
 
@@ -92,8 +92,7 @@ def init_main():
 
 
 if __name__ == "__main__":
-    database_exists = check_database_exists("database.db")
-    if database_exists:
+    if check_database_exists("database.db"):
         main()
     else:
         sys.exit(1)
