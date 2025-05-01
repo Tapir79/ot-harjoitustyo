@@ -71,7 +71,7 @@ Toteutunut pelinäkymä:
 
 [X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan pisteet.        
 [X]   - Kun pelaaja häviää pelin, loppuruutu ohjaa takaisin aloitusnäkymään.           
-[ ]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan tulos ja pelin high score eli kaikkien aikojen paras tulos.              
+[X]   - Kun pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy pelaajan tulos ja pelaajan saavuttama high score.              
 [X]   - Kun sisäänkirjautunut pelaaja häviää pelin, näytetään loppuruutu, jossa näkyy myös pelaajan oma high score eli paras henkilökohtainen tulos.             
 
 
