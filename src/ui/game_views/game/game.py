@@ -157,7 +157,7 @@ class Game:
         self.start_level_data[GameAttributes.TRANSITION_TIMER] = 0
         self.start_level_data[GameAttributes.LEVEL_COUNTDOWN] = 3
         self.start_level_data[GameAttributes.TICKS_REMAINING] = 180
-        self.set_new_level_attributes()
+        self.set_level_attributes()
 
     def handle_events(self):
         """
