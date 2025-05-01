@@ -56,6 +56,49 @@ class Game:
         self.reset_game(screen)
         self.drawer = GameDrawer(self)
 
+    def run(self):
+        """
+        Runs the main game loop.
+        Continuously handles events, updates the game state, 
+        and renders the screen until the game is quit.
+        """
+        while self.gameover_data[GameAttributes.RUNNING]:
+            self.handle_events()
+
+            if self.is_game_over() and not self.gameover_data[GameAttributes.GAMEOVER]:
+                self.lose_game()
+            elif self.gameover_data[GameAttributes.GAMEOVER]:
+                self.save_user_statistics()
+                self.game_over()
+                self.reset_game(self.screen)
+                pygame.time.wait(2000)
+                return AppState.START_SCREEN
+            elif not self.start_level_data[GameAttributes.LEVEL_STARTED]:
+                self.start_new_level()
+            else:
+                self.update()
+                self.check_sprite_collisions()
+                self.move_to_next_level()
+                self.draw()
+                self.clock.tick(60)
+
+        return AppState.QUIT
+
+    def update(self):
+        """
+        Updates the game state. 
+        """
+        self.player.handle_input()
+        self.game_groups[GameAttributes.PLAYER_BULLETS].update()
+        self.game_groups[GameAttributes.ENEMY_BULLETS].update()
+        self.game_groups[GameAttributes.ENEMIES].update()
+        self.game_groups[GameAttributes.HITS].update()
+
+    def draw(self):
+        self.drawer.draw()
+
+    # INIT ######################3
+
     def set_user(self, user):
         """
         Set game user to be logged in user or guest.
@@ -158,6 +201,8 @@ class Game:
         self.start_level_data[GameAttributes.LEVEL_COUNTDOWN] = 3
         self.start_level_data[GameAttributes.TICKS_REMAINING] = 180
         self.set_level_attributes()
+
+    ########################### UPDATE ###########################
 
     def handle_events(self):
         """
@@ -275,47 +320,6 @@ class Game:
                 self.increase_player_points(BULLET_POINTS_COEFFICIENT)
                 self.game_groups[GameAttributes.HITS].add(explosion)
 
-    def update(self):
-        """
-        Updates the game state. 
-        """
-        self.player.handle_input()
-        self.game_groups[GameAttributes.PLAYER_BULLETS].update()
-        self.game_groups[GameAttributes.ENEMY_BULLETS].update()
-        self.game_groups[GameAttributes.ENEMIES].update()
-        self.game_groups[GameAttributes.HITS].update()
-
-    def draw(self):
-        self.drawer.draw()
-
-    def run(self):
-        """
-        Runs the main game loop.
-        Continuously handles events, updates the game state, 
-        and renders the screen until the game is quit.
-        """
-        while self.gameover_data[GameAttributes.RUNNING]:
-            self.handle_events()
-
-            if self.is_game_over() and not self.gameover_data[GameAttributes.GAMEOVER]:
-                self.end_game()
-            elif self.gameover_data[GameAttributes.GAMEOVER]:
-                self.save_user_statistics()
-                self.game_over()
-                self.reset_game(self.screen)
-                pygame.time.wait(2000)
-                return AppState.START_SCREEN
-            elif not self.start_level_data[GameAttributes.LEVEL_STARTED]:
-                self.start_new_level()
-            else:
-                self.update()
-                self.check_sprite_collisions()
-                self.move_to_next_level()
-                self.draw()
-                self.clock.tick(60)
-
-        return AppState.QUIT
-
     def save_user_statistics(self):
         """
         Saves the player's score and level to the database if they are better than previous.
@@ -371,16 +375,27 @@ class Game:
             self.create_enemies()
 
     def win_game(self):
+        """
+        Player wins. An animation plays and gameover data is set.
+        """
         self.drawer.fly_player_over_bounds_animation()
         self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "YOU WIN!"
         self.gameover_data[GameAttributes.GAMEOVER] = True
 
-    def end_game(self):
+    def lose_game(self):
+        """
+        Player loses. An animation plays and gameover data is set.
+        """
         self.drawer.destroy_player_animation()
         self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "GAME OVER"
         self.gameover_data[GameAttributes.GAMEOVER] = True
 
     def game_over(self):
+        """
+        Game is over. Draw gameover text (win or lose). 
+        Draw player received points. 
+        Update display.
+        """
         self.screen.fill(BLACK)
         self.drawer.draw_game_over_text()
         points_position = Point(self.display_width//2,
@@ -389,6 +404,12 @@ class Game:
         pygame.display.update()
 
     def is_game_over(self):
+        """
+        Check if player sprite is dead.
+
+        Returns:
+            is_dead: True if player is dead
+        """
         if self.player.is_dead():
             return True
         return False
