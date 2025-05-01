@@ -18,6 +18,8 @@ Peli Guestina ja kirjautuneena käyttäjänä:
 - Pelin häviäminen 
 - Pelin voittaminen (muutettu konfiguraatioilla tasojen määrää, ominaisuuksia ja helpotettu pelaamista vihollisten ominaisuuksia säätämällä)
 - Tason vaihtuminen
+- Vihollisen kuvan vaihtuminen, kun vaikeustaso nousee
+- Vihollisen osumien määrän kasvaminen, kun vaikeustaso nousee
 - Pelaajan pisteiden laskenta
 - Pelaajan pisteiden vaihtuminen uudeksi omaksi ennätykseksi
 - Pelaajan pisteiden vaihtuminen uudeksi yleisennätykseksi
@@ -25,6 +27,10 @@ Peli Guestina ja kirjautuneena käyttäjänä:
 - Vihollisten tuhoutuminen
 - Vihollisten ampuminen
 - Vihollisten liikkuminen (alaspäin, sivulle, lomittain, liikkeen nopeutuminen)
+- Pelaajan luotien liikkuminen
+- Pelaajan luotien tuhoutuminen
+- Vihollisen luotien liikkuminen
+- Vihollisen luotien tuhoutuminen
 Aloitusvalikko Guestina ja kirjautuneena käyttäjänä:
 - Pelin aloittaminen 
 - Sisäänkirjautuminen
