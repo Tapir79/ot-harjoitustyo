@@ -371,65 +371,14 @@ class Game:
             self.create_enemies()
 
     def win_game(self):
-        self.fly_player_over_bounds_animation()
+        self.drawer.fly_player_over_bounds_animation()
         self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "YOU WIN!"
         self.gameover_data[GameAttributes.GAMEOVER] = True
 
     def end_game(self):
-        self.destroy_player_animation()
+        self.drawer.destroy_player_animation()
         self.gameover_data[GameAttributes.GAMEOVER_TEXT] = "GAME OVER"
         self.gameover_data[GameAttributes.GAMEOVER] = True
-
-    def wait(self, n):
-        for i in range(0, n):
-            self.clock.tick(60)
-
-    def play_animation_once(self, animation_sprite):
-        """
-        Plays a given animation sprite for a fixed duration (default 1000ms = 1 second).
-        """
-        clock = pygame.time.Clock()
-        group = pygame.sprite.Group(animation_sprite)
-
-        images = animation_sprite.image_paths
-
-        for image in images:
-            self.handle_events()  # So the window doesn't freeze
-            group.update()
-            self.screen.fill(BLACK)
-            group.draw(self.screen)
-            pygame.display.update()
-            clock.tick(60)
-
-    def destroy_player_animation(self):
-        position = self.player.rect.center
-        center_x, center_y = position
-        positions = get_random_positions_around_center_point(
-            Point(center_x, center_y), Size(self.display_width, self.display_height))
-        size = self.player.player_service.size
-        player_size = self.player.player_service.get_buffered_size(20)
-        explosion = PlayerHitAnimation(position, player_size)
-        self.play_animation_once(explosion)
-
-        for pos in positions:
-            explosion = HitAnimation(pos, size)
-            self.play_animation_once(explosion)
-            self.wait(5)
-
-    def fly_player_over_bounds_animation(self):
-        clock = pygame.time.Clock()
-        current_y = self.player.player_service.y
-
-        while current_y > UPPER_BOUNDARY:
-            self.handle_events()
-            current_y = self.player.player_service.y
-            self.player.player_service.y = current_y - PLAYER_SPEED
-
-            self.screen.fill(BLACK)
-            self.player.update()
-            self.player.draw(self.screen)
-            pygame.display.update()
-            clock.tick(60)
 
     def game_over(self):
         self.screen.fill(BLACK)

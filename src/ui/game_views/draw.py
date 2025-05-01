@@ -1,8 +1,11 @@
 import pygame
 from app_enums import GameAttributes
-from config import BLACK, WHITE, SILVER
+from config import BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVER
 from models.point import Point
-from utils.game_helpers import get_ending_points, get_player_lives
+from models.size import Size
+from ui.animations.hit_animation import HitAnimation
+from ui.animations.player_hit_animation import PlayerHitAnimation
+from utils.game_helpers import get_ending_points, get_player_lives, get_random_positions_around_center_point
 
 
 class GameDrawer():
@@ -132,3 +135,54 @@ class GameDrawer():
             f"Level {self.game.start_level_data[GameAttributes.LEVEL]}", True, WHITE)
         self.screen.blit(
             text, text.get_rect(center=(self.display_width // 2, self.display_height // 2)))
+
+    def play_animation_once(self, animation_sprite):
+        """
+        Plays a given animation sprite for a fixed duration (default 1000ms = 1 second).
+        """
+        clock = pygame.time.Clock()
+        group = pygame.sprite.Group(animation_sprite)
+
+        images = animation_sprite.image_paths
+
+        for image in images:
+            self.game.handle_events()  # So the window doesn't freeze
+            group.update()
+            self.screen.fill(BLACK)
+            group.draw(self.screen)
+            pygame.display.update()
+            clock.tick(60)
+
+    def destroy_player_animation(self):
+        position = self.game.player.rect.center
+        center_x, center_y = position
+        positions = get_random_positions_around_center_point(
+            Point(center_x, center_y), Size(self.display_width, self.display_height))
+        size = self.game.player.player_service.size
+        player_size = self.game.player.player_service.get_buffered_size(20)
+        explosion = PlayerHitAnimation(position, player_size)
+        self.play_animation_once(explosion)
+
+        for pos in positions:
+            explosion = HitAnimation(pos, size)
+            self.play_animation_once(explosion)
+            self.wait(5)
+
+    def wait(self, n):
+        for i in range(0, n):
+            self.game.clock.tick(60)
+
+    def fly_player_over_bounds_animation(self):
+        clock = pygame.time.Clock()
+        current_y = self.game.player.player_service.y
+
+        while current_y > UPPER_BOUNDARY:
+            self.game.handle_events()
+            current_y = self.game.player.player_service.y
+            self.game.player.player_service.y = current_y - PLAYER_SPEED
+
+            self.screen.fill(BLACK)
+            self.game.player.update()
+            self.game.player.draw(self.screen)
+            pygame.display.update()
+            clock.tick(60)
