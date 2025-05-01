@@ -95,6 +95,9 @@ class Game:
                                     self.game_groups)
 
     def init_levels(self):
+        """
+        Initialize game levels
+        """
         self.start_level_data = init_start_level_attributes()
         self.levels = LevelService()
         self.set_new_level_attributes()
