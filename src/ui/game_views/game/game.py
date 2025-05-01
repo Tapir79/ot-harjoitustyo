@@ -1,9 +1,9 @@
 import pygame
 from app_enums import AppState, GameAttributes
-from config import (UPPER_BOUNDARY, PLAYER_SPEED,
+from config import (BULLET_POINTS_COEFFICIENT, UPPER_BOUNDARY, PLAYER_SPEED,
                     ENEMY_WIDTH, ENEMY_HEIGHT,
-                    ENEMY_START_Y_OFFSET, BLACK, WHITE,
-                    ENEMY_START_X_OFFSET, SILVER)
+                    ENEMY_START_Y_OFFSET, BLACK,
+                    ENEMY_START_X_OFFSET)
 from db import Database
 from entities.user import User
 from models.point import Point
@@ -242,24 +242,18 @@ class Game:
         """
         enemy.enemy_service.add_hit()
         if enemy.enemy_service.is_dead:
-            self.increase_player_points_enemy()
+            self.increase_player_points()
             enemy.remove(self.game_groups[GameAttributes.ENEMIES])
 
-    def increase_player_points_enemy(self):
+    def increase_player_points(self, coefficient=1):
         """
-        Add points to player per shot enemy.
-        The player gets more points per enemy from higher levels. 
-        """
-        self.player.player_service.add_points(
-            self.start_level_data[GameAttributes.LEVEL])
+        Add points to player multiplied by the coefficient.
 
-    def increase_player_points_bullet(self):
-        """
-        Add points to player per shot bullet.
-        The player gets more points per bullet from higher levels.
+        Args: 
+            coefficient: points are multiplied by the coefficient.
         """
         self.player.player_service.add_points(
-            self.start_level_data[GameAttributes.LEVEL] * 2)
+            self.start_level_data[GameAttributes.LEVEL] * coefficient)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
@@ -278,7 +272,7 @@ class Game:
                 buffered_size = enemy_bullet.bullet.get_buffered_size(
                     10)
                 explosion = HitAnimation(position, buffered_size)
-                self.increase_player_points_bullet()
+                self.increase_player_points(BULLET_POINTS_COEFFICIENT)
                 self.game_groups[GameAttributes.HITS].add(explosion)
 
     def update(self):

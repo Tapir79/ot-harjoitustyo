@@ -36,6 +36,7 @@ PLAYER_COOLDOWN = 0.3
 # Bullet starting attributes
 BULLET_WIDTH = 10
 BULLET_HEIGHT = 20
+BULLET_POINTS_COEFFICIENT = 2
 
 # Enemy starting attributes
 ENEMY_WIDTH = 40
