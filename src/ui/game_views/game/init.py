@@ -12,12 +12,18 @@ from ui.sprites.player import PlayerSprite
 
 
 def init_display(screen):
+    """
+    Initialize game screen or display.
+    """
     height = screen.get_height()
     width = screen.get_width()
     return height, width
 
 
 def init_game_info():
+    """
+    Initialize pygame information
+    """
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
     return clock, font
@@ -42,6 +48,9 @@ def init_ui_images():
 
 
 def init_game_groups():
+    """
+    Initialize all pygame groups. 
+    """
     return {
         GameAttributes.PLAYER_BULLETS: Group(),
         GameAttributes.ENEMY_BULLETS: Group(),
@@ -51,6 +60,9 @@ def init_game_groups():
 
 
 def create_player(display_width, display_height, game_groups):
+    """
+    Create new player with constant values.
+    """
     player_position = Point(display_width // 2,
                             display_height - PLAYER_START_Y_OFFSET)
     player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
