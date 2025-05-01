@@ -13,7 +13,7 @@ Lataa uusin julkaisu täältä:
 * [Käyttöohje](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/kayttoohje.md)
 * [Vaatimusmäärittely](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/vaatimusmaarittely.md)
 * [Arkkitehtuuri](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/arkkitehtuuri.md)
-* **TODO**: Testausdokumentti
+* [Testausdokumentti](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/testaus.md)
 * [Työaikakirjanpito](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/tyoaikakirjanpito.md)
 * [Changelog](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/changelog.md)
 
