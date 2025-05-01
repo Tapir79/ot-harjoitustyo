@@ -92,7 +92,8 @@ def init_main():
 
 
 if __name__ == "__main__":
-    quit = check_database_exists("database.db")
-    if quit:
+    database_exists = check_database_exists("database.db")
+    if database_exists:
+        main()
+    else:
         sys.exit(1)
-    main()
