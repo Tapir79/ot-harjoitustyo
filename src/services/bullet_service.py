@@ -3,11 +3,11 @@ from models.sprite_info import SpriteInfo
 from config import UPPER_BOUNDARY, LOWER_BOUNDARY
 
 
-class BulletService(BaseSpriteService):
+class BulletService():
     """
     Controls the movement and state of a bullet in the game.
 
-    Inherits basic sprite properties from BaseSpriteService and adds 
+    Injected basic sprite properties from BaseSpriteService and adds 
     behavior for bullet movement and boundary checks.
 
     Attributes:
@@ -24,10 +24,44 @@ class BulletService(BaseSpriteService):
             sprite_info: The bullet's position, size, speed, and hit data.
             direction: The direction the bullet moves ("up" or "down").
         """
-        super().__init__(sprite_info)
-        self._lower_boundary = LOWER_BOUNDARY + self.height
-        self._upper_boundary = UPPER_BOUNDARY - self.height
+        self._sprite = BaseSpriteService(sprite_info)
+        self._lower_boundary = LOWER_BOUNDARY + self._sprite.height
+        self._upper_boundary = UPPER_BOUNDARY - self._sprite.height
         self._direction = direction
+
+    def __getattr__(self, name):
+        """
+        Delegate attribute access to the internal BaseSpriteService.
+
+        This allows the sprite service to expose the same interface as BaseSpriteService
+        without inheriting from it. Any attribute not found on the service class itself
+        is automatically looked up in the composed BaseSpriteService instance.
+
+        Args:
+            name (str): The name of the attribute being accessed.
+
+        Returns:
+            Any: The value of the attribute from BaseSpriteService.
+
+        Raises:
+            AttributeError: If the attribute does not exist on BaseSpriteService.
+        """
+        return getattr(self._sprite, name)
+
+    def __setattr__(self, name, value):
+        """
+        Delegate setting attributes to the internal BaseSpriteService.
+        Always set BulletService's own attributes directly.
+
+        Args:
+            name: name of the attribute
+            value: value to set for the attribute
+        """
+
+        if name in {"_sprite", "_direction", "_lower_boundary", "_upper_boundary"}:
+            super().__setattr__(name, value)
+        else:
+            setattr(self._sprite, name, value)
 
     @property
     def direction(self):
@@ -45,11 +79,13 @@ class BulletService(BaseSpriteService):
             int: The updated y-position after moving.
         """
         if self.direction == "up":
-            self.y = max(self._upper_boundary, self.y - self.speed)
+            self._sprite.y = max(self._upper_boundary,
+                                 self._sprite.y - self._sprite.speed)
         elif self.direction == "down":
-            self.y = min(self._lower_boundary, self.y + self.speed)
+            self._sprite.y = min(self._lower_boundary,
+                                 self._sprite.y + self._sprite.speed)
         # else do nothing
-        return self.y
+        return self._sprite.y
 
     def update(self):
         """
@@ -59,7 +95,7 @@ class BulletService(BaseSpriteService):
             tuple: The new (x, y) position after moving.
         """
         self.move()
-        return self.position
+        return self._sprite.position
 
     def is_moving(self):
         """
@@ -69,8 +105,8 @@ class BulletService(BaseSpriteService):
         Returns:
             bool: If the bullet has reached its end boundary -> False, otherwise -> True.
         """
-        if self.direction == "down" and self.y > LOWER_BOUNDARY:
+        if self.direction == "down" and self._sprite.y > LOWER_BOUNDARY:
             return False
-        if self.direction == "up" and self.y < UPPER_BOUNDARY:
+        if self.direction == "up" and self._sprite.y < UPPER_BOUNDARY:
             return False
         return True

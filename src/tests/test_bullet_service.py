@@ -72,4 +72,14 @@ class TestBulletService(unittest.TestCase):
         buffered_size = bullet.get_buffered_size(10)
         self.assertEqual(buffered_size.height, 30)
 
+    def test_setattr_sprite_info_attribute(self):
+        self.bullet.y = 123
+        self.assertEqual(self.bullet.y, 123)
+        self.assertEqual(self.bullet._sprite.y, 123)
+
+    def test_setattr_bullet_service_attribute(self):
+        self.bullet._direction = "down"  # Should affect BulletService only
+        self.assertEqual(self.bullet._direction, "down")
+        self.assertFalse(hasattr(self.bullet._sprite, "_direction"))
+
     # collisions don't need tests because they are handled by pygame
