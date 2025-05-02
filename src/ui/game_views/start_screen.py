@@ -4,12 +4,6 @@ import pygame
 from config import BLACK, BRONZE, GOLD, SILVER, WHITE, ASSETS_DIR
 from app_enums import AppState, CurrentField
 from db import Database
-from repositories.user_repository import UserRepository
-from repositories.user_statistics_repository import UserStatisticsRepository
-from services.session_service import SessionService
-from services.user_service import UserService
-from services.user_statistics_service import UserStatisticsService
-from services.general_statistics_service import GeneralStatisticsService
 from ui.game_views.managers.event_loop import EventLoop
 from ui.game_views.managers.menu_drawer import MenuDrawer
 from ui.game_views.managers.session_manager import SessionManager
