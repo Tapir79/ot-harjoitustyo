@@ -23,17 +23,13 @@ class CreateUserView():
         Args:
             screen: The pygame display surface.
         """
-
-        self.user = user
-
         self.screen = screen
         self.message = ""
-        self.drawer = MenuDrawer(screen)
+        self._drawer = MenuDrawer(screen)
 
         self.current_field = CurrentField.USERNAME
-        self.username_rect = pygame.Rect(250, 150, 300, 36)
-        self.password_rect = pygame.Rect(250, 200, 300, 36)
-        self.esc_state = AppState.START_SCREEN
+        self._username_rect = pygame.Rect(250, 150, 300, 36)
+        self._password_rect = pygame.Rect(250, 200, 300, 36)
         self._loop = EventLoop(self, esc_state=AppState.START_SCREEN)
 
         self.input_boxes = {
@@ -41,11 +37,10 @@ class CreateUserView():
             CurrentField.PASSWORD: ""
         }
 
-        self.session_manager = SessionManager(Database())
-        self.user, self.user_statistics = self.session_manager.current_user(
-            self.user)
-        self.user_service = self.session_manager.user_service
-        self.user_statistics_service = self.session_manager.user_statistics_service
+        session = SessionManager(Database())
+        self.user, _ = session.current_user(user)
+        self._user_service = session.user_service
+        self._user_statistics_service = session.user_statistics_service
 
     def run(self):
         """
@@ -66,19 +61,19 @@ class CreateUserView():
         """
         self.screen.fill(BLACK)
         y = self.draw_create_user_labels()
-        self.drawer.draw_input_field(
-            self.username_rect,
+        self._drawer.draw_input_field(
+            self._username_rect,
             self.input_boxes[CurrentField.USERNAME],
             self.current_field == CurrentField.USERNAME
         )
-        self.drawer.draw_input_field(
-            self.password_rect,
+        self._drawer.draw_input_field(
+            self._password_rect,
             self.input_boxes[CurrentField.PASSWORD],
             self.current_field == CurrentField.PASSWORD,
             is_password=True
         )
         if self.message:
-            self.drawer.draw_text(self.message, (100, y))
+            self._drawer.draw_text(self.message, (100, y))
         pygame.display.flip()
 
     def draw_create_user_labels(self):
@@ -89,7 +84,7 @@ class CreateUserView():
                  "Press Tab to change field",
                  "Press ENTER to submit",
                  "Press ESC to return"]
-        y = self.drawer.draw_labels(lines)
+        y = self._drawer.draw_labels(lines)
         return y
 
     def on_submit(self):
@@ -101,12 +96,12 @@ class CreateUserView():
         """
         username = self.input_boxes[CurrentField.USERNAME].strip()
         password = self.input_boxes[CurrentField.PASSWORD].strip()
-        success, message, user = self.user_service.register_user(
+        success, message, user = self._user_service.register_user(
             username, password)
         if success:
-            self.user_statistics_service.create_user_statistics(
+            self._user_statistics_service.create_user_statistics(
                 user.user_id, 0, 0)
-            user_id, msg = self.user_service.login(username, password)
+            user_id, msg = self._user_service.login(username, password)
 
         self.message = message
         if success:

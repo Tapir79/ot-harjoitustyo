@@ -7,7 +7,7 @@ from db import Database
 from ui.game_views.managers.event_loop import EventLoop
 from ui.game_views.managers.menu_drawer import MenuDrawer
 from ui.game_views.managers.session_manager import SessionManager
-from utils.game_helpers import format_high_scores, update_single_field
+from utils.game_helpers import format_high_scores
 
 
 class StartScreenView():
@@ -28,24 +28,28 @@ class StartScreenView():
             screen: The pygame screen surface to draw on.
             user: The currently logged-in user (optional).
         """
-        self.esc_state = esc_state
         self.screen = screen
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
-        self.current_field = CurrentField.START
-        self.menu_items = []
         self.selected_index = 0
         self.borders = {"thick": 3, "thin": 1}
+        self._drawer = MenuDrawer(screen)
 
-        self.session_manager = SessionManager(Database())
-        self.user, self.user_statistics = self.session_manager.current_user(
-            user)
-        self.user_service = self.session_manager.user_service
-        self.user_statistics_service = self.session_manager.user_statistics_service
-        self.top_scores = self.session_manager.top_scores()
-
+        self.current_field = CurrentField.START
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
+
+        self._loop = EventLoop(self, esc_state=AppState.QUIT)
+
+        self.menu_items = []
+        self.esc_state = esc_state
+
+        session = SessionManager(Database())
+        self.user, self.user_statistics = session.current_user(user)
+        self._user_service = session.user_service
+        self._user_statistics_service = session.user_statistics_service
+
+        self.top_scores = session.top_scores()
 
     def run(self):
         """
@@ -89,87 +93,31 @@ class StartScreenView():
 
     def handle_keydown(self, event):
         """
-        Handle keyboard input for navigating fields and submitting data.
+        Handle keypress events to select a menu option.
 
         Args:
             event: The pygame KEYDOWN event.
 
         Returns:
-            AppState or None: The next application state or None.
+            AppState: The next application state based on user choice.
         """
-        if event.key == pygame.K_TAB:
-            self.current_field = (
-                CurrentField.PASSWORD if self.current_field == CurrentField.USERNAME else CurrentField.USERNAME
-            )
-        elif event.key == pygame.K_BACKSPACE:
-            self._update_input_field(backspace=True)
+        if event.key == pygame.K_UP:
+            self.move_up()
+        elif event.key == pygame.K_DOWN:
+            self.move_down()
         elif event.key == pygame.K_RETURN:
-            return self.on_submit()
-        else:
-            self._update_input_field(char=event.unicode)
+            return self.choose_option()
+        if event.key == pygame.K_TAB:
+            self.handle_key_tab()
 
-    def _update_input_field(self, backspace=False, char=None):
-        """
-        Update the active input field with user typing or backspace.
+        if event.key == pygame.K_1:
+            return AppState.RUN_GAME
+        elif event.key == pygame.K_2:
+            return AppState.LOGIN_VIEW
+        elif event.key == pygame.K_3:
+            return AppState.CREATE_USER_VIEW
 
-        Args:
-            backspace: Whether to delete a character.
-            char: The character to add.
-        """
-        if hasattr(self, "input_boxes"):
-            if backspace:
-                self.input_boxes[self.current_field] = self.input_boxes[self.current_field][:-1]
-            elif char:
-                self.input_boxes[self.current_field] += char
-        else:
-            if self.current_field == CurrentField.USERNAME:
-                self.username = update_single_field(self.username,
-                                                    backspace=backspace,
-                                                    char=char)
-            else:
-                self.password = update_single_field(self.password,
-                                                    backspace=backspace,
-                                                    char=char)
-
-    def draw_input_field(self, rect, text, is_active, is_password=False):
-        """
-        Draw an input box on the screen.
-
-        Args:
-            rect: The pygame.Rect defining the box position and size.
-            text: The text to display inside the box.
-            is_active: Whether the box is currently selected.
-            is_password: Whether to hide the text (for passwords).
-        """
-        border = self.borders["thick"] if is_active else self.borders["thin"]
-        pygame.draw.rect(self.screen, WHITE, rect, border)
-        display_text = "*" * len(text) if is_password else text
-        surface = self.font.render(display_text, True, WHITE)
-        self.screen.blit(surface, (rect.x + 5, rect.y + 5))
-
-    def draw_text(self, text, position, font=None, center=False, color=WHITE):
-        """
-        Draw text on the screen.
-
-        Args:
-            text: The string to render.
-            pos: A tuple (x, y) for the text position.
-            font: A pygame.Font object to use (optional).
-
-        Returns:
-            pygame.Rect: The rectangle of the drawn text.
-        """
-        if font is None:
-            font = self.small_font
-        text_surface = font.render(text, True, color)
-        rect = text_surface.get_rect()
-        if center:
-            rect.center = position
-        else:
-            rect.topleft = position
-        self.screen.blit(text_surface, rect)
-
-        return rect
+        return None
 
     def draw_title(self):
         """
@@ -203,10 +151,10 @@ class StartScreenView():
         y += 100
 
         if self.user:
-            self.draw_text(f"Player: {self.user.username}",
-                           (center_x, y), self.small_font, center=True)
+            self._drawer.draw_text(f"Player: {self.user.username}",
+                                   (center_x, y), self.small_font, center=True)
             y += 30
-            self.draw_text(f"Your High Score: {self.user_statistics.high_score}", (
+            self._drawer.draw_text(f"Your High Score: {self.user_statistics.high_score}", (
                 center_x, y), self.small_font, center=True)
             y += 30
 
@@ -231,7 +179,8 @@ class StartScreenView():
 
         y += 20
         title = "Rank  High Score  Username"
-        title_rect = self.draw_text(str(title), (center_x, y), center=True)
+        title_rect = self._drawer.draw_text(
+            str(title), (center_x, y), center=True)
         y += 30
 
         for i, score in enumerate(self.top_scores):
@@ -240,8 +189,8 @@ class StartScreenView():
 
         player_colors = [GOLD, SILVER, BRONZE]
         for i, row in enumerate(rows):
-            self.draw_text(str(row), (title_rect.left, y),  center=False,
-                           color=player_colors[i])
+            self._drawer.draw_text(str(row), (title_rect.left, y),  center=False,
+                                   color=player_colors[i])
             y += 30
 
         y += 30
@@ -299,8 +248,8 @@ class StartScreenView():
         y = self.draw_menu_options(center_x, y)
 
         y += 20
-        self.draw_text("Press ESC to Quit", (center_x, y),
-                       self.font, center=True)
+        self._drawer.draw_text("Press ESC to Quit", (center_x, y),
+                               self.font, center=True)
 
     def draw_text_return_rect(self, text, pos, font, center=False, highlight=False):
         """
@@ -415,34 +364,6 @@ class StartScreenView():
             y += 40
 
         return y
-
-    def handle_keydown(self, event):
-        """
-        Handle keypress events to select a menu option.
-
-        Args:
-            event: The pygame KEYDOWN event.
-
-        Returns:
-            AppState: The next application state based on user choice.
-        """
-        if event.key == pygame.K_UP:
-            self.move_up()
-        elif event.key == pygame.K_DOWN:
-            self.move_down()
-        elif event.key == pygame.K_RETURN:
-            return self.choose_option()
-        if event.key == pygame.K_TAB:
-            self.handle_key_tab()
-
-        if event.key == pygame.K_1:
-            return AppState.RUN_GAME
-        elif event.key == pygame.K_2:
-            return AppState.LOGIN_VIEW
-        elif event.key == pygame.K_3:
-            return AppState.CREATE_USER_VIEW
-
-        return None
 
     def move_up(self):
         """

@@ -35,13 +35,11 @@ class LoginView():
         self.current_field = CurrentField.USERNAME
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
-        self.esc_state = AppState.START_SCREEN
 
-        self.session_manager = SessionManager(Database())
-        self.user, self.user_statistics = self.session_manager.current_user(
-            self.user)
-        self.user_service = self.session_manager.user_service
-        self.user_statistics_service = self.session_manager.user_statistics_service
+        session = SessionManager(Database())
+        self.user, _ = session.current_user(user)
+        self.user_service = session.user_service
+        self.user_statistics_service = session.user_statistics_service
         self._loop = EventLoop(self, esc_state=AppState.START_SCREEN)
 
     def run(self):
