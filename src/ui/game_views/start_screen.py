@@ -1,3 +1,4 @@
+
 import os
 import pygame
 from config import BLACK, BRONZE, GOLD, SILVER, WHITE, ASSETS_DIR
@@ -9,6 +10,9 @@ from services.session_service import SessionService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
 from services.general_statistics_service import GeneralStatisticsService
+from ui.game_views.managers.event_loop import EventLoop
+from ui.game_views.managers.menu_drawer import MenuDrawer
+from ui.game_views.managers.session_manager import SessionManager
 from utils.game_helpers import format_high_scores, update_single_field
 
 
@@ -22,7 +26,7 @@ class StartScreenView():
     Inherits from BaseView to use common input handling and rendering functionality.
     """
 
-    def __init__(self, screen, user=None):
+    def __init__(self, screen, user=None, esc_state=AppState.QUIT):
         """
         Initialize the start screen view.
 
@@ -30,22 +34,24 @@ class StartScreenView():
             screen: The pygame screen surface to draw on.
             user: The currently logged-in user (optional).
         """
+        self.esc_state = esc_state
         self.screen = screen
         self.font = pygame.font.Font(None, 50)
         self.small_font = pygame.font.Font(None, 36)
         self.current_field = CurrentField.START
         self.menu_items = []
         self.selected_index = 0
-        self.general_statistics_service = GeneralStatisticsService()
-        self.top_scores = self.general_statistics_service.get_top_scores()
         self.borders = {"thick": 3, "thin": 1}
-        self.user_service = UserService(UserRepository(Database()))
-        self.user_statistics_service = UserStatisticsService(
-            UserStatisticsRepository(Database()))
+
+        self.session_manager = SessionManager(Database())
+        self.user, self.user_statistics = self.session_manager.current_user(
+            user)
+        self.user_service = self.session_manager.user_service
+        self.user_statistics_service = self.session_manager.user_statistics_service
+        self.top_scores = self.session_manager.top_scores()
+
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
-        self.session_service = SessionService()
-        self.user, self.user_statistics = self.session_service.init_user(user)
 
     def run(self):
         """

@@ -13,7 +13,7 @@ class SessionManager:
         self.user_statistics_service = UserStatisticsService(
             UserStatisticsRepository(db))
         self.session_service = SessionService()
-        self.general_statisstics_service = GeneralStatisticsService()
+        self.general_statistics_service = GeneralStatisticsService()
 
     def current_user(self, user):
         self.user, self.user_statistics = self.session_service.init_user(user)
