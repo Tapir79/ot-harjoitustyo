@@ -78,7 +78,7 @@ class TestBulletService(unittest.TestCase):
         self.assertEqual(self.bullet._sprite.y, 123)
 
     def test_setattr_bullet_service_attribute(self):
-        self.bullet._direction = "down"  # Should affect BulletService only
+        self.bullet._direction = "down"
         self.assertEqual(self.bullet._direction, "down")
         self.assertFalse(hasattr(self.bullet._sprite, "_direction"))
 

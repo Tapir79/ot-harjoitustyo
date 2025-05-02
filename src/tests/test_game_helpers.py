@@ -9,7 +9,7 @@ from entities.user_statistics import UserStatistics
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from services.player_service import PlayerService
-from utils.game_helpers import (check_database_exists, format_high_scores, get_ending_points, get_random_positions_around_center_point,
+from utils.game_helpers import (check_database_exists, create_enemy_service, format_high_scores, get_ending_points, get_random_positions_around_center_point,
                                 get_random_x,
                                 get_random_y,
                                 get_player_lives, update_single_field)
@@ -215,3 +215,19 @@ class TestGameHelpers(unittest.TestCase):
         database_name = "test_database.db"
         exists = check_database_exists(database_name)
         self.assertEqual(exists, False)
+
+    def test_enemy_service_creation(self):
+        point = Point(1, 2)
+        size = Size(200, 400)
+        speed = 1
+        enemy_max_hits = 2
+        enemy_cooldown = 2
+        enemy_service = create_enemy_service(point,
+                                             size,
+                                             speed,
+                                             enemy_max_hits,
+                                             enemy_cooldown)
+
+        self.assertEqual(enemy_service.cooldown, enemy_cooldown)
+        self.assertEqual(enemy_service.hitcount, 0)
+        self.assertEqual(enemy_service.is_dead, False)
