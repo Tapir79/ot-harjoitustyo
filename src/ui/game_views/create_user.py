@@ -1,17 +1,11 @@
 import pygame
 from app_enums import AppState, CurrentField
-from config import BLACK, WHITE
+from config import BLACK
 from db import Database
 from entities.user import User
-from repositories.user_repository import UserRepository
-from repositories.user_statistics_repository import UserStatisticsRepository
-from services.session_service import SessionService
-from services.user_service import UserService
-from services.user_statistics_service import UserStatisticsService
 from ui.game_views.managers.event_loop import EventLoop
 from ui.game_views.managers.menu_drawer import MenuDrawer
 from ui.game_views.managers.session_manager import SessionManager
-from utils.game_helpers import update_single_field
 
 
 class CreateUserView():
