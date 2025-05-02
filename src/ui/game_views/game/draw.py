@@ -203,3 +203,6 @@ class GameDrawer():
         else:
             rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
+
+    def get_hit_animation(self, position, size):
+        return HitAnimation(position, size)

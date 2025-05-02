@@ -27,7 +27,6 @@ from utils.game_helpers import (create_enemy_service,
                                 init_high_score,
                                 init_start_level_attributes,
                                 set_new_level_attributes)
-from ui.animations.hit_animation import HitAnimation
 from ui.sprites.enemy import EnemySprite
 
 
@@ -236,7 +235,7 @@ class Game:
 
             position = self.player.rect.center
             size = self.player.player_service.size
-            explosion = HitAnimation(position, size)
+            explosion = self.drawer.get_hit_animation(position, size)
             self.game_groups[GameAttributes.HITS].add(explosion)
 
             if self.player.player_service.is_dead:
@@ -254,7 +253,7 @@ class Game:
 
             position = self.player.rect.center
             size = self.player.player_service.size
-            explosion = HitAnimation(position, size)
+            explosion = self.drawer.get_hit_animation(position, size)
             self.game_groups[GameAttributes.HITS].add(explosion)
 
             if self.player.player_service.is_dead:
@@ -281,7 +280,7 @@ class Game:
 
                 position = enemy.rect.center
                 size = enemy.enemy_service.size
-                explosion = HitAnimation(position, size)
+                explosion = self.drawer.get_hit_animation(position, size)
                 self.game_groups[GameAttributes.HITS].add(explosion)
 
     def try_kill_enemy(self, enemy):
@@ -321,7 +320,8 @@ class Game:
                 position = enemy_bullet.rect.center
                 buffered_size = enemy_bullet.bullet.get_buffered_size(
                     10)
-                explosion = HitAnimation(position, buffered_size)
+                explosion = self.drawer.get_hit_animation(
+                    position, buffered_size)
                 self.increase_player_points(BULLET_POINTS_COEFFICIENT)
                 self.game_groups[GameAttributes.HITS].add(explosion)
 
