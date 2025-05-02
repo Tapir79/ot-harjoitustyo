@@ -85,7 +85,8 @@ class Game:
 
     def update(self):
         """
-        Updates the game state. 
+        Update the game state. 
+        This happens on every game loop.
         """
         self.player.handle_input()
         self.game_groups[GameAttributes.PLAYER_BULLETS].update()
@@ -94,9 +95,14 @@ class Game:
         self.game_groups[GameAttributes.HITS].update()
 
     def draw(self):
+        """
+        Draw game background, player, enemies, bullets and animations on screen. 
+        This happens on every game loop.
+        All drawing is handled in a separate GameDrawer class. 
+        """
         self.drawer.draw()
 
-    # INIT ######################3
+    ################## INIT ######################
 
     def set_user(self, user):
         """
