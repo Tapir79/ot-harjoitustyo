@@ -9,10 +9,15 @@ from utils.game_helpers import get_ending_points, get_player_lives, get_random_p
 
 
 class GameDrawer():
+    """
+    A separate class for drawing the game objects. 
+    """
+
     def __init__(self, game):
         """
-        game: your Game instance, which must have at least:
-          - screen, font, heart_data, game_groups, player, user, ...
+        Args:
+            game: Game instance, which must have at least:
+                  - screen, font, heart_data, game_groups, player, user
         """
         self.game = game
         self.screen = game.screen
@@ -39,18 +44,6 @@ class GameDrawer():
         self.game.game_groups[GameAttributes.HITS].draw(self.screen)
         self.draw_instructions_text()
         pygame.display.update()
-
-    def draw_text(self, text, position: Point, center=False, color=WHITE):
-        """
-        General method for drawing text on the screen.
-        """
-        text_surface = self.font.render(text, True, color)
-        rect = text_surface.get_rect()
-        if center:
-            rect.center = position.x, position.y
-        else:
-            rect.topleft = position.x, position.y
-        self.screen.blit(text_surface, rect)
 
     def draw_player_name(self):
         """
@@ -131,6 +124,9 @@ class GameDrawer():
                        center, color=data["color"])
 
     def draw_next_level_title(self):
+        """
+        Draws "Level <level_number>".
+        """
         text = self.font.render(
             f"Level {self.game.start_level_data[GameAttributes.LEVEL]}", True, WHITE)
         self.screen.blit(
@@ -145,7 +141,7 @@ class GameDrawer():
 
         images = animation_sprite.image_paths
 
-        for image in images:
+        for _ in images:
             self.game.handle_events()  # So the window doesn't freeze
             group.update()
             self.screen.fill(BLACK)
@@ -154,6 +150,9 @@ class GameDrawer():
             clock.tick(60)
 
     def destroy_player_animation(self):
+        """
+        Draws an animation sprite of the player destruction.
+        """
         position = self.game.player.rect.center
         center_x, center_y = position
         positions = get_random_positions_around_center_point(
@@ -169,10 +168,16 @@ class GameDrawer():
             self.wait(5)
 
     def wait(self, n):
+        """
+        Pause the game for n * 60 seconds.
+        """
         for i in range(0, n):
             self.game.clock.tick(60)
 
     def fly_player_over_bounds_animation(self):
+        """
+        Plays an animation of the player winning. 
+        """
         clock = pygame.time.Clock()
         current_y = self.game.player.player_service.y
 
@@ -186,3 +191,15 @@ class GameDrawer():
             self.game.player.draw(self.screen)
             pygame.display.update()
             clock.tick(60)
+
+    def draw_text(self, text, position: Point, center=False, color=WHITE):
+        """
+        General method for drawing text on the screen.
+        """
+        text_surface = self.font.render(text, True, color)
+        rect = text_surface.get_rect()
+        if center:
+            rect.center = position.x, position.y
+        else:
+            rect.topleft = position.x, position.y
+        self.screen.blit(text_surface, rect)
