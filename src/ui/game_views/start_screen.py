@@ -39,8 +39,6 @@ class StartScreenView():
         self.username_rect = pygame.Rect(250, 150, 300, 36)
         self.password_rect = pygame.Rect(250, 200, 300, 36)
 
-        self._loop = EventLoop(self, esc_state=AppState.QUIT)
-
         self.menu_items = []
         self.esc_state = esc_state
 

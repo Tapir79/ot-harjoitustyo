@@ -38,20 +38,21 @@ flowchart TD
 
 Käyttäjähallintanäkymät:
 
-```mermaid 
-classDiagram
+Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimerkiksi injektoidaan sessio, jonka kautta ne kaikki näkevät peliin kirjautuneen käyttäjän ja käyttäjien tilastoja. Lisäksi näkymät jakavat yhteisen piirtäjän, joka huolehtii kaikille yhteisistä ruudunpäivityksistä. Login- ja CreateUserView-näkymillä on lisäksi yhteinen EventLoop, joka huolehtii luokkien pääsilmukan tapahtumien kuuntelusta.
 
-    class BaseView {
-        +screen
-        +run()
-        +render()
-        +handle_event()
-        +handle_keydown()
-        +on_submit()
-    }
+
+```mermaid 
+ classDiagram
+
+    class MenuDrawer
+    class SessionManager
+    class EventLoop
 
     class CreateUserView {
+        +user
         +input_boxes
+        +current_field
+        +run()
         +render()
         +on_submit()
     }
@@ -60,23 +61,64 @@ classDiagram
         +username
         +password
         +user
+        +current_field
+        +run()
         +render()
         +on_submit()
     }
 
     class StartScreenView {
         +user
+        +top_scores
+        +current_field
+        +selected_index
+        +run()
         +render()
-        +handle_keydown()
+        +choose_option()
+    }
+
+    %% Composition (providers at the top)
+    MenuDrawer <.. CreateUserView
+    MenuDrawer <.. LoginView
+    MenuDrawer <.. StartScreenView
+
+    SessionManager <.. CreateUserView
+    SessionManager <.. LoginView
+    SessionManager <.. StartScreenView
+
+    EventLoop <.. CreateUserView
+    EventLoop <.. LoginView
+
+```
+
+Peli:
+
+Peli sijaitsee omassa kansiossaan ja se käynnistetään StartScreenView-luokasta. 
+Pelillä on oma piirtäjänsä, koska sen logiikka eroaa oleellisesti muista UI-näkymistä. Lisäksi sillä on oma initialisointiluokka, jotta peliluokasta ei tulisi liian suuri. 
+
+```mermaid
+classDiagram
+
+class GameDrawer {
+    +draw()
+}
+
+class Init
+
+class Game {
+        +user
+        +input_boxes
+        +current_field
+        +run()
+        +render()
         +on_submit()
     }
 
-    %% Inheritance
-    BaseView --|>  CreateUserView 
-    BaseView --|>  LoginView 
-    BaseView --|>  StartScreenView
+GameDrawer <.. Game
+Init <.. Game
 
 ```
+
 
 ## Sovelluslogiikka 
 

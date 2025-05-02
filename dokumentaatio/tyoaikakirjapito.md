@@ -50,3 +50,4 @@
 | yht | 140 | |
 | 30.4 | 4 | Logiikan irrottamista UI:sta puhtaiksi funktioiksi. Toisteisen koodin refaktointi testeissä. Logoutin aihettaman bugin korjaaminen. |
 | 1.5 | 6 | Testausdokumentti. Game-luokan metodien refaktorointi ja uudelleenorganisointi game-, init- ja draw-luokkiin. Pelaaja kerää pisteitä myös ammusten tuhoamisesta. |
+| 2.5 | 4 | Koodin laatuvaatimusten läpikäyntiä. Muuttujien nimeäminen, luokan sisäinen käyttö. Single Responsibilityn tarkistaminen. Menu-luokille session_manager ja menu_drawer. Arkkitehtuurin päivitys UI:n osalta. |

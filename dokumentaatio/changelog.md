@@ -46,5 +46,10 @@ näppäimistöllä
 - Lisätty peliin Guest-tunnus, jolla pelataan, jos ei rekisteröitynyttä käyttäjää.
 - Toisteisen koodin refaktorointi testeistä. 
 - Funktioiden ja metodien pilkkomista pienempiin osiin.
+- Puhtaan peliogiikan irrottamista UI:sta.
 - Docstringien kirjoittaminen.
-- Testausdokumentin lisääminen projektiin. 
+- Testausdokumentin lisääminen projektiin.
+- Game-luokan refaktorointi ja hajauttaminen toiminallisuuden mukaan.
+- Perinnän purkaminen projektista ja sen korvaaminen luokkien yhteistoiminnalla (kompositio).
+- Session managerin, drawer-luokkien lisääminen (composition).  
+- Dokumentaation läpikäyminen ja päivittäminen ajan tasalle. 
