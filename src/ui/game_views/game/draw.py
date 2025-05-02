@@ -1,11 +1,13 @@
+import os
 import pygame
 from app_enums import GameAttributes
-from config import BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVER
+from config import ASSETS_DIR, BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVER
 from models.point import Point
 from models.size import Size
-from ui.animations.hit_animation import HitAnimation
-from ui.animations.player_hit_animation import PlayerHitAnimation
-from utils.game_helpers import get_ending_points, get_player_lives, get_random_positions_around_center_point
+from ui.animations.animation import AnimationSprite
+from utils.game_helpers import (get_ending_points,
+                                get_player_lives,
+                                get_random_positions_around_center_point)
 
 
 class GameDrawer():
@@ -139,9 +141,9 @@ class GameDrawer():
         clock = pygame.time.Clock()
         group = pygame.sprite.Group(animation_sprite)
 
-        images = animation_sprite.image_paths
+        images = animation_sprite.image_count
 
-        for _ in images:
+        for _ in range(0, images):
             self.game.handle_events()  # So the window doesn't freeze
             group.update()
             self.screen.fill(BLACK)
@@ -159,13 +161,23 @@ class GameDrawer():
             Point(center_x, center_y), Size(self.display_width, self.display_height))
         size = self.game.player.player_service.size
         player_size = self.game.player.player_service.get_buffered_size(20)
-        explosion = PlayerHitAnimation(position, player_size)
+        explosion = self.get_player_hit_animation(position, player_size)
         self.play_animation_once(explosion)
 
         for pos in positions:
-            explosion = HitAnimation(pos, size)
+            explosion = self.get_hit_animation(pos, size)
             self.play_animation_once(explosion)
             self.wait(5)
+
+    def get_player_hit_animation(self, position, player_size):
+        self.image_paths = [os.path.join(
+            ASSETS_DIR, f"player_hit{i}.png") for i in range(1, 9)]
+        return AnimationSprite(position, player_size, self.image_paths, duration=300)
+
+    def get_hit_animation(self, position, size):
+        self.image_paths = [os.path.join(
+            ASSETS_DIR, f"hit{i}.png") for i in range(1, 5)]
+        return AnimationSprite(position, size, self.image_paths, duration=200)
 
     def wait(self, n):
         """
@@ -203,6 +215,3 @@ class GameDrawer():
         else:
             rect.topleft = position.x, position.y
         self.screen.blit(text_surface, rect)
-
-    def get_hit_animation(self, position, size):
-        return HitAnimation(position, size)

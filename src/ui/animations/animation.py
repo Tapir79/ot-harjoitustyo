@@ -18,17 +18,65 @@ class AnimationSprite(pygame.sprite.Sprite):
         duration (int): Total time in milliseconds the animation should take. Default is 400.
         """
         super().__init__()
-        self.images = [pygame.image.load(
+        self._images = [pygame.image.load(
             path).convert_alpha() for path in image_paths]
-        self.images = [pygame.transform.scale(
-            img, (size.width, size.height)) for img in self.images]
+        self._images = [pygame.transform.scale(
+            img, (size.width, size.height)) for img in self._images]
 
-        self.index = 0
-        self.image = self.images[self.index]
-        self.rect = self.image.get_rect(center=position)
+        self._index = 0
+        self._image = self._images[self.index]
+        self._rect = self._image.get_rect(center=position)
 
-        self.last_update = pygame.time.get_ticks()
-        self.frame_rate = duration // len(self.images)
+        self._last_update = pygame.time.get_ticks()
+        self._frame_rate = duration // len(self._images)
+
+    @property
+    def index(self):
+        return self._index
+
+    @index.setter
+    def index(self, value):
+        self._index = value
+
+    @property
+    def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, surf):
+        self._image = surf
+
+    @property
+    def images(self):
+        return self._images
+
+    @property
+    def rect(self):
+        return self._rect
+
+    @rect.setter
+    def rect(self, new_rect):
+        self._rect = new_rect
+
+    @property
+    def last_update(self):
+        return self._last_update
+
+    @last_update.setter
+    def last_update(self, timestamp):
+        self._last_update = timestamp
+
+    @property
+    def frame_rate(self):
+        return self._frame_rate
+
+    @frame_rate.setter
+    def frame_rate(self, fr):
+        self._frame_rate = fr
+
+    @property
+    def image_count(self):
+        return len(self._images)
 
     def update(self):
         """
