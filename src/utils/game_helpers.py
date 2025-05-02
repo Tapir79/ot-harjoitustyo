@@ -19,6 +19,20 @@ def create_enemy_service(point: Point,
                          speed,
                          enemy_max_hits,
                          enemy_cooldown):
+    """
+    Creates EnemyService object.
+
+    Args:
+        - point: (x,y)
+        - size: (width, height)
+        - speed: how fast enemy moves as integer
+        - enemy_max_hits: how many hits the enemy can take
+        - enemy_cooldown: how long the enemy waits 
+                        before a new shooting attempt
+
+    Returns:
+        EnemyService object
+    """
     return EnemyService(
         SpriteInfo(
             point,
@@ -29,6 +43,10 @@ def create_enemy_service(point: Point,
 
 
 def init_start_level_attributes():
+    """
+    Returns:
+        Starting level game attributes
+    """
     return {
         GameAttributes.LEVEL: 1,
         GameAttributes.LEVEL_STARTED: False,
@@ -40,6 +58,10 @@ def init_start_level_attributes():
 
 def set_new_level_attributes(current_level):
     """
+
+    Args:
+        current_level: game current level
+
     Returns:
         level attributes: enemy attributes of the current level
     """
@@ -64,6 +86,11 @@ def set_new_level_attributes(current_level):
 
 def init_high_score(general_statistics_service):
     """
+
+    Args:
+        general_statistics_service: GeneralStatisticsService object
+
+
     Returns:
         high_score: game all time high score
     """

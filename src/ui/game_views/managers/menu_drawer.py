@@ -3,6 +3,13 @@ from config import WHITE
 
 
 class MenuDrawer:
+    """
+    Handles rendering of text and input fields on the screen.
+
+    This class provides utility methods to draw input boxes, single text labels,
+    and multiple lines of text.
+    """
+
     def __init__(self, screen):
         self.screen = screen
         self.font = pygame.font.Font(None, 36)

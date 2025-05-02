@@ -4,13 +4,20 @@ from utils.game_helpers import update_single_field
 
 
 class EventLoop:
+    """
+    Handles the main event loop for a view with text input.
+
+    This class manages rendering, keyboard input handling (e.g., tabbing fields,
+    submitting, or updating text), and application state transitions.
+
+    Attributes:
+        view: The view instance (LoginView or CreateUserView).
+        esc_state: The AppState to return if ESC is pressed.
+    """
+
     def __init__(self, view, esc_state):
         """
-        view: any object with methods:
-            - render()
-            - handle_keydown(event)  # returns AppState or None
-            - on_submit()             # for ENTER
-            - _update_input_field(...)  # for text input
+        view: a login or create user view object
         esc_state: the AppState to return on ESC
         """
         self.view = view
