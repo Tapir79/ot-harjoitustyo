@@ -127,3 +127,11 @@ class SpriteInfo:
             Hit: The hit/health information of the sprite.
         """
         return self._hit
+
+    @property
+    def hitcount(self):
+        return self._hit.hitcount
+
+    @hitcount.setter
+    def hitcount(self, value):
+        self._hit.hitcount = value

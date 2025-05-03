@@ -5,8 +5,8 @@ from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import (
-    LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH, BULLET_HEIGHT,
-    PLAYER_BULLET_SPEED, PLAYER_COOLDOWN
+    LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH,
+    BULLET_HEIGHT, PLAYER_BULLET_SPEED, PLAYER_COOLDOWN
 )
 from level_config import (
     ENEMY_BULLET_SPEED
@@ -63,7 +63,12 @@ class ShootingService():
             return self.shoot(sprite_position, sprite_size, direction)
         return None
 
-    def shoot(self, sprite_position, sprite_size, direction="up", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
+    def shoot(self,
+              sprite_position,
+              sprite_size,
+              direction="up",
+              bullet_size=Size(BULLET_WIDTH, BULLET_HEIGHT)
+              ):
         """
         Create a new bullet.
 
@@ -79,12 +84,12 @@ class ShootingService():
         sprite_width = sprite_size.width
         sprite_height = sprite_size.height
 
-        bullet_x = sprite_x + sprite_width // 2 - bullet_width // 2
+        bullet_x = sprite_x + sprite_width // 2 - bullet_size.width // 2
         bullet_y = self._get_bullet_y(
-            direction, sprite_y, sprite_height, bullet_height)
+            direction, sprite_y, sprite_height, bullet_size.height)
 
         bullet_position = Point(bullet_x, bullet_y)
-        bullet_size = Size(bullet_width, bullet_height)
+        bullet_size = Size(bullet_size.width, bullet_size.height)
         bullet_speed = PLAYER_BULLET_SPEED if direction == "up" else ENEMY_BULLET_SPEED
         bullet_sprite_info = SpriteInfo(
             bullet_position, bullet_size, bullet_speed, Hit(0, 1)

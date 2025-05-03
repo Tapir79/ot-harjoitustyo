@@ -132,10 +132,10 @@ class BaseSpriteService:
         Returns:
             int: The updated hit count after adding one hit.
         """
-        current_hits = self._sprite_info._hit.hitcount
-        if current_hits < self._sprite_info._hit.max_hits:
-            self._sprite_info._hit.hitcount = current_hits + 1
-        return self._sprite_info._hit.hitcount
+        current_hits = self._sprite_info.hit.hitcount
+        if current_hits < self._sprite_info.hit.max_hits:
+            self._sprite_info.hit.hitcount = current_hits + 1
+        return self._sprite_info.hit.hitcount
 
     def is_dead(self):
         """
@@ -145,7 +145,7 @@ class BaseSpriteService:
         Returns:
             bool: True if dead, False otherwise.
         """
-        return self._sprite_info._hit.hitcount == self._sprite_info._hit.max_hits
+        return self._sprite_info.hit.hitcount == self._sprite_info.hit.max_hits
 
     def increase_speed(self, amount=1):
         """

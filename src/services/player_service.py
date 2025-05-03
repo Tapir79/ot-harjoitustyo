@@ -1,9 +1,9 @@
 from models.hit import Hit
 from models.point import Point
 from models.size import Size
+from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
 from services.shooting_service import ShootingService
-from models.sprite_info import SpriteInfo
 from config import PLAYER_COOLDOWN, PLAYER_MAX_HITS, PLAYER_SPEED
 
 
