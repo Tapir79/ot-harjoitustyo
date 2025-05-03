@@ -1,6 +1,5 @@
 from services.base_sprite_service import BaseSpriteService
 from services.shooting_service import ShootingService
-from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
 from config import PLAYER_COOLDOWN
 
