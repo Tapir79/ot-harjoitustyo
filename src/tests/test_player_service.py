@@ -144,6 +144,11 @@ class TestPlayer(unittest.TestCase):
         is_dead = self.player_service.is_dead
         self.assertEqual(is_dead, True)
 
+    def test_player_is_dead_if_hitcount_3(self):
+        self.player_service._sprite._sprite_info.hitcount = 3
+        is_dead = self.player_service.is_dead
+        self.assertEqual(is_dead, True)
+
     def test_player_is_dead_with_3_hits(self):
         hits_count = add_player_hits(4, self.player_service)
         self.assertEqual(hits_count, 3)
@@ -153,5 +158,20 @@ class TestPlayer(unittest.TestCase):
         actual_points = self.player_service.points
         expected_points = 10
         self.assertEqual(actual_points, expected_points)
+
+    def test_create_player(self):
+        point = Point(1, 2)
+        size = Size(200, 400)
+        speed = 1
+        enemy_max_hits = 2
+        player_service = PlayerService.create(point,
+                                              size,
+                                              speed,
+                                              enemy_max_hits)
+
+        self.assertEqual(player_service._sprite.hitcount, 0)
+        self.assertEqual(player_service._sprite._sprite_info.hitcount, 0)
+        self.assertEqual(player_service.is_dead, False)
+        self.assertEqual(player_service.size.height, size.height)
 
     # collisions don't need tests because they are handled by pygame

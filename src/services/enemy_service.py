@@ -1,8 +1,5 @@
-from models.hit import Hit
-from models.point import Point
-from models.size import Size
-from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
+from services.service_helpers import create_sprite_info
 from services.shooting_service import ShootingService
 from config import (
     LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY
@@ -54,8 +51,8 @@ class EnemyService():
 
     @staticmethod
     def create(
-            point: Point,
-            size: Size,
+            point,
+            size,
             speed,
             enemy_max_hits,
             enemy_cooldown):
@@ -75,15 +72,15 @@ class EnemyService():
             EnemyService object
         """
         return EnemyService(
-            SpriteInfo(
+            create_sprite_info(
                 point,
                 size,
                 speed,
-                Hit(0, enemy_max_hits)),
+                enemy_max_hits),
             cooldown=enemy_cooldown)
 
     def add_hit(self):
-        self._sprite.add_hit()
+        return self._sprite.add_hit()
 
     def try_shoot(self):
         return self._shooter.try_shoot(self._sprite.position, self._sprite.size, direction="down")

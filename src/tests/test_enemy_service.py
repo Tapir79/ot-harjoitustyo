@@ -97,6 +97,20 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(self.enemy_service._sprite.y,
                          LOWER_BOUNDARY - height)
 
+    def test_enemy_tries_shooting_after_cooldown(self):
+        self.enemy_service._shooter.last_shot = 0
+        can_shoot = self.enemy_service.can_shoot()
+        self.assertEqual(can_shoot, True)
+
+    def test_enemy_is_dead_if_one_hit(self):
+        self.enemy_service.add_hit()
+        is_dead = self.enemy_service.is_dead
+        self.assertEqual(is_dead, True)
+
+    def test_enemy_is_dead_with_2_hits(self):
+        hits_count = self.enemy_service.add_hit()
+        self.assertEqual(hits_count, 1)
+
     def test_enemy_service_creation(self):
         point = Point(1, 2)
         size = Size(200, 400)
@@ -112,5 +126,6 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(enemy_service._shooter.cooldown, enemy_cooldown)
         self.assertEqual(enemy_service._sprite.hitcount, 0)
         self.assertEqual(enemy_service.is_dead, False)
+        self.assertEqual(enemy_service.size.width, size.width)
 
      # collisions don't need tests because they are handled by pygame
