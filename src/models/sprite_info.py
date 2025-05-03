@@ -127,25 +127,3 @@ class SpriteInfo:
             Hit: The hit/health information of the sprite.
         """
         return self._hit
-
-    def add_hit(self):
-        """
-        Modifies internal health state by one.
-
-        Returns:
-            int: The updated hit count after adding one hit.
-        """
-        current_hits = self._hit.hitcount
-        if current_hits < self._hit.max_hits:
-            self._hit.hitcount = current_hits + 1
-        return self._hit.hitcount
-
-    def is_dead(self):
-        """
-        Queries internal health state. 
-        If all health is depleted the player is dead.
-
-        Returns:
-            bool: True if dead, False otherwise.
-        """
-        return self._hit.hitcount == self._hit.max_hits

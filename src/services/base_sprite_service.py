@@ -75,7 +75,6 @@ class BaseSpriteService:
         """
         return self._sprite_info.size
 
-
     @property
     def width(self):
         """
@@ -108,16 +107,6 @@ class BaseSpriteService:
         """
         return self._sprite_info.hit.max_hits
 
-
-
-    @property
-    def is_dead(self):
-        """
-        Returns:
-            bool: Whether the sprite has reached its max hits and is considered dead.
-        """
-        return self._sprite_info.is_dead()
-
     @property
     def speed(self):
         """
@@ -141,9 +130,22 @@ class BaseSpriteService:
         Increase the sprite's hit count by one, if not already at max.
 
         Returns:
-            int: The updated hit count.
+            int: The updated hit count after adding one hit.
         """
-        return self._sprite_info.add_hit()
+        current_hits = self._sprite_info._hit.hitcount
+        if current_hits < self._sprite_info._hit.max_hits:
+            self._sprite_info._hit.hitcount = current_hits + 1
+        return self._sprite_info._hit.hitcount
+
+    def is_dead(self):
+        """
+        Queries internal health state. 
+        If all health is depleted the player is dead.
+
+        Returns:
+            bool: True if dead, False otherwise.
+        """
+        return self._sprite_info._hit.hitcount == self._sprite_info._hit.max_hits
 
     def increase_speed(self, amount=1):
         """

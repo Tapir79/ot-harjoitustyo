@@ -21,7 +21,7 @@ from ui.game_views.game.init import (create_player,
                                      init_game_groups,
                                      init_game_info,
                                      init_ui_images)
-from utils.game_helpers import (create_enemy_service, 
+from utils.game_helpers import (create_enemy_service,
                                 get_buffered_size,
                                 get_game_over_initialization_data,
                                 init_high_score,
@@ -238,7 +238,7 @@ class Game:
             explosion = self.drawer.get_hit_animation(position, size)
             self.game_groups[GameAttributes.HITS].add(explosion)
 
-            if self.player.player_service.is_dead:
+            if self.player.is_dead():
                 self.player.kill()
 
     def check_player_and_enemy_bullet_collisions(self):
@@ -256,7 +256,7 @@ class Game:
             explosion = self.drawer.get_hit_animation(position, size)
             self.game_groups[GameAttributes.HITS].add(explosion)
 
-            if self.player.player_service.is_dead:
+            if self.player.is_dead():
                 self.player.kill()
 
     def check_enemy_and_player_bullet_collisions(self):
@@ -290,7 +290,7 @@ class Game:
         the class enemy group. Also, increase player points.
         """
         enemy.enemy_service.add_hit()
-        if enemy.enemy_service.is_dead:
+        if enemy.enemy_service.is_dead():
             self.increase_player_points()
             enemy.remove(self.game_groups[GameAttributes.ENEMIES])
 
@@ -319,7 +319,7 @@ class Game:
             for enemy_bullet, player_bullet in collisions.items():
                 position = enemy_bullet.rect.center
                 buffered_size = get_buffered_size(enemy_bullet.bullet.size,
-                    10)
+                                                  10)
                 explosion = self.drawer.get_hit_animation(
                     position, buffered_size)
                 self.increase_player_points(BULLET_POINTS_COEFFICIENT)

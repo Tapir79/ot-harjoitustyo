@@ -130,6 +130,8 @@ Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavi
 classDiagram
     class BaseSpriteService {
         +sprite_info: SpriteInfo
+        +add_hit()
+        +is_dead()  
         +increase_speed(amount:int)
         +decrease_speed(amount:int)
     }
@@ -159,8 +161,6 @@ classDiagram
         +position:Point
         +hit: Hit
         +speed: int   
-        +add_hit()
-        +is_dead()  
     }
 
     class Size{

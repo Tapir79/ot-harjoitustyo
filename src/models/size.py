@@ -29,5 +29,3 @@ class Size:
             int: The height of the object.
         """
         return self._height
-
-    

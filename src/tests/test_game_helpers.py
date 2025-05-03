@@ -230,4 +230,4 @@ class TestGameHelpers(unittest.TestCase):
 
         self.assertEqual(enemy_service.cooldown, enemy_cooldown)
         self.assertEqual(enemy_service.hitcount, 0)
-        self.assertEqual(enemy_service.is_dead, False)
+        self.assertEqual(enemy_service.is_dead(), False)

@@ -34,14 +34,14 @@ class PlayerService():
     @property
     def height(self):
         return self._sprite.height
-    
+
     @property
     def size(self):
         return self._sprite.size
 
     @property
     def is_dead(self):
-        return self._sprite.is_dead
+        return self._sprite.is_dead()
 
     @property
     def position(self):
