@@ -5,6 +5,7 @@ from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import UPPER_BOUNDARY, LOWER_BOUNDARY
+from utils.game_helpers import get_buffered_size
 
 
 def create_bullet_service(y=500, direction="up", speed=5):
@@ -69,7 +70,7 @@ class TestBulletService(unittest.TestCase):
 
     def test_bullet_size_buffer_works_correctly(self):
         bullet = create_bullet_service(y=10, direction="down")
-        buffered_size = bullet.get_buffered_size(10)
+        buffered_size = get_buffered_size(bullet._sprite.size, 10)
         self.assertEqual(buffered_size.height, 30)
 
     def test_setattr_sprite_info_attribute(self):

@@ -5,7 +5,8 @@ from config import ASSETS_DIR, BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVE
 from models.point import Point
 from models.size import Size
 from ui.animations.animation import AnimationSprite
-from utils.game_helpers import (get_ending_points,
+from utils.game_helpers import (get_buffered_size, 
+                                get_ending_points,
                                 get_player_lives,
                                 get_random_positions_around_center_point)
 
@@ -159,13 +160,13 @@ class GameDrawer():
         center_x, center_y = position
         positions = get_random_positions_around_center_point(
             Point(center_x, center_y), Size(self.display_width, self.display_height))
-        size = self.game.player.player_service.size
-        player_size = self.game.player.player_service.get_buffered_size(20)
-        explosion = self.get_player_hit_animation(position, player_size)
+        player_size = self.game.player.player_service.size
+        buffered_size = get_buffered_size(player_size, 20)
+        explosion = self.get_player_hit_animation(position, buffered_size)
         self.play_animation_once(explosion)
 
         for pos in positions:
-            explosion = self.get_hit_animation(pos, size)
+            explosion = self.get_hit_animation(pos, player_size)
             self.play_animation_once(explosion)
             self.wait(5)
 

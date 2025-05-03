@@ -75,17 +75,6 @@ class BaseSpriteService:
         """
         return self._sprite_info.size
 
-    def get_buffered_size(self, buffer):
-        """
-        Get the sprite's size expanded by a given buffer on all sides.
-
-        Args:
-            buffer (int): Amount of padding to add.
-
-        Returns:
-            Size: A new size with the buffer applied.
-        """
-        return self._sprite_info.size.get_buffered_size(buffer)
 
     @property
     def width(self):
@@ -119,14 +108,7 @@ class BaseSpriteService:
         """
         return self._sprite_info.hit.max_hits
 
-    def add_hit(self):
-        """
-        Increase the sprite's hit count by one, if not already at max.
 
-        Returns:
-            int: The updated hit count.
-        """
-        return self._sprite_info.add_hit()
 
     @property
     def is_dead(self):
@@ -153,6 +135,15 @@ class BaseSpriteService:
             value: The new speed value.
         """
         self._sprite_info.speed = value
+
+    def add_hit(self):
+        """
+        Increase the sprite's hit count by one, if not already at max.
+
+        Returns:
+            int: The updated hit count.
+        """
+        return self._sprite_info.add_hit()
 
     def increase_speed(self, amount=1):
         """

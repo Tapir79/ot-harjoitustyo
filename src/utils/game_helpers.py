@@ -350,3 +350,32 @@ def get_random_y(center_y, y_offset, screen_height):
     down_y = min(screen_height, down_max)
 
     return random.randint(up_y, down_y)
+
+def get_buffered_size(size:Size, buffer):
+        """
+        Returns a new Size with a buffer added to all sides.
+
+        If buffer is 1:
+
+        width = 3,
+        height = 2
+        [o,o,o]
+        [o,o,o]
+
+        Area increases by 1 in all directions (buffer marked by x)
+        new_width = 5 
+        new_height = 4
+        [x,x,x,x,x]
+        [x,o,o,o,x]
+        [x,o,o,o,x]
+        [x,x,x,x,x]
+
+        Args:
+            buffer (int): The number of units to add to all sides.
+
+        Returns:
+            Size: A new Size object with increased width and height.
+        """
+        new_width = size.width + buffer * 2
+        print("new_width:",new_width)
+        return Size(size.width + buffer * 2, size.height + buffer * 2)

@@ -21,9 +21,9 @@ from ui.game_views.game.init import (create_player,
                                      init_game_groups,
                                      init_game_info,
                                      init_ui_images)
-from utils.game_helpers import (create_enemy_service,
+from utils.game_helpers import (create_enemy_service, 
+                                get_buffered_size,
                                 get_game_over_initialization_data,
-                                get_random_positions_around_center_point,
                                 init_high_score,
                                 init_start_level_attributes,
                                 set_new_level_attributes)
@@ -318,7 +318,7 @@ class Game:
         if collisions:
             for enemy_bullet, player_bullet in collisions.items():
                 position = enemy_bullet.rect.center
-                buffered_size = enemy_bullet.bullet.get_buffered_size(
+                buffered_size = get_buffered_size(enemy_bullet.bullet.size,
                     10)
                 explosion = self.drawer.get_hit_animation(
                     position, buffered_size)

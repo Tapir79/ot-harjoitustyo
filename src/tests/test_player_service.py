@@ -34,8 +34,14 @@ def get_expected_bullet(player_service):
 
 def add_player_hits(n, player_service):
     for i in range(0, n):
-        hits_count = player_service.add_hit()
+        hits_count = player_service._sprite.add_hit()
     return hits_count
+
+
+def get_position_and_size(player_service):
+    pos = player_service._sprite.position
+    size = player_service._sprite.size
+    return pos, size
 
 
 class TestPlayer(unittest.TestCase):
@@ -48,58 +54,61 @@ class TestPlayer(unittest.TestCase):
         self.expected_bullet = get_expected_bullet(self.player_service)
 
     def test_shoot_creates_new_bullet_with_correct_direction(self):
-        bullet = self.player_service.shoot()
+        pos, size = get_position_and_size(self.player_service)
+        bullet = self.player_service._shooter.shoot(pos, size)
         self.assertEqual(bullet.direction, self.expected_bullet.direction,
                          "Expected a bullet direction up")
 
     def test_shoot_creates_new_bullet_with_correct_speed(self):
-        bullet = self.player_service.shoot()
+        pos, size = get_position_and_size(self.player_service)
+        bullet = self.player_service._shooter.shoot(pos, size)
         self.assertEqual(bullet.speed, self.expected_bullet.speed,
                          "Expected a bullet speed 5")
 
     def test_shoot_creates_new_bullet_with_correct_height(self):
-        bullet = self.player_service.shoot()
+        pos, size = get_position_and_size(self.player_service)
+        bullet = self.player_service._shooter.shoot(pos, size)
         actual_height = bullet.size.height
         self.assertEqual(actual_height, self.expected_bullet.height,
                          "Expected a bullet height 20")
 
     def test_player_moves_left(self):
         self.player_service.move('a')
-        self.assertEqual(self.player_service.x,
+        self.assertEqual(self.player_service._sprite.x,
                          0, "Player should move left")
 
     def test_player_cannot_move_out_of_bounds_to_left(self):
-        self.player_service.speed = 10
+        self.player_service._sprite.speed = 10
         self.player_service.move('a')
-        self.assertEqual(self.player_service.x, 0,
+        self.assertEqual(self.player_service._sprite.x, 0,
                          "Player should not move out of bounds to left")
 
     def test_player_moves_right(self):
         self.player_service.move('d')
-        self.assertEqual(self.player_service.x,
+        self.assertEqual(self.player_service._sprite.x,
                          10, "Player should move right")
 
     def test_player_cannot_move_out_of_bounds_to_right(self):
-        self.player_service.speed = RIGHT_BOUNDARY + 1
+        self.player_service._sprite.speed = RIGHT_BOUNDARY + 1
         self.player_service.move('d')
-        max_x = RIGHT_BOUNDARY - self.player_service.width
-        self.assertEqual(self.player_service.x, max_x,
+        max_x = RIGHT_BOUNDARY - self.player_service._sprite.width
+        self.assertEqual(self.player_service._sprite.x, max_x,
                          "Player should not move out of bounds to right")
 
     def test_invalid_key_does_nothing(self):
-        player_pos_x = self.player_service.x
+        player_pos_x = self.player_service._sprite.x
         self.player_service.move('w')
-        self.assertEqual(self.player_service.x, player_pos_x,
+        self.assertEqual(self.player_service._sprite.x, player_pos_x,
                          "Player position should not change if a or d is not pressed")
 
     def test_player_speed_increases(self):
-        self.player_service.increase_speed(2)
-        self.assertEqual(self.player_service.speed, 7,
+        self.player_service._sprite.increase_speed(2)
+        self.assertEqual(self.player_service._sprite.speed, 7,
                          "Player speed should increase")
 
     def test_player_speed_decreases(self):
-        self.player_service.decrease_speed(2)
-        self.assertEqual(self.player_service.speed, 3,
+        self.player_service._sprite.decrease_speed(2)
+        self.assertEqual(self.player_service._sprite.speed, 3,
                          "Player speed should decrease")
 
     def test_last_shot_time_increases_after_shooting_attempt(self):
@@ -111,12 +120,12 @@ class TestPlayer(unittest.TestCase):
         self.assertIsNotNone(bullet)
 
     def test_shooting_in_cooldown(self):
-        self.player_service.last_shot = time.time()
+        self.player_service._shooter.last_shot = time.time()
         bullet = self.player_service.try_shoot()
         self.assertIsNone(bullet)
 
     def test_player_tries_shooting_after_cooldown(self):
-        self.player_service.last_shot = 0
+        self.player_service._shooter.last_shot = 0
         can_shoot = self.player_service.can_shoot()
         self.assertEqual(can_shoot, True)
 
@@ -126,7 +135,7 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(can_shoot, False)
 
     def test_player_is_not_dead_if_one_hit(self):
-        self.player_service.add_hit()
+        self.player_service._sprite.add_hit()
         is_dead = self.player_service.is_dead
         self.assertEqual(is_dead, False)
 

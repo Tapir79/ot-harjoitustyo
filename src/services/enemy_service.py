@@ -36,7 +36,6 @@ class EnemyService():
         else:
             setattr(self._shooter, name, value)
 
-
     def shoot(self, direction="down", bullet_width=BULLET_WIDTH, bullet_height=BULLET_HEIGHT):
         """
         Shoot a bullet in the given direction.

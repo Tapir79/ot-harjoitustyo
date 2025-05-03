@@ -1,3 +1,5 @@
+from services.base_sprite_service import BaseSpriteService
+from services.shooting_service import ShootingService
 from services.shooting_sprite_service import ShootingSpriteService
 from models.sprite_info import SpriteInfo
 from config import PLAYER_COOLDOWN
@@ -21,17 +23,43 @@ class PlayerService():
             cooldown (float): The cooldown time between player shots.
             points (int, optional): The initial points of the player. Defaults to 0.
         """
-        self._shooter = ShootingSpriteService(sprite_info, cooldown=cooldown)
+        self._sprite = BaseSpriteService(sprite_info)
+        self._shooter = ShootingService(cooldown=cooldown)
         self.points = points
 
-    def __getattr__(self, name):
-        return getattr(self._shooter, name)
+    @property
+    def width(self):
+        return self._sprite.width
 
-    def __setattr__(self, name, value):
-        if name in {"_shooter", "points"}:
-            super().__setattr__(name, value)
-        else:
-            setattr(self._shooter, name, value)
+    @property
+    def height(self):
+        return self._sprite.height
+    
+    @property
+    def size(self):
+        return self._sprite.size
+
+    @property
+    def is_dead(self):
+        return self._sprite.is_dead
+
+    @property
+    def position(self):
+        return self._sprite.position
+
+    @property
+    def hitcount(self):
+        return self._sprite.hitcount
+
+    @property
+    def max_hits(self):
+        return self._sprite.max_hits
+
+    def add_hit(self):
+        self._sprite.add_hit()
+
+    def try_shoot(self):
+        return self._shooter.try_shoot(self._sprite.position, self._sprite.size, direction="up")
 
     def can_shoot(self):
         return self._shooter.can_shoot()
@@ -46,21 +74,20 @@ class PlayerService():
         Returns:
             int: The updated x-coordinate after movement.
         """
-        local_x = self._shooter.x
-        width = self.width
+        local_x = self._sprite.x
+        width = self._sprite.width
 
         if key == "a":
             new_x = max(self._shooter.left_boundary,
-                        local_x - self._shooter.speed)
+                        local_x - self._sprite.speed)
         elif key == "d":
             new_x = min(self._shooter.right_boundary -
-                        width, local_x + self._shooter.speed)
+                        width, local_x + self._sprite.speed)
         else:
-            new_x = local_x
+            return self._sprite.x
 
-        self._shooter.x = new_x
+        self._sprite.x = new_x
         return new_x
-
 
     def add_points(self, value: int):
         """

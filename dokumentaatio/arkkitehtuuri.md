@@ -166,7 +166,6 @@ classDiagram
     class Size{
         +width:int
         +height:int
-        +get_buffered_size(buffer):Size
     }
 
     class  Point{
