@@ -11,9 +11,9 @@ from level_config import (
 
 class EnemyService():
     """
-    Controls enemy behavior such as movement, direction changes, and shooting.
+    Control enemy behavior such as movement, direction changes, and shooting.
 
-    Gets basic sprite behavior from ShootingSpriteService and adds logic
+    Get basic sprite behavior from ShootingSpriteService and adds logic
     specific to enemy movement patterns and boundary handling.
     """
 

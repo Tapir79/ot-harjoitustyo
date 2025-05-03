@@ -12,8 +12,8 @@ class Hit:
         Initialize the Hit object.
 
         Args:
-            hitcount (int): The current number of hits the sprite has taken.
-            max_hits (int): The maximum number of hits the sprite can take.
+            hitcount: The current number of hits the sprite has taken.
+            max_hits: The maximum number of hits the sprite can take.
         """
         self._hitcount = hitcount
         self._max_hits = max_hits
@@ -32,7 +32,7 @@ class Hit:
         Set the current number of hits.
 
         Args:
-            value (int): The new hit count.
+            value: The new hit count.
         """
         self._hitcount = value
 

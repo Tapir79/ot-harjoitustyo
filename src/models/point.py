@@ -18,7 +18,7 @@ class Point:
     def x(self):
         """
         Returns:
-            int or float: The current x-coordinate of the point.
+            x: The current x-coordinate of the point.
         """
         return self._x
 
@@ -28,7 +28,7 @@ class Point:
         Set a new x-coordinate.
 
         Args:
-            value (int or float): The new x value.
+            value: The new x value.
         """
         self._x = value
 
@@ -36,7 +36,7 @@ class Point:
     def y(self):
         """
         Returns:
-            int or float: The current y-coordinate of the point.
+            y: The current y-coordinate of the point.
         """
         return self._y
 
@@ -46,7 +46,7 @@ class Point:
         Set a new y-coordinate.
 
         Args:
-            value (int or float): The new y value.
+            value: The new y value.
         """
         self._y = value
 

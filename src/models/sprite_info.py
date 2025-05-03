@@ -12,10 +12,10 @@ class SpriteInfo:
     response, should be handled in service classes.
 
     Attributes:
-        position (Point): The (x, y) coordinates of the sprite.
-        size (Size): The width and height of the sprite.
-        speed (int): The movement speed of the sprite.
-        hit (Hit): Health data that tracks how many times the sprite has been hit 
+        position: The (x, y) coordinates of the sprite.
+        size: The width and height of the sprite.
+        speed: The movement speed of the sprite.
+        hit: Health data that tracks how many times the sprite has been hit 
                    and the max hits allowed.
     """
 
@@ -24,10 +24,10 @@ class SpriteInfo:
         Initialize the SpriteInfo object.
 
         Args:
-            position (Point): The initial position of the sprite.
-            size (Size): The dimensions of the sprite.
-            speed (int): The movement speed of the sprite.
-            hit (Hit): The hit/health information for the sprite.
+            position: The initial Point position of the sprite.
+            size: The Size dimensions of the sprite.
+            speed: The movement speed of the sprite.
+            hit: The hit/health object of the sprite.
         """
         self._position = position
         self._size = size
@@ -46,7 +46,7 @@ class SpriteInfo:
     def x(self):
         """
         Returns:
-            int: The x-coordinate of the sprite.
+            x: The x-coordinate of the sprite.
         """
         return self._position.x
 
@@ -56,7 +56,7 @@ class SpriteInfo:
         Sets a new x-coordinate.
 
         Args:
-            value (int): The new x-coordinate.
+            value: The new x-coordinate.
         """
         self._position.x = value
 
@@ -64,7 +64,7 @@ class SpriteInfo:
     def y(self):
         """
         Returns:
-            int: The y-coordinate of the sprite.
+            y: The y-coordinate of the sprite.
         """
         return self._position.y
 
@@ -74,7 +74,7 @@ class SpriteInfo:
         Sets a new y-coordinate.
 
         Args:
-            value (int): The new y-coordinate.
+            value: The new y-coordinate.
         """
         self._position.y = value
 
@@ -90,7 +90,7 @@ class SpriteInfo:
     def width(self):
         """
         Returns:
-            int: The width of the sprite.
+            width: The width of the sprite.
         """
         return self._size.width
 
@@ -98,7 +98,7 @@ class SpriteInfo:
     def height(self):
         """
         Returns:
-            int: The height of the sprite.
+            height: The height of the sprite.
         """
         return self._size.height
 
@@ -106,7 +106,7 @@ class SpriteInfo:
     def speed(self):
         """
         Returns:
-            int: The current movement speed of the sprite.
+            speed: The current movement speed of the sprite.
         """
         return self._speed
 
@@ -116,7 +116,7 @@ class SpriteInfo:
         Sets a new speed value for the sprite.
 
         Args:
-            value (int): The new speed.
+            speed: The new speed.
         """
         self._speed = value
 
@@ -124,14 +124,24 @@ class SpriteInfo:
     def hit(self):
         """
         Returns:
-            Hit: The hit/health information of the sprite.
+            Hit: The hit information of the sprite.
         """
         return self._hit
 
     @property
     def hitcount(self):
+        """
+        Returns:
+            Hitcount: How many hits the sprite can take.
+        """
         return self._hit.hitcount
 
     @hitcount.setter
     def hitcount(self, value):
+        """
+        Set new hitcount of the sprite.
+
+        Args:
+            value: The new hitcount.
+        """
         self._hit.hitcount = value

@@ -8,8 +8,8 @@ class Size:
         Initialize the Size with a given width and height.
 
         Args:
-            width (int): The width of the object.
-            height (int): The height of the object.
+            width: The width of the object.
+            height: The height of the object.
         """
         self._width = width
         self._height = height
@@ -18,7 +18,7 @@ class Size:
     def width(self):
         """
         Returns:
-            int: The width of the object.
+            width: The width of the object.
         """
         return self._width
 
@@ -26,6 +26,6 @@ class Size:
     def height(self):
         """
         Returns:
-            int: The height of the object.
+            height: The height of the object.
         """
         return self._height

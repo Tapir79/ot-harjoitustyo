@@ -66,7 +66,7 @@ class PlayerService():
         compared to the constructor.
 
         Args:
-            - point: (x,y)
+            - point: Point(x,y)
             - size: (width, height)
             - speed: how fast enemy moves as integer
             - player_max_hits: how many hits the enemy can take
