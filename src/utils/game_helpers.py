@@ -6,40 +6,9 @@ from app_enums import GameAttributes, LevelAttributes
 from config import BRONZE, GOLD, PROJECT_ROOT, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
-from models.hit import Hit
 from models.point import Point
 from models.size import Size
-from models.sprite_info import SpriteInfo
-from services.enemy_service import EnemyService
 from services.player_service import PlayerService
-
-
-def create_enemy_service(point: Point,
-                         size: Size,
-                         speed,
-                         enemy_max_hits,
-                         enemy_cooldown):
-    """
-    Creates EnemyService object.
-
-    Args:
-        - point: (x,y)
-        - size: (width, height)
-        - speed: how fast enemy moves as integer
-        - enemy_max_hits: how many hits the enemy can take
-        - enemy_cooldown: how long the enemy waits 
-                        before a new shooting attempt
-
-    Returns:
-        EnemyService object
-    """
-    return EnemyService(
-        SpriteInfo(
-            point,
-            size,
-            speed,
-            Hit(0, enemy_max_hits)),
-        cooldown=enemy_cooldown)
 
 
 def init_start_level_attributes():

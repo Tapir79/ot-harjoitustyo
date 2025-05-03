@@ -11,6 +11,7 @@ from models.size import Size
 from repositories.general_statistics_repository import GeneralStatisticsRepository
 from repositories.user_repository import UserRepository
 from repositories.user_statistics_repository import UserStatisticsRepository
+from services.enemy_service import EnemyService
 from services.general_statistics_service import GeneralStatisticsService
 from services.user_service import UserService
 from services.user_statistics_service import UserStatisticsService
@@ -21,8 +22,7 @@ from ui.game_views.game.init import (create_player,
                                      init_game_groups,
                                      init_game_info,
                                      init_ui_images)
-from utils.game_helpers import (create_enemy_service,
-                                get_buffered_size,
+from utils.game_helpers import (get_buffered_size,
                                 get_game_over_initialization_data,
                                 init_high_score,
                                 init_start_level_attributes,
@@ -186,12 +186,12 @@ class Game:
         enemy_max_hits = self.enemy_attributes[GameAttributes.MAX_HITS]
         enemy_cooldown = self.enemy_attributes[GameAttributes.COOLDOWN]
 
-        return create_enemy_service(Point(x, y),
-                                    Size(enemy_width,
-                                    enemy_height),
-                                    speed,
-                                    enemy_max_hits,
-                                    enemy_cooldown)
+        return EnemyService.create(Point(x, y),
+                                   Size(enemy_width,
+                                        enemy_height),
+                                   speed,
+                                   enemy_max_hits,
+                                   enemy_cooldown)
 
     def new_level_reset(self):
         """

@@ -1,3 +1,7 @@
+from models.hit import Hit
+from models.point import Point
+from models.size import Size
+from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
 from services.shooting_service import ShootingService
 from config import (
@@ -47,6 +51,36 @@ class EnemyService():
     @property
     def is_dead(self):
         return self._sprite.is_dead()
+
+    @staticmethod
+    def create(
+            point: Point,
+            size: Size,
+            speed,
+            enemy_max_hits,
+            enemy_cooldown):
+        """
+        Creates EnemyService object. Simplifies the creation
+        compared to the constructor.
+
+        Args:
+            - point: (x,y)
+            - size: (width, height)
+            - speed: how fast enemy moves as integer
+            - enemy_max_hits: how many hits the enemy can take
+            - enemy_cooldown: how long the enemy waits 
+                            before a new shooting attempt
+
+        Returns:
+            EnemyService object
+        """
+        return EnemyService(
+            SpriteInfo(
+                point,
+                size,
+                speed,
+                Hit(0, enemy_max_hits)),
+            cooldown=enemy_cooldown)
 
     def add_hit(self):
         self._sprite.add_hit()
