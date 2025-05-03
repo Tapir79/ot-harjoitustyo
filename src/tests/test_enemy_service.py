@@ -18,7 +18,7 @@ class TestEnemy(unittest.TestCase):
         self.enemy_service = EnemyService(sprite_info=self.sprite_info)
 
     def test_enemy_shoot_creates_new_bullet(self):
-        bullet = self.enemy_service.shoot()
+        bullet = self.enemy_service.try_shoot()
 
         bullet_width = 5
         bullet_height = 10
@@ -56,14 +56,14 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(new_dir, "left")
 
     def test_enemy_moves_down_if_hits_right_wall(self):
-        self.enemy_service.x = RIGHT_BOUNDARY + 1
+        self.enemy_service._sprite.x = RIGHT_BOUNDARY + 1
         self.enemy_service.move()
         new_x, new_y = self.enemy_service.position
         self.assertEqual(new_x, RIGHT_BOUNDARY - 10)
         self.assertEqual(new_y, 15)
 
     def test_enemy_moves_down_if_hits_left_wall(self):
-        self.enemy_service.x = LEFT_BOUNDARY - 1
+        self.enemy_service._sprite.x = LEFT_BOUNDARY - 1
         self.enemy_service.direction = "left"
         self.enemy_service.move()
         new_x, new_y = self.enemy_service.position
@@ -71,30 +71,30 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(new_y, 15)
 
     def test_enemy_changes_direction_if_hits_right_wall(self):
-        self.enemy_service.x = RIGHT_BOUNDARY + 1
+        self.enemy_service._sprite.x = RIGHT_BOUNDARY + 1
         self.enemy_service.direction = "right"
         self.enemy_service.move()
         new_dir = self.enemy_service.direction
         self.assertEqual(new_dir, "left")
 
     def test_enemy_changes_direction_if_hits_left_wall(self):
-        self.enemy_service.x = LEFT_BOUNDARY - 1
+        self.enemy_service._sprite.x = LEFT_BOUNDARY - 1
         self.enemy_service.direction = "left"
         self.enemy_service.move()
         new_dir = self.enemy_service.direction
         self.assertEqual(new_dir, "right")
 
     def test_enemy_speed_increases_if_hits_right_wall(self):
-        self.enemy_service.x = RIGHT_BOUNDARY + 1
+        self.enemy_service._sprite.x = RIGHT_BOUNDARY + 1
         self.enemy_service.move()
-        new_speed = self.enemy_service.speed
+        new_speed = self.enemy_service._sprite.speed
         self.assertEqual(new_speed, 2)
 
     def test_enemy_stops_moving_if_touched_bottom(self):
         height = self.enemy_service.height
-        self.enemy_service.y = LOWER_BOUNDARY - height + 5
+        self.enemy_service._sprite.y = LOWER_BOUNDARY - height + 5
         self.enemy_service.move()
-        self.assertEqual(self.enemy_service.y,
+        self.assertEqual(self.enemy_service._sprite.y,
                          LOWER_BOUNDARY - height)
 
      # collisions don't need tests because they are handled by pygame

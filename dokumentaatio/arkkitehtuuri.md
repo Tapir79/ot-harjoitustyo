@@ -17,7 +17,7 @@ graph TD
 - ui-pakkaus sisältää käyttöliittymän eli pygame-osuuden 
 - services-pakkaus sisältää pelilogiikan
 - models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
-- utils-pakkaus sisältää nyt UI:sta erotettuja apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
+- utils-pakkaus sisältää nyt UI:sta erotettuja yksinkertaisia ja itsenäisiä apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
 - entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
 
@@ -36,17 +36,8 @@ flowchart TD
 ```
 ---
 
-Käyttäjähallintanäkymät:
-
-Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimerkiksi injektoidaan sessio, jonka kautta ne kaikki näkevät peliin kirjautuneen käyttäjän ja käyttäjien tilastoja. Lisäksi näkymät jakavat yhteisen piirtäjän, joka huolehtii kaikille yhteisistä ruudunpäivityksistä. Login- ja CreateUserView-näkymillä on lisäksi yhteinen EventLoop, joka huolehtii luokkien pääsilmukan tapahtumien kuuntelusta.
-
-
-```mermaid 
- classDiagram
-
-    class MenuDrawer
-    class SessionManager
-    class EventLoop
+```mermaid
+classDiagram
 
     class CreateUserView {
         +user
@@ -76,22 +67,57 @@ Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimer
         +render()
         +choose_option()
     }
+```
 
-    %% Composition (providers at the top)
-    MenuDrawer <.. CreateUserView
-    MenuDrawer <.. LoginView
-    MenuDrawer <.. StartScreenView
+### Käyttäjähallintanäkymät:
 
-    SessionManager <.. CreateUserView
-    SessionManager <.. LoginView
-    SessionManager <.. StartScreenView
+Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimerkiksi injektoidaan sessio, jonka kautta ne kaikki näkevät peliin kirjautuneen käyttäjän ja käyttäjien tilastoja. 
 
-    EventLoop <.. CreateUserView
-    EventLoop <.. LoginView
+```mermaid 
+ classDiagram
+
+    class SessionManager
+
+
+
+    SessionManager <-- CreateUserView
+    SessionManager <-- LoginView
+    SessionManager <-- StartScreenView
+
+
+```
+---
+
+Näkymät jakavat yhteisen piirtäjän, joka huolehtii kaikille yhteisistä ruudunpäivityksistä. 
+```mermaid 
+ classDiagram
+
+    class MenuDrawer
+
+    MenuDrawer <-- CreateUserView
+    MenuDrawer <-- LoginView
+    MenuDrawer <-- StartScreenView
 
 ```
 
-Peli:
+
+---
+Login- ja CreateUserView-näkymillä on lisäksi yhteinen EventLoop, joka huolehtii luokkien pääsilmukan tapahtumien kuuntelusta.
+```mermaid 
+ classDiagram
+
+    class EventLoop
+
+
+    EventLoop <-- CreateUserView
+    EventLoop <-- LoginView
+
+```
+---
+
+
+
+## Peli:
 
 Peli sijaitsee omassa kansiossaan ja se käynnistetään StartScreenView-luokasta. 
 Pelillä on oma piirtäjänsä, koska sen logiikka eroaa oleellisesti muista UI-näkymistä. Lisäksi sillä on oma initialisointiluokka, jotta peliluokasta ei tulisi liian suuri. 
@@ -122,7 +148,7 @@ Init <.. Game
 
 ## Sovelluslogiikka 
 
-ShootingSpriteService ja bulletservice toimivat yhdessä base_sprite_service-luokan kanssa. Lisäksi player- ja enemyservice-luokkiin injektoidaan shootingSpriteService. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. ShootingSpriteService-luokassa on player- ja enemyservicelle yhteisiä ominaisuuksia. 
+PlayerService, EnemyService ja BulletService toimivat yhdessä BaseSpriteService-luokan kanssa. Lisäksi PlayerService- ja EnemyService-luokkiin injektoidaan ShootingService. ShootingService huolehtii ampumisesta. Base-luokassa on kaikille yhteisiä metodeja, kuten nopeuden muuttaminen ja osuman lisääminen. ShootingSpriteService-luokassa on player- ja enemyservicelle yhteisiä ominaisuuksia, kuten koko, sijainti ja nopeus. 
 
 Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavio:
 
@@ -136,19 +162,18 @@ classDiagram
         +decrease_speed(amount:int)
     }
 
-    class ShootingSpriteService {
-        +move(key)
+    class ShootingService {
         +shoot()
-        +update()
-        +is_dead()
     }
 
     class PlayerService {
-       
+       +move()
+       +update()
     }
 
     class EnemyService {
-
+        +move()
+        +update()
     }
 
     class BulletService {
@@ -179,11 +204,12 @@ classDiagram
     }
  
 
-    BaseSpriteService <.. ShootingSpriteService
+    BaseSpriteService <.. PlayerService
+    BaseSpriteService <.. EnemyService
     BaseSpriteService <.. BulletService
 
-    ShootingSpriteService <.. PlayerService
-    ShootingSpriteService <.. EnemyService
+    ShootingService <.. PlayerService
+    ShootingService <.. EnemyService
 
     SpriteInfo ..> Size
     SpriteInfo ..> Point
@@ -461,6 +487,6 @@ sequenceDiagram
 ```
 
 
-# Jatkokehitystä vaativat toiminnallisuudet ja rakenteelliset heikkoudet
+# Rakenteelliset heikkoudet
 
-Toiminnallisuus toteuttamatta
+SpriteService-luokilla on nyt liikkuminen osana olioluokkaa. Olisi hyvä irrottaa tämä omaksi palvelukseen ja injektoida Enemy- , Player- ja BulletService:lle. 

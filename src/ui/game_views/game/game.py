@@ -290,7 +290,7 @@ class Game:
         the class enemy group. Also, increase player points.
         """
         enemy.enemy_service.add_hit()
-        if enemy.enemy_service.is_dead():
+        if enemy.is_dead():
             self.increase_player_points()
             enemy.remove(self.game_groups[GameAttributes.ENEMIES])
 

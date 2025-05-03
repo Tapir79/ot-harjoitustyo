@@ -48,7 +48,7 @@ class EnemySprite(pygame.sprite.Sprite):
         Tries to shoot. If shooting is a success a new bullet is created. 
         The bullet is added to enemy bullet group.
         """
-        bullet_service = self.enemy_service.try_shoot("down")
+        bullet_service = self.enemy_service.try_shoot()
 
         if bullet_service:
             bullet_sprite = BulletSprite(bullet_service)
@@ -65,3 +65,10 @@ class EnemySprite(pygame.sprite.Sprite):
         x, y = self.enemy_service.position
         self.rect.x = x
         self.rect.y = y
+
+    def is_dead(self):
+        """
+        Returns:
+            bool: Whether the enemy has surpassed the maximum hitcount.
+        """
+        return self.enemy_service.is_dead
