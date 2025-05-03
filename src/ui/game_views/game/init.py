@@ -66,12 +66,7 @@ def create_player(display_width, display_height, game_groups):
     player_position = Point(display_width // 2,
                             display_height - PLAYER_START_Y_OFFSET)
     player_size = Size(PLAYER_WIDTH, PLAYER_HEIGHT)
-    hit = Hit(0, PLAYER_MAX_HITS)
-    player_info = SpriteInfo(
-        player_position, player_size, PLAYER_SPEED, hit)
-
-    player_service = PlayerService(
-        sprite_info=player_info
-    )
+    player_service = PlayerService.create(player_position,
+                                          player_size)
 
     return PlayerSprite(player_service, game_groups[GameAttributes.PLAYER_BULLETS])

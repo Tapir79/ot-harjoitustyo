@@ -1,7 +1,10 @@
+from models.hit import Hit
+from models.point import Point
+from models.size import Size
 from services.base_sprite_service import BaseSpriteService
 from services.shooting_service import ShootingService
 from models.sprite_info import SpriteInfo
-from config import PLAYER_COOLDOWN
+from config import PLAYER_COOLDOWN, PLAYER_MAX_HITS, PLAYER_SPEED
 
 
 class PlayerService():
@@ -54,11 +57,42 @@ class PlayerService():
     def max_hits(self):
         return self._sprite.max_hits
 
+    @staticmethod
+    def create(
+            point: Point,
+            size: Size,
+            speed=PLAYER_SPEED,
+            player_max_hits=PLAYER_MAX_HITS):
+        """
+        Creates EnemyService object. Simplifies the creation
+        compared to the constructor.
+
+        Args:
+            - point: (x,y)
+            - size: (width, height)
+            - speed: how fast enemy moves as integer
+            - player_max_hits: how many hits the enemy can take
+            - enemy_cooldown: how long the enemy waits 
+                            before a new shooting attempt
+
+        Returns:
+            EnemyService object
+        """
+        return PlayerService(
+            SpriteInfo(
+                point,
+                size,
+                speed,
+                Hit(0, player_max_hits)),
+            cooldown=PLAYER_COOLDOWN)
+
     def add_hit(self):
         self._sprite.add_hit()
 
     def try_shoot(self):
-        return self._shooter.try_shoot(self._sprite.position, self._sprite.size, direction="up")
+        return self._shooter.try_shoot(self._sprite.position,
+                                       self._sprite.size,
+                                       direction="up")
 
     def can_shoot(self):
         return self._shooter.can_shoot()
