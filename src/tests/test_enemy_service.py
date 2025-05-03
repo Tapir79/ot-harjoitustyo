@@ -72,6 +72,7 @@ class TestEnemy(unittest.TestCase):
 
     def test_enemy_changes_direction_if_hits_right_wall(self):
         self.enemy_service.x = RIGHT_BOUNDARY + 1
+        self.enemy_service.direction = "right"
         self.enemy_service.move()
         new_dir = self.enemy_service.direction
         self.assertEqual(new_dir, "left")

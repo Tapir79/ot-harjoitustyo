@@ -59,7 +59,6 @@ class TestPlayer(unittest.TestCase):
 
     def test_shoot_creates_new_bullet_with_correct_height(self):
         bullet = self.player_service.shoot()
-        # get the actual height through size to cover that path too
         actual_height = bullet.size.height
         self.assertEqual(actual_height, self.expected_bullet.height,
                          "Expected a bullet height 20")
@@ -122,7 +121,7 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(can_shoot, True)
 
     def test_player_cannot_shoot_if_in_cooldown(self):
-        self.player_service.last_shot = time.time()
+        self.player_service._shooter.last_shot = time.time()
         can_shoot = self.player_service.can_shoot()
         self.assertEqual(can_shoot, False)
 

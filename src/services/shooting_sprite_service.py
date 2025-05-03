@@ -14,7 +14,7 @@ from level_config import (
 )
 
 
-class ShootingSpriteService(BaseSpriteService):
+class ShootingSpriteService():
     """
     Base class for any sprite that can shoot bullets.
     """
@@ -30,29 +30,20 @@ class ShootingSpriteService(BaseSpriteService):
             left_boundary (int): Minimum x-coordinate allowed.
             right_boundary (int): Maximum x-coordinate allowed.
         """
-        super().__init__(sprite_info)
+        self._sprite = BaseSpriteService(sprite_info)
         self.left_boundary = left_boundary
         self.right_boundary = right_boundary
         self.cooldown = cooldown
-        self._last_shot = 0
+        self.last_shot = 0
 
-    @property
-    def last_shot(self):
-        """
-        Returns:
-            float: The timestamp of the last sprite shot time.
-        """
-        return self._last_shot
+    def __getattr__(self, name):
+        return getattr(self._sprite, name)
 
-    @last_shot.setter
-    def last_shot(self, value):
-        """
-        Set the last sprite shot time.
-
-        Args:
-            value: The new last shot timestamp.
-        """
-        self._last_shot = value
+    def __setattr__(self, name, value):
+        if name in {"_sprite", "left_boundary", "right_boundary", "cooldown", "_last_shot"}:
+            super().__setattr__(name, value)
+        else:
+            setattr(self._sprite, name, value)
 
     def can_shoot(self):
         """
@@ -64,8 +55,8 @@ class ShootingSpriteService(BaseSpriteService):
             bool: True if the sprite can shoot, False otherwise.
         """
         current_time = time.time()
-        if current_time - self._last_shot >= self.cooldown:
-            self._last_shot = current_time
+        if current_time - self.last_shot >= self.cooldown:
+            self.last_shot = current_time
             return True
         return False
 

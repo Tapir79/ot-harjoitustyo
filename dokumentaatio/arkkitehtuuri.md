@@ -122,7 +122,7 @@ Init <.. Game
 
 ## Sovelluslogiikka 
 
-Playerservice, bulletservice ja enemyservice, jakavat base-luokan base_sprite_service. Lisäksi player- ja enemyservice perivät shootingSpriteService:n. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. 
+ShootingSpriteService ja bulletservice toimivat yhdessä base_sprite_service-luokan kanssa. Lisäksi player- ja enemyservice-luokkiin injektoidaan shootingSpriteService. Base-luokassa on kaikille yhteisiä yleisiä ominaisuuksia, kuten koko, sijainti ja nopeus. ShootingSpriteService-luokassa on player- ja enemyservicelle yhteisiä ominaisuuksia. 
 
 Service-luokkien ja luokan ja ohjelman muiden osien suhdetta kuvaava luokkakaavio:
 
@@ -180,16 +180,16 @@ classDiagram
     }
  
 
-    BaseSpriteService <|-- ShootingSpriteService
-    BaseSpriteService <|-- BulletService
+    BaseSpriteService <.. ShootingSpriteService
+    BaseSpriteService <.. BulletService
 
-    ShootingSpriteService <|-- PlayerService
-    ShootingSpriteService <|-- EnemyService
+    ShootingSpriteService <.. PlayerService
+    ShootingSpriteService <.. EnemyService
 
-    SpriteInfo --> Size
-    SpriteInfo --> Point
-    SpriteInfo --> Hit
-    BaseSpriteService --> SpriteInfo
+    SpriteInfo ..> Size
+    SpriteInfo ..> Point
+    SpriteInfo ..> Hit
+    BaseSpriteService ..> SpriteInfo
 ```
 
 ### Tasojen generointi

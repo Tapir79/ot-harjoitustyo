@@ -3,7 +3,7 @@ from models.sprite_info import SpriteInfo
 from config import PLAYER_COOLDOWN
 
 
-class PlayerService(ShootingSpriteService):
+class PlayerService():
     """
     Manages the player's movement and shooting logic.
 
@@ -21,8 +21,20 @@ class PlayerService(ShootingSpriteService):
             cooldown (float): The cooldown time between player shots.
             points (int, optional): The initial points of the player. Defaults to 0.
         """
-        super().__init__(sprite_info, cooldown=cooldown)
-        self._points = points
+        self._shooter = ShootingSpriteService(sprite_info, cooldown=cooldown)
+        self.points = points
+
+    def __getattr__(self, name):
+        return getattr(self._shooter, name)
+
+    def __setattr__(self, name, value):
+        if name in {"_shooter", "points"}:
+            super().__setattr__(name, value)
+        else:
+            setattr(self._shooter, name, value)
+
+    def can_shoot(self):
+        return self._shooter.can_shoot()
 
     def move(self, key: int):
         """
@@ -34,36 +46,21 @@ class PlayerService(ShootingSpriteService):
         Returns:
             int: The updated x-coordinate after movement.
         """
-        x = self.x
+        local_x = self._shooter.x
         width = self.width
 
         if key == "a":
-            new_x = max(self.left_boundary, x - self.speed)
+            new_x = max(self._shooter.left_boundary,
+                        local_x - self._shooter.speed)
         elif key == "d":
-            new_x = min(self.right_boundary - width, x + self.speed)
+            new_x = min(self._shooter.right_boundary -
+                        width, local_x + self._shooter.speed)
         else:
-            new_x = x
+            new_x = local_x
 
-        self.x = new_x
+        self._shooter.x = new_x
         return new_x
 
-    @property
-    def points(self):
-        """
-        Returns:
-            int: The current amount of points.
-        """
-        return self._points
-
-    @points.setter
-    def points(self, value: int):
-        """
-        Set the value of points.
-
-        Args:
-            value: The new value of points.
-        """
-        self._points = value
 
     def add_points(self, value: int):
         """
