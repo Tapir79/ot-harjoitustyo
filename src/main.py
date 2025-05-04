@@ -13,7 +13,7 @@ from ui.game_views.create_user import CreateUserView
 from ui.game_views.start_screen import StartScreenView
 from ui.game_views.login import LoginView
 from ui.game_views.game.game import Game
-from utils.game_helpers import check_database_exists
+from utils.ui_helpers import check_database_exists
 
 
 def main():

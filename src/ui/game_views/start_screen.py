@@ -7,7 +7,7 @@ from db import Database
 from ui.game_views.managers.event_loop import EventLoop
 from ui.game_views.managers.menu_drawer import MenuDrawer
 from ui.game_views.managers.session_manager import SessionManager
-from utils.game_helpers import format_high_scores
+from utils.ui_helpers import format_high_scores
 
 
 class StartScreenView():

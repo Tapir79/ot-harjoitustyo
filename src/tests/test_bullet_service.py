@@ -5,7 +5,7 @@ from models.size import Size
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from config import UPPER_BOUNDARY, LOWER_BOUNDARY
-from utils.game_helpers import get_buffered_size
+from utils.ui_helpers import get_buffered_size
 
 
 def create_bullet_service(y=500, direction="up", speed=5):

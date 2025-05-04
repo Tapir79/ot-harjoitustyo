@@ -5,10 +5,10 @@ from config import ASSETS_DIR, BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVE
 from models.point import Point
 from models.size import Size
 from ui.game_views.game.animation import AnimationSprite
-from utils.game_helpers import (get_buffered_size,
-                                get_ending_points,
-                                get_player_lives,
-                                get_random_positions_around_center_point)
+from utils.ui_helpers import (get_buffered_size,
+                              get_ending_points,
+                              get_player_lives,
+                              get_random_positions_around_center_point)
 
 
 class GameDrawer():

@@ -30,18 +30,30 @@ def get_database(db_connection):
     return db.Database(connection=db_connection)
 
 
-def get_user_service(db):
-    user_repository = UserRepository(db)
+def get_user_repository(database):
+    return UserRepository(database)
+
+
+def get_user_statistics_repository(database):
+    return UserStatisticsRepository(database)
+
+
+def get_general_statistics_repository(database):
+    return GeneralStatisticsRepository(database)
+
+
+def get_user_service(database):
+    user_repository = get_user_repository(database)
     return UserService(user_repository)
 
 
-def get_general_statistics_service(db):
-    general_stats_repository = GeneralStatisticsRepository(db)
+def get_general_statistics_service(database):
+    general_stats_repository = get_general_statistics_repository(database)
     return GeneralStatisticsService(
         general_stats_repository)
 
 
-def get_user_statistics_service(db):
-    user_statistics_repository = UserStatisticsRepository(db)
+def get_user_statistics_service(database):
+    user_statistics_repository = get_user_statistics_repository(database)
     return UserStatisticsService(
         user_statistics_repository)

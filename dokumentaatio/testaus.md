@@ -43,7 +43,7 @@ Aloitusvalikko Guestina ja kirjautuneena käyttäjänä:
 
 ## Ohjelmallinen testaaminen 
 
-Testauskattavuus on 100%. Pelissä on pyritty irrottamaan kaikki mahdollinen koodi käyttöliittymästä joko game_utils.py-luokkaan tai services-kerrokseen. Jos jokainen funktio yrittää olla ns. mahdollisimman puhdas eli tehdä vain yhtä asiaa kerrallaan, testaaminen on helpompaa. 
+Testauskattavuus on 100%. Pelissä on pyritty irrottamaan kaikki mahdollinen koodi käyttöliittymästä joko utils/helpers-luokkiin tai services-kerrokseen. Lisäksi jokainen luokka ja funktio yrittää olla mahdollisimman puhdas eli tehdä vain yhtä asiaa kerrallaan.  
 
 ### Yksikkötestaaminen 
 Mahdollisimman suuri osa funktioista on yksikkötestattu eli kirjoitettu testi vain ja ainoastaan yhtä funktiota varten. Esimerkiksi jos funktio palauttaa totuusarvon, on pyritty testaamaan skenaario, missä funktio palauttaa arvon True ja toinen skenaario, missä funktio palauttaa arvon False. Jokainen sprite-service on testattu erilaisilla skenaarioilla. Esim. pelaajan liikkeet on testattu seuraavin skenaarioin:
@@ -61,8 +61,9 @@ Testaamista varten on lisätty sqlite-testitietokanta, joka pyörii testin ajan 
 
 ![](./kuvat/coverage_report.png)  
 
-Testit on kirjoitettu seuraaville luokille: 
-#### Spritet:
+Testit on kirjoitettu seuraaville luokille:
+
+#### Sprite-olioiden ja palvelukerroksen yhteentoimivuus:
 - services/base_sprite_service
 - services/bullet_service
 - services/enemy_service
@@ -73,12 +74,15 @@ Testit on kirjoitettu seuraaville luokille:
 - services/session_service
 - utils/game_helpers 
 
-#### Pysyväistallennus 
+#### Pysyväistallennuksen ja palvelukerroksen yhteentoimivuustestit
 - services/general_statistics_service
 - services/user_service
 - services/user_statistics_service 
 
-Testit kattavat myös muita luokkia, koska skenaarioissa testataan monen luokan läpi kulkevia vaihtoehtoisia polkuja. Esimerkiksi user_statistics_service-luokassa testaaan käyttäjän tilastojen tallentamista ja varmistetaan, että tallennus onnistui. Tällöin kuljetaan service-luokasta ensin repositorioon ja samalla luodaan entity. Näin erilaisia tilanteita testaamalla saadaan katetuksi kaikkien luokkien kaikki vaihtoehtoiset polut. 
+### Pysyväistallennuksen yksikkötestit
+- services/general_statistics_reository
+- services/user_repository
+- services/user_statistics_repository 
 
-# Parannettavaa 
-- Tietokannan alustus tehdään jokaisen luokan alussa integraatiotesteille. Tähän pitäisi miettiä yhtenäisempi ratkaisu, jolloin testien ajaminen nopeutuu. Testit voidaan projektin laajentuessa ajaa esim. CI/CD-putkessa ja tällöin niiden nopea suoritusaika on tärkeää. 
+
+Yhteentoimivuustestit ja monet muutkin testit kattavat myös muita luokkia, koska skenaarioissa testataan monen luokan läpi kulkevia vaihtoehtoisia polkuja. Esimerkiksi user_statistics_service-luokassa testaaan käyttäjän tilastojen tallentamista ja varmistetaan, että tallennus onnistui. Tällöin kuljetaan service-luokasta ensin repositorioon ja samalla luodaan entity. Näin erilaisia tilanteita testaamalla saadaan katetuksi kaikkien luokkien kaikki vaihtoehtoiset polut. Lisäksi on testattu erikseen myös repositoriot yksikkötestein. 

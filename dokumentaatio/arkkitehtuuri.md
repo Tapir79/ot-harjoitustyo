@@ -2,7 +2,7 @@
 
 ## Rakenne 
 
-Pelin rakenne neudattaa seuraavanlaista kolmikerrosarkkitehtuuria: 
+Pelin rakenne noudattaa seuraavanlaista kolmikerrosarkkitehtuuria: 
 
 ```mermaid
 graph TD
@@ -16,10 +16,10 @@ graph TD
 
 - ui-pakkaus sisältää käyttöliittymän eli pygame-osuuden 
 - services-pakkaus sisältää pelilogiikan
-- models-pakkaus sisältää luokkia, joita käytetään logiikkapakkauksessa esim. tietojen organisointiin
-- utils-pakkaus sisältää nyt UI:sta erotettuja yksinkertaisia ja itsenäisiä apufunktioita, jotka eivät suoraan kuuluu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
+- models-pakkaus sisältää luokkia, joita käytetään services-pakkauksessa esim. tietojen organisointiin. 
+- utils-pakkaus sisältää nyt UI:sta erotettuja yksinkertaisia ja itsenäisiä apufunktioita, jotka eivät suoraan kuulu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
-- entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit.  
+- entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit. Entiteetit ovat dataclass-tyyppisiä olioita, joiden tarkoitus on mallintaa tietokantakyselyjen tuloksia. 
 
 ## Käyttöliittymä 
 
@@ -78,13 +78,9 @@ Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimer
 
     class SessionManager
 
-
-
     SessionManager <-- CreateUserView
     SessionManager <-- LoginView
     SessionManager <-- StartScreenView
-
-
 ```
 ---
 
@@ -97,7 +93,6 @@ Näkymät jakavat yhteisen piirtäjän, joka huolehtii kaikille yhteisistä ruud
     MenuDrawer <-- CreateUserView
     MenuDrawer <-- LoginView
     MenuDrawer <-- StartScreenView
-
 ```
 
 
@@ -111,7 +106,6 @@ Login- ja CreateUserView-näkymillä on lisäksi yhteinen EventLoop, joka huoleh
 
     EventLoop <-- CreateUserView
     EventLoop <-- LoginView
-
 ```
 ---
 
@@ -221,6 +215,11 @@ classDiagram
 
 Tasot generoidaan levelservice-luokassa level_config-tiedoston vakioarvojen ohjaamana. 
 
+
+```mermaid
+TODO 
+```
+
 ## Tietojen pysyväistallennus 
 
 Tietokantaan tallennetaan rekisteröityneet käyttäjät ja käyttäjät pelistatistiikat. 
@@ -256,7 +255,7 @@ SQLite-tietokanta alustetaan sql-tiedostoilla. `schema.sql` luo taulut ja näkym
 
 ## Päätoiminnallisuudet
 
-Kuvataan seuraavaksi sovelluksen toimintalogiikka muutaman päätoiminnallisuuden osalta sekvenssikaaviona.
+Sovelluksen toimintalogiikan päätoiminnallisuudet sekvenssikaaviona.
 
 
 ## Käyttäjän kirjautuminen  
@@ -323,7 +322,7 @@ sequenceDiagram
     Main->>Game: aloita peli()
     Game->>Level: luo pelitasot()
     Game->>PlayerSprite:luo pelaaja()
-    Game->>Game: luo pelisimukka()
+    Game->>Game: luo pelisilmukka()
     Game->>Game: Aloita 1. taso()
     Game->>EnemySprite: luo viholliset()
     
@@ -337,6 +336,20 @@ sequenceDiagram
     end
 ```
 ---
+
+Uuden tason luominen. Taso 1 luodaan aina kun peli alkaa alusta. Uusi taso luodaan level_servicen tietojen mukaan aina kun edellisen tason kaikki viholliset on tuhottu. 
+
+```mermaid
+sequenceDiagram
+    participant Game
+    participant Level
+    
+    Game->>Level: Luo uusi taso
+    Level->>Level: Tuhoa kaikki luodit
+    Level->>Level: Tuhoa kaikki tason viholliset
+    Level->>Level: TUhoa kaikki tason animaatiot
+    Level->>Level: Nollaa kaikki tasoattribuutit
+```
 
 ### Pelaajan ja vihollisen perustoiminnot
 
@@ -413,11 +426,10 @@ sequenceDiagram
         Game->>EnemyBullet: päivitä sijainti()
         Game->>Game: tarkista luotien törmäykset()
 
-        alt pelaajan luodin törmäys vihollisluotiin
-            EnemyBullet-->>Game: tuhoa vihollisluoti
-            PlayerBullet-->>Game: tuhoa pelaajan luoti
-            Game->>HitAnimation: luo pieni räjähdys
-        end
+        Game-->>EnemyBullet: tuhoa törmännyt vihollisluoti
+        Game-->>PlayerBullet: tuhoa törmännyt pelaajan luoti
+        Game->>HitAnimation: luo pieni räjähdys
+        
     end
 ```
 ---
@@ -436,24 +448,14 @@ sequenceDiagram
         Game->>PlayerBullet: päivitä sijainti()
         Game->>PlayerBullet: tarkista törmäykset()
 
-        alt törmäys viholliseen
-            PlayerBullet-->>EnemySprite: osuma
-            EnemySprite->>EnemySprite: lisää osuma viholliselle
-            alt vihollinen kuolee
-                EnemySprite-->>Game: poista vihollinen ryhmästä
-                Game-->>PlayerBullet: poista luoti
-                Game->>HitAnimation: luo räjähdys
-            end
-            alt viimeinen vihollinen tason ryhmässä kuolee
-                Game->>Level: Luo uusi taso
-                Level->>Level: Tuhoa kaikki luodit
-                Level->>Level: Tuhoa kaikki tason viholliset
-                Level->>Level: TUhoa kaikki tason animaatiot
-                Level->>Level: Nollaa kaikki tasoattribuutit
-                Level->>Game: Aloita uusi taso
-            end
-            
-        end  
+        EnemySprite->>EnemySprite: lisää osuma viholliselle
+        
+        Game-->>EnemySprite: vihollinen kuolee: poista vihollinen ryhmästä()
+        Game-->>PlayerBullet: poista törmännyt luoti()
+        Game->>HitAnimation: luo räjähdys()
+        
+        Game->>Level: viimeinen vihollinen kuolee Aloita uusi taso
+        
     end
 
 ```
@@ -473,20 +475,22 @@ sequenceDiagram
         Game->>EnemyBullet: päivitä sijainti()
         Game->>EnemyBullet: tarkista törmäykset()
 
-        alt törmäys pelaajaan
-            EnemyBullet-->>PlayerSprite: osuma
-            PlayerSprite->>PlayerSprite: lisää osuma pelaajalle
-            Game-->>EnemyBullet: poista luoti
-            Game->>HitAnimation: luo räjähdys
-            alt pelaaja kuolee
-                PlayerSprite-->>Game: siirry pelin lopetukseen, GAME OVER
-            end
-        end
+       
+        EnemyBullet-->>PlayerSprite: osuma
+        PlayerSprite->>PlayerSprite: lisää osuma pelaajalle
+        Game-->>EnemyBullet: poista luoti
+        Game->>HitAnimation: luo räjähdys
+        
+        PlayerSprite-->>Game: jos pelaaaja kuolee: GAME OVER 
     end
 
 ```
 
 
-# Rakenteelliset heikkoudet
+# Rakenteelliset heikkoudet ja ideat jatkokehitykseen
 
-SpriteService-luokilla on nyt liikkuminen osana olioluokkaa. Olisi hyvä irrottaa tämä omaksi palvelukseen ja injektoida Enemy- , Player- ja BulletService:lle. 
+- Tietokannan alustus tehdään jokaisen luokan alussa integraatiotesteille. Tähän pitäisi miettiä yhtenäisempi ratkaisu, jolloin testien ajaminen nopeutuu. Testit voidaan projektin laajentuessa ajaa esim. CI/CD-putkessa ja tällöin niiden nopea suoritusaika on tärkeää.
+
+- Virheilmoitukset ja virheiden käsittely voisivat sijaita omassa luokassaan, mikä standardoisi ja helpottaisi niiden hallintaa, mikäli ohjelma laajenisi.
+
+- Sprite-olioiden liikkuminen on nyt yksinkertaista. SpriteService-luokilla on nyt liikkuminen osana olioluokkaa. Monimutkaisempien liikeratojen laskenta ja nykyinen liikelaskenta kannattaisi eristää omaan palveluunsa, esim. MovementService ja injektoida Enemy- , Player- ja BulletService:lle. Tällöin ohjelman laajennettavuus olisi helpompaa.

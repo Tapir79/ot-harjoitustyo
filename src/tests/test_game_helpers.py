@@ -7,13 +7,13 @@ from entities.user_statistics import UserStatistics
 from models.hit import Hit
 from models.sprite_info import SpriteInfo
 from services.player_service import PlayerService
-from utils.game_helpers import (check_database_exists,
-                                format_high_scores,
-                                get_ending_points,
-                                get_random_positions_around_center_point,
-                                get_random_x,
-                                get_random_y,
-                                get_player_lives, update_single_field)
+from utils.ui_helpers import (check_database_exists,
+                              format_high_scores,
+                              get_ending_points,
+                              get_random_positions_around_center_point,
+                              get_random_x,
+                              get_random_y,
+                              get_player_lives, update_single_field)
 from models.point import Point
 from models.size import Size
 

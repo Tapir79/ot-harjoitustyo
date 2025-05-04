@@ -1,6 +1,6 @@
 from services.base_sprite_service import BaseSpriteService
-from services.service_helpers import create_sprite_info
 from services.shooting_service import ShootingService
+from utils.service_helpers import create_sprite_info
 from config import (
     LEFT_BOUNDARY, RIGHT_BOUNDARY, LOWER_BOUNDARY
 )

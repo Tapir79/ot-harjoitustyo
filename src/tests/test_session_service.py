@@ -1,7 +1,7 @@
 import unittest
 
 from services.session_service import SessionService
-from tests.db_setup_helpers import (create_test_database_connection,
+from utils.db_setup_helpers import (create_test_database_connection,
                                     get_database,
                                     get_user_service, get_user_statistics_service)
 

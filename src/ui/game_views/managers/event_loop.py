@@ -1,6 +1,6 @@
 import pygame
 from app_enums import AppState, CurrentField
-from utils.game_helpers import update_single_field
+from utils.ui_helpers import update_single_field
 
 
 class EventLoop:

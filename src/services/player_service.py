@@ -1,7 +1,7 @@
 from models.sprite_info import SpriteInfo
 from services.base_sprite_service import BaseSpriteService
-from services.service_helpers import create_sprite_info
 from services.shooting_service import ShootingService
+from utils.service_helpers import create_sprite_info
 from config import PLAYER_COOLDOWN, PLAYER_MAX_HITS, PLAYER_SPEED
 
 

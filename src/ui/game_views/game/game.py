@@ -22,11 +22,11 @@ from ui.game_views.game.init import (create_player,
                                      init_game_groups,
                                      init_game_info,
                                      init_ui_images)
-from utils.game_helpers import (get_buffered_size,
-                                get_game_over_initialization_data,
-                                init_high_score,
-                                init_start_level_attributes,
-                                set_new_level_attributes)
+from utils.ui_helpers import (get_buffered_size,
+                              get_game_over_initialization_data,
+                              init_high_score,
+                              init_start_level_attributes,
+                              set_new_level_attributes)
 from ui.sprites.enemy import EnemySprite
 
 
