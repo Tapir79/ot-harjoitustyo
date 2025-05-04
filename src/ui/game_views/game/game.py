@@ -363,7 +363,6 @@ class Game:
 
         if self.start_level_data[GameAttributes.TRANSITION_TIMER] == 0:
             self.start_level_data[GameAttributes.TRANSITION_TIMER] = 1
-            # show for 1 second at 60 FPS
             self.start_level_data[GameAttributes.TICKS_REMAINING] = 60
 
         self.screen.fill(BLACK)

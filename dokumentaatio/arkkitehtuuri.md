@@ -17,7 +17,7 @@ graph TD
 - ui-pakkaus sisältää käyttöliittymän eli pygame-osuuden 
 - services-pakkaus sisältää pelilogiikan
 - models-pakkaus sisältää luokkia, joita käytetään services-pakkauksessa esim. tietojen organisointiin. 
-- utils-pakkaus sisältää nyt UI:sta erotettuja yksinkertaisia ja itsenäisiä apufunktioita, jotka eivät suoraan kuulu mihinkään serviceen, mutta logiikka on haluttu erottaa käyttöliittymästä, jotta sitä voi testata.
+- utils-pakkaus sisältää yksinkertaisia ja itsenäisiä apufunktioita, jotka eivät suoraan kuulu mihinkään serviceen. Kaikki utils-funktiot testataan.
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
 - entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit. Entiteetit ovat dataclass-tyyppisiä olioita, joiden tarkoitus on mallintaa tietokantakyselyjen tuloksia. 
 
@@ -35,6 +35,8 @@ flowchart TD
     StartScreenView -->|Aloita peli| Game
 ```
 ---
+
+Käyttöliittymävalikon luokat: 
 
 ```mermaid
 classDiagram
@@ -69,7 +71,7 @@ classDiagram
     }
 ```
 
-### Käyttäjähallintanäkymät:
+### Käyttöliittymävalikon näkymät:
 
 Näkymissä käytetään luokkien yhteistoimintaa (composition) ja niihin esimerkiksi injektoidaan sessio, jonka kautta ne kaikki näkevät peliin kirjautuneen käyttäjän ja käyttäjien tilastoja. 
 
@@ -114,18 +116,30 @@ Login- ja CreateUserView-näkymillä on lisäksi yhteinen EventLoop, joka huoleh
 ## Peli:
 
 Peli sijaitsee omassa kansiossaan ja se käynnistetään StartScreenView-luokasta. 
-Pelillä on oma piirtäjänsä, koska sen logiikka eroaa oleellisesti muista UI-näkymistä. Lisäksi sillä on oma initialisointiluokka, jotta peliluokasta ei tulisi liian suuri. 
+Pelillä on oma piirtäjänsä, koska sen logiikka eroaa oleellisesti muista UI-näkymistä. Lisäksi sillä on oma initialisointiluokka, jotta peliluokasta ei tulisi liian suuri. Initialisointitiedostoon on eristetty itsenäisiä funktioita, mutta se ei ole aputiedosto eikä toisaalta luokka, joka injektoidaan peliin.
+Peli toimii yhdessä GameDrawer-luokan kanssa, joka huolehtii ruudunpäivityksestä ja animaatioista peliluupin jokaisen kierroksen aikana.
 
 ```mermaid
 classDiagram
+
+class Animation {
+    +update()
+}
 
 class GameDrawer {
     +draw()
 }
 
-class Init
+class Init {
+    +init_display()
+    +init_game_info()
+    +init_ui_images()
+    +init_game_groups()
+    +create_player()
+}
 
 class Game {
+        +drawer: GameDrawer
         +user
         +input_boxes
         +current_field
@@ -133,9 +147,9 @@ class Game {
         +render()
         +on_submit()
     }
-
+Animation <.. GameDrawer
 GameDrawer <.. Game
-Init <.. Game
+Init .. Game
 
 ```
 
@@ -211,14 +225,56 @@ classDiagram
     BaseSpriteService ..> SpriteInfo
 ```
 
-### Tasojen generointi
+### Tasojen generointi ja uudelle tasolle siirtyminen
 
-Tasot generoidaan levelservice-luokassa level_config-tiedoston vakioarvojen ohjaamana. 
+Tasot generoidaan levelservice-luokassa level_config-tiedoston vakioarvojen ohjaamana, kun peli alkaa. 
 
 
 ```mermaid
-TODO 
+sequenceDiagram
+    participant Main
+    participant Game
+    participant LevelService
+    participant level_config
+
+    Main->>Game: pelin aloitus
+    Game->>LevelService: initialisointi
+    level_config-->>LevelService: lue vakioarvot
+    LevelService->>LevelService: initialize_levels()
+
+    LevelService->>LevelService: create_common_level_attributes()
+    LevelService->>LevelService: create_specific_level_attributes()
+    LevelService->>LevelService: scale_from_previous_level()
+
+
+    Game->>LevelService: get_level(current_level)
+    LevelService-->>Game: palauta kaikki tasot
+    Game->>Game: set_level_attributes()
+
+    
+ 
 ```
+---
+Uudelle tasolle siirtyminen
+
+```mermaid
+sequenceDiagram
+    participant Game
+    participant GameDrawer
+    participant level_config
+    participant EnemySprite
+
+    Game->>Game: uuden tason initialisointi(timer)
+    Game->>GameDrawer: piirrä uuden tason otsikko
+    Game->>Game: odota 60 sekuntia
+    Game->>EnemySprite: luo tason EnemySprite-oliot
+    EnemySprite-->>Game: palauta EnemySprite-oliot
+    Game->>Game: lisää EnemySpritet tasoon
+    Game->>Game: Aloita uusi taso
+   
+ 
+```
+
 
 ## Tietojen pysyväistallennus 
 
@@ -378,6 +434,14 @@ sequenceDiagram
         BulletService->>BulletService: päivitä sijainti
         BulletSprite->>Game: piirrä luoti
     end
+
+    Game->>Game: create_enemies()
+    loop jokaiselle viholliselle
+        Game->>Game: get_enemy_service(x, y)
+        Game->>EnemyService: EnemyService.create(...) käyttäen tasoasetuksia
+        EnemyService-->>Game: EnemyService-olio
+        Game->>Game: Luo EnemySprite ja lisää se ryhmään
+    end
 ```
 ---
 Pelin käynnistyminen ja vihollisen toiminnot:
@@ -489,7 +553,7 @@ sequenceDiagram
 
 # Rakenteelliset heikkoudet ja ideat jatkokehitykseen
 
-- Tietokannan alustus tehdään jokaisen luokan alussa integraatiotesteille. Tähän pitäisi miettiä yhtenäisempi ratkaisu, jolloin testien ajaminen nopeutuu. Testit voidaan projektin laajentuessa ajaa esim. CI/CD-putkessa ja tällöin niiden nopea suoritusaika on tärkeää.
+- Testeille generoidaan dataa, joka eri testien välillä konfliktoi keskenään, mikäli edellisen testin dataa muokataan tai se poistetaan. Jokainen testi alkaakin ns. puhtaalta pöydältä ja tietokannan alustus tehdään uudestaan jokaiselle integraatiotestille. Jos projekti laajenee ja testien määrä kasvaa, niiden suorittaminen hidastuu. Testit voidaan projektin laajentuessa ajaa esim. CI/CD-putkessa ja tällöin niiden nopea suoritusaika on tärkeää. Tähän pitäisi miettiä ratkaisu, jolla testien ajaminen nopeutuu. 
 
 - Virheilmoitukset ja virheiden käsittely voisivat sijaita omassa luokassaan, mikä standardoisi ja helpottaisi niiden hallintaa, mikäli ohjelma laajenisi.
 

@@ -2,7 +2,10 @@ import pygame
 from pygame.sprite import Group
 import os
 from app_enums import GameAttributes
-from config import ASSETS_DIR, PLAYER_HEIGHT, PLAYER_MAX_HITS, PLAYER_SPEED, PLAYER_START_Y_OFFSET, PLAYER_WIDTH
+from config import (ASSETS_DIR,
+                    PLAYER_HEIGHT,
+                    PLAYER_START_Y_OFFSET,
+                    PLAYER_WIDTH)
 from models.hit import Hit
 from models.point import Point
 from models.size import Size
