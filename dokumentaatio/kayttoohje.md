@@ -4,7 +4,7 @@ Lataa projektin viimeisimmän [![GitHub release](https://img.shields.io/github/v
 
 ## Konfigurointi
 
-Pelin vaikeustasoa voi säätää itse muuttamalla __level_config.py__ tiedostossa olevia attribuutteja. 
+Pelin tasojen vaikeutta voi säätää itse muuttamalla __level_config.py__ tiedostossa olevia attribuutteja. 
 Tiedoston muoto on seuraava:
 
 ```
@@ -14,6 +14,7 @@ ENEMY_COLS = 4
 ENEMY_ROWS = 2
 ...
 ```
+
 
 ## Ohjelman asentaminen ja käynnistäminen
 
@@ -53,7 +54,10 @@ jolloin peli ohjaa tähän näkymään:
 
 ![](./kuvat/alien_attack_register_screen.png)
 
-Luo uusi käyttäjätunnus. Huomaa, että sekä käyttäjätunnuksen ja salasanan on oltava vähintään 3 merkkiä pitkiä. 
+Luo uusi käyttäjätunnus. 
+Käyttäjätunnuksen on oltava vähintään 3 merkkiä pitkä ja enintään 8 merkkiä pitkä. 
+Salasanan on oltava vähintään 3 merkkiä pitkä.
+Käyttäjätunnus ja salasana saavat sisältää ainoastaan numeroita (0-9) ja kirjaimia (a-z).
 
 Luotuasi uuden tunnuksen saat siitä ilmoituksen ja peli ohjautuu takaisin aloitusvalikkoon. 
 
@@ -111,5 +115,11 @@ Ampuminen:
 ![](./kuvat/enemy3.png)  
 - Elämät: 3 
 - Pisteet: 3
+
+### Luoti
+
+![](./kuvat/enemy_bullet.png)  
+- Elämät: 1 
+- Pisteet: taso * 1.5
 
 
