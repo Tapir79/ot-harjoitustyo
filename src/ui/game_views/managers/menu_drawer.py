@@ -28,10 +28,10 @@ class MenuDrawer:
             is_active: If the box is currently selected.
             is_password: password is hidden and replaced with * characters
         """
-        border = self.generate_border(self, is_active)
+        border = self.generate_border(is_active)
         pygame.draw.rect(self.screen, WHITE, rect, border)
 
-        display_text = self.generate_display_text(self, text, is_password)
+        display_text = self.generate_display_text(text, is_password)
         surface = self.font.render(display_text, True, WHITE)
 
         y_offset = 5
