@@ -4,7 +4,7 @@ from app_enums import GameAttributes
 from config import ASSETS_DIR, BLACK, PLAYER_SPEED, UPPER_BOUNDARY, WHITE, SILVER
 from models.point import Point
 from models.size import Size
-from ui.animations.animation import AnimationSprite
+from ui.game_views.game.animation import AnimationSprite
 from utils.game_helpers import (get_buffered_size,
                                 get_ending_points,
                                 get_player_lives,
