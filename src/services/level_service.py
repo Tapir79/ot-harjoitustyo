@@ -124,6 +124,8 @@ class LevelService():
             level: The level number.
 
         Returns:
-            bool: True if the level starts a new group, otherwise False.
+            bool: 
+                - True: If a starting level of level group.
+                - False: Not a starting level.
         """
         return level in (1, 6, 11)

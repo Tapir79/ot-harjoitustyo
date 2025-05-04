@@ -84,12 +84,11 @@ class LoginView():
 
     def on_submit(self):
         """
-        Handle user submission of login form.
+        Handle user submission of the login form.
 
         Returns:
-            AppState or None: 
-                - AppState.START_SCREEN if login successful,
-                - None if login failed.
+            Success: AppState.START_SCREEN
+            Failure: None
         """
         username = self.username.strip()
         password = self.password.strip()

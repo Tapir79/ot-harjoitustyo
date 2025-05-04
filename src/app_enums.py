@@ -75,3 +75,5 @@ class GameAttributes(str, Enum):
     ENEMY_BULLETS = "enemy_bullets"
     ENEMIES = "enemies"
     HITS = "hits"
+    THICK_BORDER = "thick"
+    THIN_BORDER = "thin"

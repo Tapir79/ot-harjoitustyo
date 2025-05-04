@@ -1,10 +1,8 @@
 class Hit:
     """
-    Stores health-related information for a sprite.
-
-    This class tracks how many times a sprite has been hit and the maximum number 
-    of hits it can take before being considered 'dead'. It provides read/write 
-    access to the current hit count, and read-only access to the maximum allowed hits.
+    Stores the health information of the sprite. 
+    Hitcount tells how many hits the sprite has taken so far. 0 = full health.
+    Max hits tells how many hits the sprite can take. 
     """
 
     def __init__(self, hitcount: int, max_hits: int):
@@ -22,7 +20,7 @@ class Hit:
     def hitcount(self):
         """
         Returns:
-            int: The current number of hits the sprite has taken.
+            hitcount: The current number of hits the sprite has taken.
         """
         return self._hitcount
 

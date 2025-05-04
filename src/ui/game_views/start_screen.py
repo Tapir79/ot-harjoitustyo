@@ -297,6 +297,9 @@ class StartScreenView():
             y_start: Start y position.
             line_colors: Colors for each line.
             line_fonts: Fonts for each line.
+
+        Returns:
+            y: the updated y for the draw method to start from
         """
 
         y, left_x = self.draw_centered_title(title_text, center_x, y_start)
@@ -341,7 +344,7 @@ class StartScreenView():
             y: y-coordinate position for the first line
 
         Returns:
-        y = next y coordinate 
+            y = next y coordinate 
         """
         for idx, line in enumerate(lines):
             color = WHITE

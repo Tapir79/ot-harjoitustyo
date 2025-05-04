@@ -18,10 +18,10 @@ class AnimationSprite(pygame.sprite.Sprite):
         duration (int): Total time in milliseconds the animation should take. Default is 400.
         """
         super().__init__()
-        self._images = [pygame.image.load(
-            path).convert_alpha() for path in image_paths]
-        self._images = [pygame.transform.scale(
-            img, (size.width, size.height)) for img in self._images]
+        self._images = [pygame.image.load(path)
+                        .convert_alpha() for path in image_paths]
+        self._images = [pygame.transform
+                        .scale(img, (size.width, size.height)) for img in self._images]
 
         self._index = 0
         self._image = self._images[self.index]

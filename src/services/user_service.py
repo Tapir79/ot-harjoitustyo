@@ -65,9 +65,9 @@ class UserService:
 
         Returns:
             tuple: (bool, str, User or None)
-            - Success:            (True, success message, User)
-            - Not valid:          (False, error message, None)
-            - User not available: (False, error message, None)
+            - Success:            (True, list:str, User)
+            - Not valid:          (False, list:str, None)
+            - User not available: (False, list:str, None)
         """
         is_valid, errors = self.validate_user_input(username, password)
         if not is_valid:
@@ -88,8 +88,8 @@ class UserService:
 
         Returns:
             tuple: (User or None, str or None)
-            - Found:     (User, None)
-            - Not found: (None, error message9
+                - Found:     (User, None)
+                - Not found: (None, error message)
         """
         user = self.user_repository.get_user(user_id)
         if user is None:

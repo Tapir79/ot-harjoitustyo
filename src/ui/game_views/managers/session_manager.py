@@ -7,7 +7,7 @@ from services.user_statistics_service import UserStatisticsService
 
 
 class SessionManager:
-    """Handles session-related services and user initialization."""
+    """Handles session and user initialization."""
 
     def __init__(self, db=None):
         """

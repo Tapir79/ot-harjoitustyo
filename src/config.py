@@ -12,11 +12,16 @@ PROJECT_ROOT = SRC_ROOT[:-4]
 DATABASE_FILE_PATH = os.path.join(PROJECT_ROOT, "data", "database.db")
 ASSETS_DIR = os.path.join(SRC_ROOT, "assets")
 
+# colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GOLD = (255, 215, 0)
 SILVER = (192, 192, 192)
 BRONZE = (205, 127, 50)
+
+# borders 
+THICK_BORDER = 3
+THIN_BORDER = 1
 
 # global boundaries
 UPPER_BOUNDARY = 0

@@ -92,7 +92,6 @@ class EventLoop:
         v = self.view
 
         if hasattr(v, "input_boxes"):
-            # CreateUserView style
             current = v.input_boxes[v.current_field]
             if backspace:
                 v.input_boxes[v.current_field] = current[:-1]
@@ -100,7 +99,6 @@ class EventLoop:
                 v.input_boxes[v.current_field] = current + char
 
         else:
-            # LoginView style (attributes .username and .password)
             field_name = "username" if v.current_field == CurrentField.USERNAME else "password"
             old = getattr(v, field_name)
             new = update_single_field(old, backspace=backspace, char=char)

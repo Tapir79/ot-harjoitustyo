@@ -47,6 +47,3 @@ Projektissa käytetyn [.pylinrc](https://github.com/Tapir79/ot-harjoitustyo/tree
 - Kenney Board Game Icons: https://kenney.nl/assets/board-game-icons     
 CC lisenssi: https://creativecommons.org/publicdomain/zero/1.0/
 - Pelin otsikkokuvan luomisessa on käytetty mallina ANSI Shadow -fonttia: https://github.com/pwaller/pyfiglet.     
-
-## Tekoälyn käyttö 
-Olen käyttänyt ChatGPT:tä debuggailuun ja virheiden tulkintaan (esim. pylint virheiden merkitys, ohjelman käynnistysvirheet jne.), mutta en ole generoinut sillä koodia tai pyytänyt korjaamaan koodia.

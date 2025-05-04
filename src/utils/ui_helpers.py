@@ -27,7 +27,6 @@ def init_start_level_attributes():
 
 def set_new_level_attributes(current_level):
     """
-
     Args:
         current_level: game current level
 
@@ -55,7 +54,6 @@ def set_new_level_attributes(current_level):
 
 def init_high_score(general_statistics_service):
     """
-
     Args:
         general_statistics_service: GeneralStatisticsService object
 
@@ -151,9 +149,9 @@ def get_ending_points(current_points: int,
 
     Returns:
         List of dicts, each dict containing:
-            - 'text': Text to display
-            - 'color': Text color
-            - 'position': Point object where text should be displayed
+            text: Text to display
+            color: Text color
+            position: Point object where text should be displayed
     """
 
     ending_points_data = None
@@ -181,7 +179,7 @@ def get_logged_in_high_score_data(
         all_time_high_score,
         y_spacing):
     """
-    Collects the ending points information for logged in user
+    Collects the ending points information for the logged in user.
 
     Args:
         current_points: User's current score
@@ -192,25 +190,16 @@ def get_logged_in_high_score_data(
 
     Returns:
         List of dicts, each dict containing:
-            - 'text': Text to display
-            - 'color': Text color
-            - 'position': Point object where text should be displayed
+            text: Text to display
+            color: Text color
+            position: Point object where text should be displayed
     """
     high_score = user_statistics.high_score
 
     if current_points > high_score and current_points > all_time_high_score:
-        return {
-            "text": f"NEW HIGH SCORE: {current_points}",
-            "color": GOLD,
-            "position": Point(position.x, position.y + y_spacing)
-        }
+        return get_score_data("NEW HIGH SCORE",current_points, GOLD, position, y_spacing)
     if high_score < current_points <= all_time_high_score:
-        return {
-            "text": f"NEW RECORD: {current_points}",
-            "color": SILVER,
-            "position": Point(position.x, position.y + y_spacing)
-        }
-
+        return get_score_data("NEW RECORD", current_points, SILVER, position, y_spacing)
     if current_points >= all_time_high_score:
         text = f"NEW HIGH SCORE: {current_points}"
     elif current_points == high_score:
@@ -224,12 +213,40 @@ def get_logged_in_high_score_data(
         "position": Point(position.x, position.y + y_spacing)
     }
 
+def get_score_data(text, current_points, color, position, y_spacing):
+     """
+     Helper function for get_logged_in_high_score_data. 
+
+     Args: 
+        text: high_score text
+        current_points: User's current score
+        position (Point): Starting screen position to display the scores.
+        color: color to draw the text.
+        y_spacing: gap to previous text
+
+    Returns:
+        dictionary:
+            text: Text to display
+            color: Text color
+            position: Point object where text should be displayed
+     """
+     return {
+            "text": f"{text}: {current_points}",
+            "color": color,
+            "position": Point(position.x, position.y + y_spacing)
+        }
 
 def get_player_lives(player: PlayerService):
     """
     The function counts how many hearts player has left.
     It also counts how many hearts are broken.
     The counts are used to draw the hearts on the game screen.
+
+    Args:
+        player: PlayerService
+
+    Returns:
+        tuple: hearts, broken_hearts
     """
 
     current_hits = player.hitcount

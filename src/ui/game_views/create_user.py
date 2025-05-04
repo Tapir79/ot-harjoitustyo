@@ -79,7 +79,9 @@ class CreateUserView():
         """
         Draw static text labels (Login, Username, Password prompts) on the screen.
         """
-        lines = ["Create a new user", "Username:", "Password:",
+        lines = ["Create a new user", 
+                 "Username:", 
+                 "Password:",
                  "Press Tab to change field",
                  "Press ENTER to submit",
                  "Press ESC to return"]
@@ -91,7 +93,8 @@ class CreateUserView():
         Handle the user registration when ENTER is pressed.
 
         Returns:
-            AppState or None: Returns AppState.START_SCREEN on success, or None on failure.
+            Success: AppState.START_SCREEN
+            Failure: None
         """
         username = self.input_boxes[CurrentField.USERNAME].strip()
         password = self.input_boxes[CurrentField.PASSWORD].strip()

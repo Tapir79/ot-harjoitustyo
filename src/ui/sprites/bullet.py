@@ -13,9 +13,6 @@ class BulletSprite (pygame.sprite.Sprite):
 
     This class uses the logic from a BulletService and then
     updates the sprite image and location on the screen.
-
-    Args:
-        bullet_service (BulletService): The logic class controlling bullet behavior.
     """
 
     def __init__(self, bullet_service: BulletService):

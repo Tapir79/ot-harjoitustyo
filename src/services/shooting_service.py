@@ -2,8 +2,6 @@ import time
 from services.bullet_service import BulletService
 from models.point import Point
 from models.size import Size
-from models.hit import Hit
-from models.sprite_info import SpriteInfo
 from config import (
     LEFT_BOUNDARY, RIGHT_BOUNDARY, BULLET_WIDTH,
     BULLET_HEIGHT, PLAYER_BULLET_SPEED, PLAYER_COOLDOWN
@@ -11,6 +9,7 @@ from config import (
 from level_config import (
     ENEMY_BULLET_SPEED
 )
+from utils.service_helpers import create_sprite_info
 
 
 class ShootingService():
@@ -81,18 +80,21 @@ class ShootingService():
             BulletService: The created bullet object.
         """
         sprite_x, sprite_y = sprite_position
-        sprite_width = sprite_size.width
-        sprite_height = sprite_size.height
 
-        bullet_x = sprite_x + sprite_width // 2 - bullet_size.width // 2
+        bullet_x = sprite_x + sprite_size.width // 2 - bullet_size.width // 2
         bullet_y = self._get_bullet_y(
-            direction, sprite_y, sprite_height, bullet_size.height)
+            direction,
+            sprite_y,
+            sprite_size.height,
+            bullet_size.height
+        )
 
-        bullet_position = Point(bullet_x, bullet_y)
-        bullet_size = Size(bullet_size.width, bullet_size.height)
         bullet_speed = PLAYER_BULLET_SPEED if direction == "up" else ENEMY_BULLET_SPEED
-        bullet_sprite_info = SpriteInfo(
-            bullet_position, bullet_size, bullet_speed, Hit(0, 1)
+        bullet_sprite_info = create_sprite_info(
+            Point(bullet_x, bullet_y),
+            Size(bullet_size.width, bullet_size.height),
+            bullet_speed,
+            1
         )
 
         return BulletService(sprite_info=bullet_sprite_info, direction=direction)
