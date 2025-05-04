@@ -57,7 +57,7 @@ jolloin peli ohjaa tähän näkymään:
 Luo uusi käyttäjätunnus. 
 Käyttäjätunnuksen on oltava vähintään 3 merkkiä pitkä ja enintään 8 merkkiä pitkä. 
 Salasanan on oltava vähintään 3 merkkiä pitkä.
-Käyttäjätunnus ja salasana saavat sisältää ainoastaan numeroita (0-9) ja kirjaimia (a-z).
+Käyttäjätunnus ja salasana saavat sisältää ainoastaan numeroita (0-9) ja kirjaimia (a-Ö).
 
 Luotuasi uuden tunnuksen saat siitä ilmoituksen ja peli ohjautuu takaisin aloitusvalikkoon. 
 
