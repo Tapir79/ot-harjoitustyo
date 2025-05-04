@@ -15,9 +15,7 @@ class StartScreenView():
     The start screen view shown when the game launches.
 
     Allows users to choose between starting the game, logging in, or creating an account.
-    If the player is logged in only start game is visible. 
-
-    Inherits from BaseView to use common input handling and rendering functionality.
+    If the player is logged in only start game is visible.
     """
 
     def __init__(self, screen, user=None, esc_state=AppState.QUIT):

@@ -11,9 +11,6 @@ from ui.game_views.managers.session_manager import SessionManager
 class CreateUserView():
     """
     View for creating a new user account.
-
-    Inherits from BaseView and provides input fields and submit logic
-    for user registration.
     """
 
     def __init__(self, screen, user=None):

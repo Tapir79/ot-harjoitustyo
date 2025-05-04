@@ -8,8 +8,6 @@ from config import PLAYER_COOLDOWN, PLAYER_MAX_HITS, PLAYER_SPEED
 class PlayerService():
     """
     Manages the player's movement and shooting logic.
-
-    Inherits ShootingSpriteService.
     """
 
     def __init__(self, sprite_info: SpriteInfo,

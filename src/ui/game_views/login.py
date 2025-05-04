@@ -13,8 +13,6 @@ class LoginView():
     """
     Login screen where the user can input their username and password 
     to authenticate.
-
-    Inherits from BaseView to reuse input handling and rendering functionality.
     """
 
     def __init__(self, screen, user=None):
