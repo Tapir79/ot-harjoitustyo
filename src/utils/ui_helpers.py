@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import random
 
-from app_enums import GameAttributes, LevelAttributes
+from app_enums import GameAttributes, GameMessages, LevelAttributes
 from config import BRONZE, GOLD, PROJECT_ROOT, SILVER
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
@@ -197,18 +197,19 @@ def get_logged_in_high_score_data(
     high_score = user_statistics.high_score
 
     if current_points > high_score and current_points > all_time_high_score:
-        return get_score_data("NEW HIGH SCORE", current_points, GOLD, position, y_spacing)
+        return get_score_data(GameMessages.HIGH_SCORE_TEXT,
+                              current_points, GOLD, position, y_spacing)
     if high_score < current_points <= all_time_high_score:
-        return get_score_data("NEW RECORD", current_points, SILVER, position, y_spacing)
+        return get_score_data(GameMessages.RECORD_TEXT,
+                              current_points, SILVER, position, y_spacing)
     if current_points >= all_time_high_score:
-        text = f"NEW HIGH SCORE: {current_points}"
-    elif current_points == high_score:
-        text = f"NEW RECORD: {current_points}"
-    else:
-        text = f"Points / Record: {current_points}  /  {high_score}"
-
+        return get_score_data(GameMessages.HIGH_SCORE_TEXT,
+                              current_points, GOLD, position, y_spacing)
+    if current_points == high_score and high_score > 0:
+        return get_score_data(GameMessages.RECORD_TEXT,
+                              current_points, SILVER, position, y_spacing)
     return {
-        "text": text,
+        "text": f"{GameMessages.POINTS_TEXT} {current_points}  /  {high_score}",
         "color": BRONZE,
         "position": Point(position.x, position.y + y_spacing)
     }
@@ -232,7 +233,7 @@ def get_score_data(text, current_points, color, position, y_spacing):
            position: Point object where text should be displayed
     """
     return {
-        "text": f"{text}: {current_points}",
+        "text": f"{text} {current_points}",
         "color": color,
         "position": Point(position.x, position.y + y_spacing)
     }

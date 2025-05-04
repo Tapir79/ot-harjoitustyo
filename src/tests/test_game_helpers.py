@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import unittest
 
+from app_enums import GameMessages
 from entities.general_statistics import GeneralStatistics
 from entities.user_statistics import UserStatistics
 from models.hit import Hit
@@ -128,7 +129,8 @@ class TestGameHelpers(unittest.TestCase):
                                           position,
                                           all_time_high_score)
         high_score_text = ending_points["text"]
-        self.assertEqual(high_score_text,  f"NEW RECORD: {current_points}")
+        self.assertEqual(high_score_text,
+                         f"{GameMessages.RECORD_TEXT} {current_points}")
 
     def test_ending_points_with_lower_score_returns_correct_text(self):
         current_points = 8
@@ -142,7 +144,7 @@ class TestGameHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
-                         f"Points / Record: {current_points}  /  {user_current_high_score}")
+                         f"{GameMessages.POINTS_TEXT} {current_points}  /  {user_current_high_score}")
 
     def test_ending_points_with_new_all_time_high_score_returns_correct_text(self):
         current_points = 21
@@ -156,7 +158,7 @@ class TestGameHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
-                         f"NEW HIGH SCORE: {current_points}")
+                         f"{GameMessages.HIGH_SCORE_TEXT} {current_points}")
 
     def test_ending_points_current_points_is_high_score_returns_correct_text(self):
         current_points = 8
@@ -170,7 +172,7 @@ class TestGameHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
-                         f"NEW RECORD: {current_points}")
+                         f"{GameMessages.RECORD_TEXT} {current_points}")
 
     def test_ending_points_current_points_is_all_time_high_score_returns_correct_text(self):
         current_points = 20
@@ -184,7 +186,7 @@ class TestGameHelpers(unittest.TestCase):
                                           all_time_high_score)
         high_score_text = ending_points["text"]
         self.assertEqual(high_score_text,
-                         f"NEW HIGH SCORE: {current_points}")
+                         f"{GameMessages.HIGH_SCORE_TEXT} {current_points}")
 
     def test_formatting(self):
         general_stats = GeneralStatistics("elaine", "20", 2)

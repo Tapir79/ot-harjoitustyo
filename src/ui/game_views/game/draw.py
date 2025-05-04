@@ -111,6 +111,10 @@ class GameDrawer():
         """
         Draw current player points on screen.
         Draw player high score on screen.
+
+        Args:
+            position: (x,y)
+            center: draw the text centered
         """
         player_current_points = self.game.player.player_service.points
         user_statistics = None

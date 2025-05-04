@@ -77,3 +77,9 @@ class GameAttributes(str, Enum):
     HITS = "hits"
     THICK_BORDER = "thick"
     THIN_BORDER = "thin"
+
+
+class GameMessages(str, Enum):
+    POINTS_TEXT = "POINTS / RECORD:"
+    RECORD_TEXT = "NEW RECORD:"
+    HIGH_SCORE_TEXT = "NEW HIGH SCORE:"

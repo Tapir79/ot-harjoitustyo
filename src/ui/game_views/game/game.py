@@ -303,8 +303,11 @@ class Game:
         Args: 
             coefficient: points are multiplied by the coefficient.
         """
+        level_enemy = self.enemy_attributes[GameAttributes.IMAGE]
+        points_char = ''.join([char for char in level_enemy if char in "123"])
+        points = int(points_char)
         self.player.player_service.add_points(
-            self.start_level_data[GameAttributes.LEVEL] * coefficient)
+            points * coefficient)
 
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
