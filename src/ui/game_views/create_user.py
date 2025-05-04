@@ -79,8 +79,8 @@ class CreateUserView():
         """
         Draw static text labels (Login, Username, Password prompts) on the screen.
         """
-        lines = ["Create a new user", 
-                 "Username:", 
+        lines = ["Create a new user",
+                 "Username:",
                  "Password:",
                  "Press Tab to change field",
                  "Press ENTER to submit",

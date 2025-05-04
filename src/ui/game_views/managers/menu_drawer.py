@@ -15,7 +15,7 @@ class MenuDrawer:
         self.screen = screen
         self.font = pygame.font.Font(None, 36)
         self.small_font = pygame.font.Font(None, 28)
-        self.borders = {GameAttributes.THICK_BORDER: THICK_BORDER, 
+        self.borders = {GameAttributes.THICK_BORDER: THICK_BORDER,
                         GameAttributes.THIN_BORDER: THIN_BORDER}
 
     def draw_input_field(self, rect, text, is_active, is_password=False):
@@ -30,7 +30,7 @@ class MenuDrawer:
         """
         border = self.generate_border(self, is_active)
         pygame.draw.rect(self.screen, WHITE, rect, border)
-        
+
         display_text = self.generate_display_text(self, text, is_password)
         surface = self.font.render(display_text, True, WHITE)
 
@@ -43,7 +43,7 @@ class MenuDrawer:
 
         Args: 
             is_active: Choose active border style. 
-        
+
         Returns:
             border style integer 
         """
@@ -58,7 +58,7 @@ class MenuDrawer:
         Args:
             text: the text to draw. 
             is_password: if the text is password it should be replaced with *.
-        
+
         Returns:
             text or the text as *.
         """
