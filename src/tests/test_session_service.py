@@ -23,7 +23,7 @@ class TestSessionService(unittest.TestCase):
         self.assertEqual(user_statistics.level, 1)
 
     def test_init_user_with_new_user(self):
-        success, msg, user = self.user_service.register_user(
+        _, _, user = self.user_service.register_user(
             "elaine", "elaine")
         self.user_statistics_service.create_user_statistics(user.user_id, 0, 0)
         user, user_statistics = self.session_service.init_user(user)

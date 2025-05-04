@@ -37,6 +37,8 @@ class ErrorMessages(str, Enum):
     USERNAME_EXISTS = "Username already exists."
     USER_NOT_FOUND = "Could not find user."
     USER_STATISTICS_EXISTS = "User statistics already exists."
+    USERNAME_NOT_ALPHANUM = "Username must contain only letters a-Ö or numbers 0-9."
+    PASSWORD_NOT_ALPHANUM = "Password must contain only letters a-Ö or numbers 0-9."
 
 
 class LevelAttributes(str, Enum):

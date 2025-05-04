@@ -23,6 +23,8 @@ class UserService:
         Validates username and password.
         Both fields must be filled.
         Both strings must be longer or equal to 3 characters.
+        Username must be at most 8 characters.
+        Both must contain alphanumerical characters a-Ö or 0-9.
 
         Args:
             username: The username to validate.
@@ -33,15 +35,25 @@ class UserService:
             - Valid:     (True, None) 
             - Non-valid: (False, Error message)
         """
+        errors = []
+
         if not username or not password:
-            return False, ErrorMessages.FIELDS_REQUIRED
+            return False, [ErrorMessages.FIELDS_REQUIRED]
+
         if len(username) < 3:
-            return False, ErrorMessages.USERNAME_TOO_SHORT
+            errors.append(ErrorMessages.USERNAME_TOO_SHORT)
         if len(username) > 8:
-            return False, ErrorMessages.USERNAME_TOO_LONG
+            errors.append(ErrorMessages.USERNAME_TOO_LONG)
         if len(password) < 3:
-            return False, ErrorMessages.PASSWORD_TOO_SHORT
-        return True, None
+            errors.append(ErrorMessages.PASSWORD_TOO_SHORT)
+        if not username.isalnum():
+            errors.append(ErrorMessages.USERNAME_NOT_ALPHANUM)
+        if not password.isalnum():
+            errors.append(ErrorMessages.PASSWORD_NOT_ALPHANUM)
+
+        if not errors:
+            return True, None
+        return False, errors
 
     def register_user(self, username: str, password: str):
         """
@@ -57,15 +69,15 @@ class UserService:
             - Not valid:          (False, error message, None)
             - User not available: (False, error message, None)
         """
-        is_valid, error = self.validate_user_input(username, password)
+        is_valid, errors = self.validate_user_input(username, password)
         if not is_valid:
-            return False, error, None
+            return False, errors, None
 
         try:
             user = self.user_repository.create_user(username, password)
-            return True, f"User '{username}' created!", user
+            return True, [f"User '{username}' created!"], user
         except sqlite3.IntegrityError:
-            return False, ErrorMessages.USERNAME_EXISTS, None
+            return False, [ErrorMessages.USERNAME_EXISTS], None
 
     def get_user(self, user_id):
         """

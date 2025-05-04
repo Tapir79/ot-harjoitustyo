@@ -21,7 +21,7 @@ class CreateUserView():
             screen: The pygame display surface.
         """
         self.screen = screen
-        self.message = ""
+        self.messages = []
         self._drawer = MenuDrawer(screen)
 
         self.current_field = CurrentField.USERNAME
@@ -69,8 +69,10 @@ class CreateUserView():
             self.current_field == CurrentField.PASSWORD,
             is_password=True
         )
-        if self.message:
-            self._drawer.draw_text(self.message, (100, y))
+        if self.messages:
+            for message in self.messages:
+                self._drawer.draw_text(message, (100, y))
+                y += 30
         pygame.display.flip()
 
     def draw_create_user_labels(self):
@@ -93,14 +95,14 @@ class CreateUserView():
         """
         username = self.input_boxes[CurrentField.USERNAME].strip()
         password = self.input_boxes[CurrentField.PASSWORD].strip()
-        success, message, user = self._user_service.register_user(
+        success, messages, user = self._user_service.register_user(
             username, password)
         if success:
             self._user_statistics_service.create_user_statistics(
                 user.user_id, 0, 0)
             user_id, msg = self._user_service.login(username, password)
 
-        self.message = message
+        self.messages = messages
         if success:
             self.render()
             self.user = User(user_id, username)

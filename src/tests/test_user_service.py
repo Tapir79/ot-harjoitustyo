@@ -22,38 +22,48 @@ class TestUserService(unittest.TestCase):
     def test_username_and_password_must_exist(self):
         success, msg = self.service.validate_user_input(None, None)
         self.assertFalse(success)
-        self.assertEqual(msg, ErrorMessages.FIELDS_REQUIRED)
+        self.assertEqual(msg[0], ErrorMessages.FIELDS_REQUIRED)
 
     def test_username_too_short(self):
         success, msg = self.service.validate_user_input("ab", "baa")
         self.assertFalse(success)
-        self.assertEqual(msg, ErrorMessages.USERNAME_TOO_SHORT)
+        self.assertEqual(msg[0], ErrorMessages.USERNAME_TOO_SHORT)
 
     def test_password_too_short(self):
         success, msg = self.service.validate_user_input("abb", "ba")
         self.assertFalse(success)
-        self.assertEqual(msg, ErrorMessages.PASSWORD_TOO_SHORT)
+        self.assertEqual(msg[0], ErrorMessages.PASSWORD_TOO_SHORT)
 
     def test_register_invalid_user(self):
         success, msg, _ = self.service.register_user("g", "le")
         self.assertFalse(success)
-        self.assertEqual(msg, ErrorMessages.USERNAME_TOO_SHORT)
+        self.assertEqual(msg[0], ErrorMessages.USERNAME_TOO_SHORT)
 
     def test_register_invalid_user(self):
         success, msg, _ = self.service.register_user(
             "guybrushthreepwood", "le")
         self.assertFalse(success)
-        self.assertEqual(msg, ErrorMessages.USERNAME_TOO_LONG)
+        self.assertEqual(msg[0], ErrorMessages.USERNAME_TOO_LONG)
 
     def test_register_valid_user(self):
-        success, msg, _ = self.service.register_user("g.p.", "lechuck")
+        success, msg, _ = self.service.register_user("mrgp", "lechuck")
         self.assertTrue(success)
-        self.assertIn("created", msg.lower())
+        self.assertIn("created", msg[0].lower())
+
+    def test_register_non_alphanumerical_user(self):
+        success, msg, _ = self.service.register_user("g.p.", "lechuck")
+        self.assertFalse(success)
+        self.assertEqual(msg[0], ErrorMessages.USERNAME_NOT_ALPHANUM)
+
+    def test_register_non_alphanumerical_password(self):
+        success, msg, _ = self.service.register_user("elaine", "??=")
+        self.assertFalse(success)
+        self.assertEqual(msg[0], ErrorMessages.PASSWORD_NOT_ALPHANUM)
 
     def test_user_already_created(self):
         success, msg, _ = self.service.register_user("guybrush", "threepwood")
         self.assertTrue(success)
-        self.assertIn("created", msg.lower())
+        self.assertIn("created", msg[0].lower())
         success, msg, _ = self.service.register_user("guybrush", "threepwood")
         self.assertFalse(success)
 
