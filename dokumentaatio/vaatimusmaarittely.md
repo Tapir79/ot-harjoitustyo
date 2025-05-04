@@ -17,6 +17,9 @@ Pelin käyttäjärooli on _pelaaja_, joka ohjaa avaruusalusta ja yrittää tuhot
   - **unittest** ja **coverage**: Testaukseen käytetään unittest- ja coverage-työkaluja.
   - **Poetry**: Pakettien hallintaan ja projektin riippuvuuksien hallintaan käytetään Poetry-työkalua.
 
+- **Kurssimateriaalin ulkopuoliset kirjastot:**
+  - **werkzeug**: Tietokannan salasanojen hashaus.
+
 - **Rajoitteet:**
   - Ohjelman on toimittava HY TKTL laitoksen Cubbli Linuxilla.
   - Peli tallentaa pelaajan parhaat tulokset paikallisesti SQLite-tietokantaan.
