@@ -37,7 +37,7 @@ class TestEnemy(unittest.TestCase):
 
         self.assertEqual(bullet.direction, expected_bullet.direction,
                          "Expected a bullet direction down")
-        self.assertEqual(bullet.speed, expected_bullet.speed,
+        self.assertEqual(bullet._sprite.speed, expected_bullet._sprite.speed,
                          "Expected a bullet speed 5")
 
     def test_enemy_moves_right(self):

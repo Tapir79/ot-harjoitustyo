@@ -29,39 +29,21 @@ class BulletService():
         self._upper_boundary = UPPER_BOUNDARY - self._sprite.height
         self._direction = direction
 
-    # def __getattr__(self, name):
-    #     """
-    #     Delegate attribute access to the internal BaseSpriteService.
+    @property
+    def width(self):
+        return self._sprite.width
 
-    #     This allows the sprite service to expose the same interface as BaseSpriteService
-    #     without inheriting from it. Any attribute not found on the service class itself
-    #     is automatically looked up in the composed BaseSpriteService instance.
+    @property
+    def height(self):
+        return self._sprite.height
 
-    #     Args:
-    #         name (str): The name of the attribute being accessed.
+    @property
+    def position(self):
+        return self._sprite.position
 
-    #     Returns:
-    #         Any: The value of the attribute from BaseSpriteService.
-
-    #     Raises:
-    #         AttributeError: If the attribute does not exist on BaseSpriteService.
-    #     """
-    #     return getattr(self._sprite, name)
-
-    # def __setattr__(self, name, value):
-    #     """
-    #     Delegate setting attributes to the internal BaseSpriteService.
-    #     Always set BulletService's own attributes directly.
-
-    #     Args:
-    #         name: name of the attribute
-    #         value: value to set for the attribute
-    #     """
-
-    #     if name in {"_sprite", "_direction", "_lower_boundary", "_upper_boundary"}:
-    #         super().__setattr__(name, value)
-    #     else:
-    #         setattr(self._sprite, name, value)
+    @property
+    def size(self):
+        return self._sprite.size
 
     @property
     def direction(self):

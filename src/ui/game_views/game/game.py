@@ -265,12 +265,14 @@ class Game:
         First get all player bullets. 
         Then check collisions with each enemy.
         Using pygame group collisions. 
+        Remove enemy.
+        Remove bullet.
         """
         collisions = pygame.sprite.groupcollide(
             self.game_groups[GameAttributes.ENEMIES],
             self.game_groups[GameAttributes.PLAYER_BULLETS],
-            False,  # remove enemy
-            True   # remove bullet
+            False,
+            True
         )
 
         if collisions:
@@ -307,12 +309,14 @@ class Game:
     def check_enemy_bullet_and_player_bullet_collisions(self):
         """
         Handle enemy bullet collisions with player bullets.
+        Remove enemy bullet.
+        Remove player bullet.
         """
         collisions = pygame.sprite.groupcollide(
             self.game_groups[GameAttributes.ENEMY_BULLETS],
             self.game_groups[GameAttributes.PLAYER_BULLETS],
-            True,  # remove enemy bullet
-            True   # remove player bullet
+            True,
+            True
         )
 
         if collisions:
@@ -347,10 +351,8 @@ class Game:
         """
         if not self.game_groups[GameAttributes.ENEMIES]:
             self.start_level_data[GameAttributes.LEVEL] += 1
-            # passed final levelga
             if self.start_level_data[GameAttributes.LEVEL] > self.levels.get_final_level():
                 self.win_game()
-            # load next level
             else:
                 self.new_level_reset()
                 self.start_level_data[GameAttributes.LEVEL_STARTED] = False

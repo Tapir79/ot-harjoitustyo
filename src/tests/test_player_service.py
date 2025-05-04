@@ -62,7 +62,7 @@ class TestPlayer(unittest.TestCase):
     def test_shoot_creates_new_bullet_with_correct_speed(self):
         pos, size = get_position_and_size(self.player_service)
         bullet = self.player_service._shooter.shoot(pos, size)
-        self.assertEqual(bullet.speed, self.expected_bullet.speed,
+        self.assertEqual(bullet._sprite.speed, self.expected_bullet._sprite.speed,
                          "Expected a bullet speed 5")
 
     def test_shoot_creates_new_bullet_with_correct_height(self):
