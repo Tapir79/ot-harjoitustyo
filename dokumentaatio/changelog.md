@@ -44,12 +44,13 @@ näppäimistöllä
 ## Viikko 7 
 
 - Lisätty peliin Guest-tunnus, jolla pelataan, jos ei rekisteröitynyttä käyttäjää.
+- High score näkymän järjestäminen pisteiden ja tason perusteella.
 - Toisteisen koodin refaktorointi testeistä. 
 - Funktioiden ja metodien pilkkomista pienempiin osiin.
 - Puhtaan peliogiikan irrottamista UI:sta.
 - Docstringien kirjoittaminen.
 - Testausdokumentin lisääminen projektiin.
 - Game-luokan refaktorointi ja hajauttaminen toiminallisuuden mukaan.
-- Perinnän purkaminen projektista ja sen korvaaminen luokkien yhteistoiminnalla (kompositio).
+- Perinnän purkaminen projektista ja sen korvaaminen luokkien yhteistoiminnalla (composition).
 - Session managerin, drawer-luokkien lisääminen (composition).  
-- Dokumentaation läpikäyminen ja päivittäminen ajan tasalle. 
+- Dokumentaation (vaatimusmäärittely, arkkitehtuuri, käyttöohje, changelog, työaikakirjanpito, testausdokumentti, kuvat) läpikäyminen ja päivittäminen ajan tasalle. 

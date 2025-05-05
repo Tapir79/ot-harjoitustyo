@@ -18,5 +18,5 @@ CREATE VIEW general_statistics AS
     SELECT u.username, us.high_score, us.level
     FROM users u
     JOIN user_statistics us ON u.id = us.user_id
-    ORDER BY us.high_score DESC
+    ORDER BY us.high_score DESC, us.level ASC
     LIMIT 3;
