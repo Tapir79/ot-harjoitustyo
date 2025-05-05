@@ -1,7 +1,6 @@
 import pygame
 import os
 from config import ASSETS_DIR
-
 from services.bullet_service import BulletService
 
 dirname = os.path.dirname(__file__)

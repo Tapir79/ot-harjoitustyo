@@ -49,7 +49,8 @@ def add_test_data(database_name="database"):
 
     db_path = Path(f"data/{database_name}.db")
     schema_path = Path("data/seed_data.sql")
-    # equivalent of: sqlite3 database.db < data/test_data.sql
+    
+    # equivalent of: sqlite3 database.db < data/seed_data.sql
     try:
         subprocess.run(
             ["sqlite3", str(db_path)],

@@ -3,7 +3,7 @@ import random
 import pygame
 from config import ASSETS_DIR
 from level_config import ENEMY_SHOOTING_PROBABILITY
-from ui.sprites.bullet import BulletSprite  # import the sprite class
+from ui.sprites.bullet import BulletSprite
 from services.enemy_service import EnemyService
 
 
