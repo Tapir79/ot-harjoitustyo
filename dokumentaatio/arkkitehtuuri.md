@@ -336,6 +336,7 @@ sequenceDiagram
     UserRepository->>DB: haet käyttäjä ja varmista, että salasana täsmää
     DB->>UserRepository: palauta käyttäjä_id
     UserRepository->>UserService: palauta käyttäjä_id
+    UserService->>LoginView: palauta käyttäjä_id
     LoginView-->>StartScreenView: palaa aloitusvalikkoon
     StartScreenView->>User: odota seuraavaa valintaa
 
@@ -360,8 +361,9 @@ sequenceDiagram
     CreateUserView->>UserService: luo uusi käyttäjä
     UserService->>UserRepository: suorita käyttäjän luontilause
     UserRepository->>DB: lisää uusi käyttäjä tietokantaan
-    DB->>UserRepository: palauta käyttäjä entiteetti
-    UserRepository->>UserService: palauta käyttäjä entiteetti
+    DB->>UserRepository: palauta käyttäjä
+    UserRepository->>UserService: palauta käyttäjä 
+    UserService->>CreateUserView: palauta käyttäjä
     CreateUserView-->>StartScreenView: palaa aloitusvalikkoon
     StartScreenView->>User: odota seuraavaa valintaa
 
