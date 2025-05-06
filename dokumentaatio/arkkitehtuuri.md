@@ -456,9 +456,11 @@ sequenceDiagram
     Game->>Game: create_enemies()
     loop jokaiselle viholliselle
         Game->>Game: get_enemy_service(x, y)
-        Game->>EnemyService: EnemyService.create(...) käyttäen tasoasetuksia
-        EnemyService-->>Game: EnemyService-olio
-        Game->>Game: Luo EnemySprite ja lisää se ryhmään
+        Game->>EnemyService: luo enemy_service tason asetuksilla
+        EnemyService-->>Game: palauta EnemyService-olio
+        Game->>EnemySprite: Luo EnemySprite
+        EnemySprite-->>Game: palauta EnemySprite
+        Game->>Game: lisää vihollinen ryhmään
     end
 ```
 ---
