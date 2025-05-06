@@ -21,6 +21,8 @@ graph TD
 - repositories-pakkaus vastaa pysyväistallennuksesta sqlite-tietokantaan. 
 - entities-pakkaus, jossa on tietokantatauluja vastaavat python-rakenteet eli entiteetit. Entiteetit ovat dataclass-tyyppisiä olioita, joiden tarkoitus on mallintaa tietokantakyselyjen tuloksia. 
 
+
+
 ## Käyttöliittymä 
 
 Käyttöliittymä koostuu uuden käyttäjän luomisesta, kirjautumisesta ja itse pelistä. Näkymät sijaitsevat "ui/game_views"-kansiossa, jonne on eristetty kaikki Pygame-koodi. Kansion entrypoint on main.py. Peli käynnistetään src-kansion juuresta, tiedostosta main.py. Aloitusnäkymässä voi siirtyä suoraan pelinäkymään, jolloin pelaajan henkilökohtaisia tuloksia ei tallenneta. Käyttäjä voi myös luoda uuden käyttäjätunnuksen ja kirjautua sisään, jolloin tulokset tallennetaan tietokantaan.   
@@ -318,6 +320,7 @@ Sovelluksen toimintalogiikan päätoiminnallisuudet sekvenssikaaviona.
 
 ```mermaid 
 sequenceDiagram
+    actor User
     participant Main
     participant StartScreenView
     participant LoginView
@@ -325,6 +328,7 @@ sequenceDiagram
     participant UserRepository
     participant DB
 
+    User->>Main: click Login
     Main->>StartScreenView: aloita()
     StartScreenView->>LoginView: valitse "Login"
     LoginView->>UserService: tarkista sisäänkirjautuminen
@@ -333,7 +337,7 @@ sequenceDiagram
     DB->>UserRepository: palauta käyttäjä_id
     UserRepository->>UserService: palauta käyttäjä_id
     LoginView-->>StartScreenView: palaa aloitusvalikkoon
-    StartScreenView->>StartScreenView: odota seuraavaa valintaa
+    StartScreenView->>User: odota seuraavaa valintaa
 
 
 ```
@@ -342,6 +346,7 @@ sequenceDiagram
 
 ```mermaid 
 sequenceDiagram
+    actor User
     participant Main
     participant StartScreenView
     participant CreateUserView
@@ -349,6 +354,7 @@ sequenceDiagram
     participant UserRepository
     participant DB
 
+    User->>Main: click Login
     Main->>StartScreenView: aloita()
     StartScreenView->>CreateUserView: valitse "Create Account"
     CreateUserView->>UserService: luo uusi käyttäjä
@@ -357,7 +363,7 @@ sequenceDiagram
     DB->>UserRepository: palauta käyttäjä entiteetti
     UserRepository->>UserService: palauta käyttäjä entiteetti
     CreateUserView-->>StartScreenView: palaa aloitusvalikkoon
-    StartScreenView->>StartScreenView: odota seuraavaa valintaa
+    StartScreenView->>User: odota seuraavaa valintaa
 
 
 ```
