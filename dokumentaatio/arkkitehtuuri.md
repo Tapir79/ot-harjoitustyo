@@ -334,11 +334,11 @@ sequenceDiagram
     LoginView->>UserService: tarkista sisäänkirjautuminen
     UserService->>UserRepository: suorita käyttäjän luontilause
     UserRepository->>DB: haet käyttäjä ja varmista, että salasana täsmää
-    DB->>UserRepository: palauta käyttäjä_id
-    UserRepository->>UserService: palauta käyttäjä_id
-    UserService->>LoginView: palauta käyttäjä_id
+    DB-->>UserRepository: palauta käyttäjä_id
+    UserRepository-->>UserService: palauta käyttäjä_id
+    UserService-->>LoginView: palauta käyttäjä_id
     LoginView-->>StartScreenView: palaa aloitusvalikkoon
-    StartScreenView->>User: odota seuraavaa valintaa
+    StartScreenView-->>User: odota seuraavaa valintaa
 
 
 ```
@@ -361,11 +361,11 @@ sequenceDiagram
     CreateUserView->>UserService: luo uusi käyttäjä
     UserService->>UserRepository: suorita käyttäjän luontilause
     UserRepository->>DB: lisää uusi käyttäjä tietokantaan
-    DB->>UserRepository: palauta käyttäjä
-    UserRepository->>UserService: palauta käyttäjä 
-    UserService->>CreateUserView: palauta käyttäjä
+    DB-->>UserRepository: palauta käyttäjä
+    UserRepository-->>UserService: palauta käyttäjä 
+    UserService-->>CreateUserView: palauta käyttäjä
     CreateUserView-->>StartScreenView: palaa aloitusvalikkoon
-    StartScreenView->>User: odota seuraavaa valintaa
+    StartScreenView-->>User: odota seuraavaa valintaa
 
 
 ```
@@ -378,26 +378,36 @@ Pelin ylätasokaavio:
 sequenceDiagram
     participant Main
     participant Game
-    participant Level
+    participant LevelService
     participant PlayerSprite
-    participant BulletSprite
     participant EnemySprite
+    participant BulletSprite
+    
 
-    Main->>Game: aloita peli()
-    Game->>Level: luo pelitasot()
-    Game->>PlayerSprite:luo pelaaja()
-    Game->>Game: luo pelisilmukka()
-    Game->>Game: Aloita 1. taso()
+    Main->>Game: aloita_peli()
+    Game->>LevelService: luo tasot()
+    Game->>PlayerSprite: luo_pelaaja()
+    Game->>Game: pelisilmukka()
+    
+   
+    Game->>Game: aloita 1. taso()
+    LevelService-->>Game: hae tason attribuutit()
     Game->>EnemySprite: luo viholliset()
     
+
     loop peli-iteraatio
-        PlayerSprite->>Game: liiku ja ammu
-        EnemySprite->>Game: liiku ja ammu
-        BulletSprite->>Game: liiku
-        PlayerSprite->>Main: Pelaaja kuolee. GAME OVER
-        EnemySprite->>Level: Viimeinen tason vihollinen kuolee
-        Level->>Game: tuhoa vanha taso ja luo uusi taso
+        Game->>PlayerSprite: liiku ja yritä ampua()
+        PlayerSprite->>BulletSprite: ammu()
+        Game->>EnemySprite: liiku ja yritä ampua()
+        EnemySprite->>BulletSprite: ammu()
+        BulletSprite->>Game: liiku()
+
+        Game->>Game: yhteentörmäystarkistelu()
+         
+        Game->>Game: seuraava_taso() tai game_over()
+        
     end
+
 ```
 ---
 
@@ -482,7 +492,7 @@ sequenceDiagram
 
 ### Yhteentörmäystarkistukset:
 
-Pelaajan luoti ja vihollisen luoti
+Pelaajan luoti ja vihollisen luoti:
 
 ```mermaid
 
@@ -493,16 +503,16 @@ sequenceDiagram
     participant EnemySprite
     participant HitAnimation
 
-    loop peli-iteraatio
-        Game->>PlayerBullet: päivitä sijainti()
-        Game->>EnemyBullet: päivitä sijainti()
-        Game->>Game: tarkista luotien törmäykset()
+    
+    Game->>PlayerBullet: päivitä sijainti()
+    Game->>EnemyBullet: päivitä sijainti()
+    Game->>Game: tarkista luotien törmäykset()
 
-        Game-->>EnemyBullet: tuhoa törmännyt vihollisluoti
-        Game-->>PlayerBullet: tuhoa törmännyt pelaajan luoti
-        Game->>HitAnimation: luo pieni räjähdys
+    Game-->>EnemyBullet: tuhoa törmännyt vihollisluoti
+    Game-->>PlayerBullet: tuhoa törmännyt pelaajan luoti
+    Game->>HitAnimation: luo pieni räjähdys
         
-    end
+    
 ```
 ---
 
@@ -516,20 +526,17 @@ sequenceDiagram
     participant HitAnimation
     participant Level
 
-    loop peli-iteraatio
-        Game->>PlayerBullet: päivitä sijainti()
-        Game->>PlayerBullet: tarkista törmäykset()
+    Game->>PlayerBullet: päivitä sijainti()
+    Game->>PlayerBullet: tarkista törmäykset()
 
-        EnemySprite->>EnemySprite: lisää osuma viholliselle
+    EnemySprite->>EnemySprite: lisää osuma viholliselle
+    
+    Game->>EnemySprite: vihollinen kuolee: poista vihollinen ryhmästä()
+    Game->>PlayerBullet: poista törmännyt luoti()
+    Game->>HitAnimation: luo räjähdys()
+    
+    Game->>Level: viimeinen vihollinen kuolee Aloita uusi taso
         
-        Game-->>EnemySprite: vihollinen kuolee: poista vihollinen ryhmästä()
-        Game-->>PlayerBullet: poista törmännyt luoti()
-        Game->>HitAnimation: luo räjähdys()
-        
-        Game->>Level: viimeinen vihollinen kuolee Aloita uusi taso
-        
-    end
-
 ```
 ---
 
@@ -543,19 +550,13 @@ sequenceDiagram
     participant EnemyBullet
     participant HitAnimation
 
-    loop peli-iteraatio
-        Game->>EnemyBullet: päivitä sijainti()
-        Game->>EnemyBullet: tarkista törmäykset()
-
-       
-        EnemyBullet-->>PlayerSprite: osuma
-        PlayerSprite->>PlayerSprite: lisää osuma pelaajalle
-        Game-->>EnemyBullet: poista luoti
-        Game->>HitAnimation: luo räjähdys
-        
-        PlayerSprite-->>Game: jos pelaaaja kuolee: GAME OVER 
-    end
-
+    Game->>EnemyBullet: päivitä sijainti()
+    Game->>EnemyBullet: tarkista törmäykset()
+    EnemyBullet-->>PlayerSprite: osuma
+    PlayerSprite->>PlayerSprite: lisää osuma pelaajalle
+    Game-->>EnemyBullet: poista luoti
+    Game->>HitAnimation: luo räjähdys
+    PlayerSprite-->>Game: jos pelaaaja kuolee: GAME OVER 
 ```
 
 
@@ -563,6 +564,6 @@ sequenceDiagram
 
 - Testeille generoidaan dataa, joka eri testien välillä konfliktoi keskenään, mikäli edellisen testin dataa muokataan tai se poistetaan. Jokainen testi alkaakin ns. puhtaalta pöydältä ja tietokannan alustus tehdään uudestaan jokaiselle integraatiotestille. Jos projekti laajenee ja testien määrä kasvaa, niiden suorittaminen hidastuu. Testit voidaan projektin laajentuessa ajaa esim. CI/CD-putkessa ja tällöin niiden nopea suoritusaika on tärkeää. Tähän pitäisi miettiä ratkaisu, jolla testien ajaminen nopeutuu. 
 
-- Virheilmoitukset ja virheiden käsittely voisivat sijaita omassa luokassaan, mikä standardoisi ja helpottaisi niiden hallintaa, mikäli ohjelma laajenisi.
+- Virheilmoitukset sekä poikkeuksien ja virheiden käsittely voisivat sijaita omassa luokassaan tai palvelussaan, mikä standardoisi ja helpottaisi niiden hallintaa, mikäli ohjelma laajenisi.
 
-- Sprite-olioiden liikkuminen on nyt yksinkertaista. SpriteService-luokilla on nyt liikkuminen osana olioluokkaa. Monimutkaisempien liikeratojen laskenta ja nykyinen liikelaskenta kannattaisi eristää omaan palveluunsa, esim. MovementService ja injektoida Enemy- , Player- ja BulletService:lle. Tällöin ohjelman laajennettavuus olisi helpompaa.
+- Sprite-olioiden liikkuminen on nyt yksinkertaista. SpriteService-luokilla on nyt liikkuminen osana olioluokkaa. Monimutkaisempien liikeratojen laskenta ja nykyinen liikelaskenta kannattaisi eristää omaan palveluunsa, esim. MovementService ja injektoida Enemy- , Player- ja BulletService:lle. Tällöin ohjelman laajennettavuus olisi helpompaa. Monimutkaisempien liikeratojen laskentaan olisin halunnut kokeilla Numpy-kirjastoa ja sen erilaisia funktioita kuten siniä ja kosinia, mutta aika loppui kesken. 
