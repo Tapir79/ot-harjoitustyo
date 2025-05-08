@@ -54,5 +54,6 @@
 | 3.5 | 6 | Sprite_service-luokkien refaktorointi.|
 | 4.5 | 7 | Repositoriotestit. Testausdokumentin päivitys. Arkkitehtuuridokumentin päivitys. Lisää merkkijonovalidointi kirjautumiseen. Yleistä koodin, docstringien ja dokumentaation siivoamista. | 
 | 5.5 | 2 | Vaatimusmäärittelyn läpikäynti ja päivitys ajan tasalle. |
-| 6.5 | 1 | Arkkithetuurikaavion päivittäminen. | 
-|yht | 171 ||
+| 6.5 | 1 | Arkkithetuurikaavion päivittäminen. |
+| 8.5 | 0.5 | README-päivitys ja releasen päivitys. | 
+|yht | 171.5 ||

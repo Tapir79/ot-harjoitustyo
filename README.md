@@ -43,10 +43,12 @@ Projektissa käytetyn [.pylinrc](https://github.com/Tapir79/ot-harjoitustyo/tree
 
 ## Lisenssit
 ### Kuvat: 
-- Kenney Space Shooter Extension: https://kenney.nl/assets/space-shooter-extension 
+- Kenney Space Shooter Extension: https://kenney.nl/assets/space-shooter-extension     
+CC lisenssi: https://creativecommons.org/publicdomain/zero/1.0/
 - Kenney Board Game Icons: https://kenney.nl/assets/board-game-icons     
 CC lisenssi: https://creativecommons.org/publicdomain/zero/1.0/
-- Pelin otsikkokuvan luomisessa on käytetty mallina ANSI Shadow -fonttia: https://github.com/pwaller/pyfiglet.     
+- Pelin otsikkokuvan luomisessa on käytetty mallina ANSI Shadow -fonttia: https://github.com/pwaller/pyfiglet.    
+MIT lisenssi: https://opensource.org/license/mit     
 
 ## Tekoälyn käyttö
 Projektissa on käytetty [ChatGPT 4o](https://chatgpt.com/)-kielimallia virheviestien ja pylint-virheiden tulkintaan ja virheiden etsimiseen. Tekoälyä on myös käytetty tukena docstring-pohjien tekemiseen. Tekoälyllä ei ole kuitenkaan generoitu koodia tai tekstiä. 
