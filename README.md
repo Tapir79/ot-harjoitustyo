@@ -10,12 +10,12 @@ Lataa uusin julkaisu täältä:
 
 
 ## Dokumentaatio
-* [Käyttöohje](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/kayttoohje.md)
-* [Vaatimusmäärittely](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/vaatimusmaarittely.md)
-* [Arkkitehtuuri](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/arkkitehtuuri.md)
-* [Testausdokumentti](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/testaus.md)
-* [Työaikakirjanpito](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/tyoaikakirjanpito.md)
-* [Changelog](https://github.com/Tapir79/ot-harjoitustyo/tree/main/dokumentaatio/changelog.md)
+* [Käyttöohje](dokumentaatio/kayttoohje.md)
+* [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
+* [Arkkitehtuuri](dokumentaatio/arkkitehtuuri.md)
+* [Testausdokumentti](dokumentaatio/testaus.md)
+* [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
+* [Changelog](dokumentaatio/changelog.md)
 
 
 ## Ohjelman asentaminen ja käynnistäminen
